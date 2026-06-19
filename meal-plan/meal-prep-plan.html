@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-Day Meal Prep Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --black: #0f0f0f;
+    --charcoal: #1c1c1c;
+    --panel: #242424;
+    --border: #333;
+    --muted: #888;
+    --cream: #f0ece3;
+    --white: #fafaf8;
+    --green: #4caf78;
+    --green-dim: #2a6645;
+    --red: #e05a5a;
+    --amber: #e8a53a;
+    --blue: #5b9bd5;
+    --purple: #9b7fd4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .hero {
+    background: var(--charcoal);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 36px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 28px;
+  }
+
+  /* BIOMARKER ALERT BAR */
+  .alert-bar {
+    background: #1a1208;
+    border: 1px solid #4a3010;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 auto;
+    max-width: 700px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+  }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { font-size: 13px; color: #c8a060; }
+  .alert-text strong { color: var(--amber); }
+
+  /* STATS ROW */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--charcoal);
+  }
+  .stat {
+    flex: 1;
+    padding: 20px 16px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    max-width: 200px;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--green);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* PROTOCOL CARDS */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .protocol-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .protocol-card h4 {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .protocol-card p {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.55;
+  }
+
+  /* DAY TABS */
+  .day-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .day-tab {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    transition: all 0.15s;
+  }
+  .day-tab:hover { border-color: var(--green-dim); color: var(--white); }
+  .day-tab.active {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--white);
+  }
+
+  /* MEAL DAY CARD */
+  .day-card { display: none; }
+  .day-card.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .day-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+  }
+  .day-macros {
+    display: flex;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .macro { color: var(--green); font-weight: 500; }
+
+  .meals-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .meal-row {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 12px;
+    align-items: start;
+  }
+  .meal-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .meal-type.breakfast { color: var(--amber); }
+  .meal-type.lunch { color: var(--blue); }
+  .meal-type.dinner { color: var(--purple); }
+  .meal-type.snack { color: var(--green); }
+
+  .meal-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .meal-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .meal-cal {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+  .meal-protein {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 2px;
+  }
+
+  /* TRAINING BADGE */
+  .training-badge {
+    display: inline-block;
+    background: #1a1208;
+    border: 1px solid #4a3010;
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--amber);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  /* SHOPPING LIST */
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .shop-category {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .shop-cat-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .shop-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 13px;
+    gap: 8px;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item-name { color: var(--white); }
+  .shop-item-qty {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* BIOMARKER NOTE */
+  .biomarker-notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .bio-note {
+    background: var(--panel);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+  }
+  .bio-note.heart { border-color: var(--red); }
+  .bio-note.nutrient { border-color: var(--amber); }
+  .bio-note h4 {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .bio-note.heart h4 { color: var(--red); }
+  .bio-note.nutrient h4 { color: var(--amber); }
+  .bio-note p { font-size: 13px; color: #bbb; line-height: 1.55; }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer span { color: var(--green); }
+
+  @media (max-width: 600px) {
+    .meal-row { grid-template-columns: 1fr; gap: 6px; }
+    .meal-cal { display: none; }
+    .stats { flex-wrap: wrap; }
+    .stat { max-width: none; border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Function Health · Personalized Protocol</div>
+  <h1>7-Day Meal Prep Plan</h1>
+  <p class="hero-sub">Built around your biomarkers. Optimized for fat loss, muscle gain, and heart health — at 48 with 3–4x weekly strength training.</p>
+
+  <div class="alert-bar">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-text">
+      <strong>Your #1 priority:</strong> 10 of 15 Heart biomarkers are out of range. Every meal in this plan is designed around reducing LDL, lowering hs-CRP inflammation, and improving cardiovascular markers through Mediterranean-style eating, omega-3s, and fiber.
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-val">~2,200</div>
+    <div class="stat-label">Calories / day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">185g</div>
+    <div class="stat-label">Protein / day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">65 lbs</div>
+    <div class="stat-label">Goal fat loss</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">~8 mo</div>
+    <div class="stat-label">Estimated timeline</div>
+  </div>
+</div>
+
+<!-- PROTOCOL -->
+<div class="section">
+  <div class="section-title">Your Eating Protocol</div>
+  <div class="section-sub">Principles driving every food choice this week</div>
+
+  <div class="protocol-grid">
+    <div class="protocol-card">
+      <h4>🫀 Heart Priority</h4>
+      <p>Emphasize omega-3s (salmon, cod, sardines), soluble fiber (oats, lentils, beans), and olive oil. Limit saturated fat. These directly target your 10 out-of-range cardiovascular biomarkers.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>💪 Muscle Preservation</h4>
+      <p>Target 0.7–0.8g protein per lb of goal bodyweight (~185g/day). Spread protein across 4–5 meals. Prioritize leucine-rich foods: eggs, chicken, Greek yogurt, fish.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>🔥 Fat Loss Deficit</h4>
+      <p>At 255 lbs + strength training, your TDEE ≈ 2,900–3,100 cal. Eating 2,200 cal creates a ~700 cal deficit for ~1.5 lb/week loss without sacrificing muscle.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>☀️ Vitamin D</h4>
+      <p>One of your 2 out-of-range nutrient markers. This plan includes fatty fish 3x/week, eggs daily, and fortified foods. Consider a D3 supplement (2,000–4,000 IU/day).</p>
+    </div>
+    <div class="protocol-card">
+      <h4>🕐 Meal Timing</h4>
+      <p>On training days: eat a protein-rich meal 60–90 min before and within 60 min after training. This maximizes muscle protein synthesis and recovery.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>🚫 Avoid</h4>
+      <p>Ultra-processed foods, refined seed oils, sugary drinks, white bread. These drive up inflammation markers (hs-CRP) and directly worsen your heart biomarkers.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- MEAL PLAN -->
+<div class="section">
+  <div class="section-title">Weekly Meal Plan</div>
+  <div class="section-sub">Click any day to see your full meal schedule</div>
+
+  <div class="day-tabs">
+    <button class="day-tab active" onclick="showDay(0)">MON</button>
+    <button class="day-tab" onclick="showDay(1)">TUE</button>
+    <button class="day-tab" onclick="showDay(2)">WED</button>
+    <button class="day-tab" onclick="showDay(3)">THU</button>
+    <button class="day-tab" onclick="showDay(4)">FRI</button>
+    <button class="day-tab" onclick="showDay(5)">SAT</button>
+    <button class="day-tab" onclick="showDay(6)">SUN</button>
+  </div>
+
+  <!-- MONDAY -->
+  <div class="day-card active" id="day-0">
+    <div class="day-header">
+      <div class="day-title">Monday</div>
+      <div class="day-macros">~2,230 cal · <span class="macro">188g protein</span> · 165g carbs · 68g fat</div>
+    </div>
+    <div class="training-badge">🏋️ TRAINING DAY</div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">Greek Yogurt Power Bowl</div>
+          <div class="meal-detail">1.5 cups 0% Greek yogurt · ½ cup blueberries · 2 tbsp ground flaxseed · 1 oz walnuts · 1 tsp honey</div>
+        </div>
+        <div>
+          <div class="meal-cal">430 cal</div>
+          <div class="meal-protein">42g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Pre-Workout</div>
+        <div>
+          <div class="meal-name">Cottage Cheese + Apple</div>
+          <div class="meal-detail">1 cup 2% cottage cheese · 1 medium apple · cinnamon</div>
+        </div>
+        <div>
+          <div class="meal-cal">280 cal</div>
+          <div class="meal-protein">28g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Turkey & Avocado Power Bowl</div>
+          <div class="meal-detail">6 oz ground turkey (93% lean) · ½ avocado · 1 cup brown rice · 2 cups mixed greens · 1 tbsp olive oil & lemon dressing</div>
+        </div>
+        <div>
+          <div class="meal-cal">620 cal</div>
+          <div class="meal-protein">52g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Hard-Boiled Eggs + Celery</div>
+          <div class="meal-detail">3 hard-boiled eggs · 3 celery stalks · 1 tbsp almond butter</div>
+        </div>
+        <div>
+          <div class="meal-cal">280 cal</div>
+          <div class="meal-protein">22g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Grilled Salmon with Roasted Veg & Quinoa</div>
+          <div class="meal-detail">6 oz salmon · ½ cup quinoa · 2 cups roasted bell peppers, zucchini, tomatoes · olive oil, lemon, garlic, herbs</div>
+        </div>
+        <div>
+          <div class="meal-cal">620 cal</div>
+          <div class="meal-protein">44g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUESDAY -->
+  <div class="day-card" id="day-1">
+    <div class="day-header">
+      <div class="day-title">Tuesday</div>
+      <div class="day-macros">~2,180 cal · <span class="macro">182g protein</span> · 158g carbs · 66g fat</div>
+    </div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">Egg White Oatmeal Scramble</div>
+          <div class="meal-detail">½ cup rolled oats (cooked) · 4 egg whites + 2 whole eggs scrambled · 1 cup spinach · ¼ cup salsa</div>
+        </div>
+        <div>
+          <div class="meal-cal">420 cal</div>
+          <div class="meal-protein">38g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Mid-Morning</div>
+        <div>
+          <div class="meal-name">Protein Shake + Banana</div>
+          <div class="meal-detail">1 scoop whey protein · 1 cup unsweetened almond milk · 1 banana · 1 tbsp natural peanut butter</div>
+        </div>
+        <div>
+          <div class="meal-cal">320 cal</div>
+          <div class="meal-protein">32g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Tuna Salad Lettuce Wraps</div>
+          <div class="meal-detail">2 cans albacore tuna · 1 tbsp avocado mayo · dijon mustard · romaine leaves · cherry tomatoes · cucumber · ½ cup chickpeas</div>
+        </div>
+        <div>
+          <div class="meal-cal">480 cal</div>
+          <div class="meal-protein">56g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Greek Yogurt + Pumpkin Seeds</div>
+          <div class="meal-detail">1 cup 0% Greek yogurt · 2 tbsp pumpkin seeds · ½ cup raspberries</div>
+        </div>
+        <div>
+          <div class="meal-cal">230 cal</div>
+          <div class="meal-protein">22g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Lentil & Spinach Stew</div>
+          <div class="meal-detail">1.5 cups green lentils · 4 cups spinach · onion, garlic · vegetable broth · EVOO · lemon · black pepper</div>
+        </div>
+        <div>
+          <div class="meal-cal">400 cal</div>
+          <div class="meal-protein">34g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div class="day-card" id="day-2">
+    <div class="day-header">
+      <div class="day-title">Wednesday</div>
+      <div class="day-macros">~2,250 cal · <span class="macro">190g protein</span> · 172g carbs · 65g fat</div>
+    </div>
+    <div class="training-badge">🏋️ TRAINING DAY — increase pre-workout carbs</div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">Smoked Salmon Egg Scramble</div>
+          <div class="meal-detail">3 whole eggs + 2 egg whites · 2 oz smoked salmon · ½ cup baby spinach · 1 slice Ezekiel toast · 1 tsp EVOO</div>
+        </div>
+        <div>
+          <div class="meal-cal">450 cal</div>
+          <div class="meal-protein">46g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Pre-Workout</div>
+        <div>
+          <div class="meal-name">Rice Cake + Almond Butter</div>
+          <div class="meal-detail">2 brown rice cakes · 2 tbsp natural almond butter · 1 scoop protein powder + water</div>
+        </div>
+        <div>
+          <div class="meal-cal">340 cal</div>
+          <div class="meal-protein">34g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Chicken & Sweet Potato Bowl</div>
+          <div class="meal-detail">7 oz grilled chicken breast · 1 medium sweet potato (baked) · 2 cups arugula · ¼ avocado · balsamic drizzle</div>
+        </div>
+        <div>
+          <div class="meal-cal">560 cal</div>
+          <div class="meal-protein">58g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Post-Workout</div>
+        <div>
+          <div class="meal-name">Chocolate Milk + Banana</div>
+          <div class="meal-detail">12 oz low-fat chocolate milk · 1 banana (fast recovery: simple carbs + protein)</div>
+        </div>
+        <div>
+          <div class="meal-cal">290 cal</div>
+          <div class="meal-protein">14g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Herb-Crusted Chicken + Brussels + Sweet Potato</div>
+          <div class="meal-detail">6 oz chicken breast · rosemary, garlic · 1 cup Brussels sprouts · 1 medium sweet potato · olive oil · lemon</div>
+        </div>
+        <div>
+          <div class="meal-cal">450 cal</div>
+          <div class="meal-protein">45g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THURSDAY -->
+  <div class="day-card" id="day-3">
+    <div class="day-header">
+      <div class="day-title">Thursday</div>
+      <div class="day-macros">~2,160 cal · <span class="macro">178g protein</span> · 155g carbs · 62g fat</div>
+    </div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">High-Protein Overnight Oats</div>
+          <div class="meal-detail">½ cup rolled oats · 1 scoop vanilla protein · 1 cup almond milk · 1 tbsp chia seeds · ½ cup strawberries — prep night before</div>
+        </div>
+        <div>
+          <div class="meal-cal">420 cal</div>
+          <div class="meal-protein">40g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Mid-Morning</div>
+        <div>
+          <div class="meal-name">Edamame + String Cheese</div>
+          <div class="meal-detail">1 cup shelled edamame · 2 sticks part-skim mozzarella</div>
+        </div>
+        <div>
+          <div class="meal-cal">300 cal</div>
+          <div class="meal-protein">30g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Sardine & White Bean Salad</div>
+          <div class="meal-detail">2 cans sardines in water · ½ cup cannellini beans · 2 cups arugula · ½ cup cherry tomatoes · red onion · EVOO · red wine vinegar · capers</div>
+        </div>
+        <div>
+          <div class="meal-cal">480 cal</div>
+          <div class="meal-protein">52g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Beef Jerky + Walnuts</div>
+          <div class="meal-detail">1.5 oz low-sodium beef jerky · 1 oz walnuts (omega-3 boost)</div>
+        </div>
+        <div>
+          <div class="meal-cal">240 cal</div>
+          <div class="meal-protein">22g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Tofu Stir-Fry with Broccoli, Bell Peppers & Brown Rice</div>
+          <div class="meal-detail">200g extra-firm tofu · 150g broccoli · 2 bell peppers · 1 cup brown rice · olive oil · garlic · low-sodium soy sauce</div>
+        </div>
+        <div>
+          <div class="meal-cal">520 cal</div>
+          <div class="meal-protein">34g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRIDAY -->
+  <div class="day-card" id="day-4">
+    <div class="day-header">
+      <div class="day-title">Friday</div>
+      <div class="day-macros">~2,240 cal · <span class="macro">186g protein</span> · 162g carbs · 67g fat</div>
+    </div>
+    <div class="training-badge">🏋️ TRAINING DAY</div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">3-Egg Veggie Omelet</div>
+          <div class="meal-detail">3 whole eggs · ½ cup egg whites · spinach, mushrooms, bell pepper · ¼ cup feta crumble · 1 slice Ezekiel toast</div>
+        </div>
+        <div>
+          <div class="meal-cal">460 cal</div>
+          <div class="meal-protein">44g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Pre-Workout</div>
+        <div>
+          <div class="meal-name">Banana + Protein Shake</div>
+          <div class="meal-detail">1 banana · 1 scoop whey isolate + water · 1 tbsp peanut butter</div>
+        </div>
+        <div>
+          <div class="meal-cal">340 cal</div>
+          <div class="meal-protein">30g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Ground Turkey Taco Bowl</div>
+          <div class="meal-detail">6 oz 93% lean turkey · ½ cup black beans · ½ cup brown rice · pico de gallo · ¼ avocado · lime · cumin · garlic</div>
+        </div>
+        <div>
+          <div class="meal-cal">580 cal</div>
+          <div class="meal-protein">56g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Cottage Cheese + Pineapple</div>
+          <div class="meal-detail">1 cup 1% cottage cheese · ½ cup pineapple chunks · 1 tbsp hemp seeds</div>
+        </div>
+        <div>
+          <div class="meal-cal">260 cal</div>
+          <div class="meal-protein">28g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Baked Cod with Tomato-Olive Salsa & Asparagus</div>
+          <div class="meal-detail">6 oz cod · 1 cup cherry tomatoes · ½ cup kalamata olives · fresh basil · 1 bunch asparagus · EVOO · lemon · garlic</div>
+        </div>
+        <div>
+          <div class="meal-cal">450 cal</div>
+          <div class="meal-protein">32g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SATURDAY -->
+  <div class="day-card" id="day-5">
+    <div class="day-header">
+      <div class="day-title">Saturday</div>
+      <div class="day-macros">~2,200 cal · <span class="macro">180g protein</span> · 160g carbs · 65g fat</div>
+    </div>
+    <div class="training-badge">🏋️ OPTIONAL TRAINING DAY</div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">Protein Pancakes</div>
+          <div class="meal-detail">1 scoop protein powder + 2 eggs + ½ cup oats (blended) + ½ banana — cook 4 pancakes · top with berries, 1 tbsp almond butter, no syrup</div>
+        </div>
+        <div>
+          <div class="meal-cal">490 cal</div>
+          <div class="meal-protein">46g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Mid-Morning</div>
+        <div>
+          <div class="meal-name">Nut & Seed Mix</div>
+          <div class="meal-detail">1 oz almonds · 1 oz pumpkin seeds · 1 tbsp dark chocolate chips (≥70%) · 1 string cheese</div>
+        </div>
+        <div>
+          <div class="meal-cal">280 cal</div>
+          <div class="meal-protein">14g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Shrimp & Quinoa Mediterranean Bowl</div>
+          <div class="meal-detail">6 oz wild-caught shrimp · ½ cup quinoa · cucumber, roasted red pepper · 2 tbsp hummus · lemon-herb drizzle · kalamata olives</div>
+        </div>
+        <div>
+          <div class="meal-cal">480 cal</div>
+          <div class="meal-protein">48g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Celery + Hummus + Tuna</div>
+          <div class="meal-detail">4 celery sticks · 3 tbsp hummus · 1 can light tuna in water</div>
+        </div>
+        <div>
+          <div class="meal-cal">220 cal</div>
+          <div class="meal-protein">28g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Chickpea & Vegetable Curry with Cauliflower Rice</div>
+          <div class="meal-detail">1 cup chickpeas · cauliflower rice · spinach · tomatoes · turmeric, cumin, curry · garlic, ginger · olive oil · cilantro</div>
+        </div>
+        <div>
+          <div class="meal-cal">420 cal</div>
+          <div class="meal-protein">34g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUNDAY -->
+  <div class="day-card" id="day-6">
+    <div class="day-header">
+      <div class="day-title">Sunday — Meal Prep Day</div>
+      <div class="day-macros">~2,170 cal · <span class="macro">176g protein</span> · 150g carbs · 70g fat</div>
+    </div>
+    <div class="meals-grid">
+      <div class="meal-row">
+        <div class="meal-type breakfast">Breakfast</div>
+        <div>
+          <div class="meal-name">Smoked Salmon Avocado Toast</div>
+          <div class="meal-detail">2 slices Ezekiel bread · ½ avocado mashed · 3 oz smoked salmon · 2 poached eggs · capers · red onion · everything bagel seasoning</div>
+        </div>
+        <div>
+          <div class="meal-cal">480 cal</div>
+          <div class="meal-protein">42g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Mid-Morning</div>
+        <div>
+          <div class="meal-name">Greek Yogurt Parfait</div>
+          <div class="meal-detail">1 cup 0% Greek yogurt · ¼ cup granola (low sugar) · ½ cup mixed berries · 1 tbsp ground flaxseed</div>
+        </div>
+        <div>
+          <div class="meal-cal">310 cal</div>
+          <div class="meal-protein">24g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type lunch">Lunch</div>
+        <div>
+          <div class="meal-name">Leftover Batch Protein Bowl</div>
+          <div class="meal-detail">Use prepped chicken or turkey · ½ cup lentils or beans · 2 cups roasted veg from prep · olive oil, lemon, herbs</div>
+        </div>
+        <div>
+          <div class="meal-cal">520 cal</div>
+          <div class="meal-protein">52g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type snack">Snack</div>
+        <div>
+          <div class="meal-name">Hard-Boiled Eggs + Almonds</div>
+          <div class="meal-detail">3 hard-boiled eggs · 1 oz roasted almonds · pinch sea salt</div>
+        </div>
+        <div>
+          <div class="meal-cal">280 cal</div>
+          <div class="meal-protein">24g protein</div>
+        </div>
+      </div>
+      <div class="meal-row">
+        <div class="meal-type dinner">Dinner</div>
+        <div>
+          <div class="meal-name">Grass-Fed Beef Stir-Fry with Bok Choy, Mushrooms & Wild Rice</div>
+          <div class="meal-detail">6 oz grass-fed beef · 2 cups bok choy · 1 cup mushrooms · ½ cup wild rice · olive oil · garlic, ginger · low-sodium soy sauce</div>
+        </div>
+        <div>
+          <div class="meal-cal">550 cal</div>
+          <div class="meal-protein">48g protein</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SHOPPING LIST -->
+<div class="section">
+  <div class="section-title">Shopping List</div>
+  <div class="section-sub">One week of groceries — buy Sunday, prep Sunday afternoon</div>
+
+  <div class="shop-grid">
+    <div class="shop-category">
+      <div class="shop-cat-title">🐟 Proteins — Fish & Seafood</div>
+      <div class="shop-item"><span class="shop-item-name">Salmon fillets</span><span class="shop-item-qty">1.5 lbs</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cod fillets</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Smoked salmon</span><span class="shop-item-qty">5 oz</span></div>
+      <div class="shop-item"><span class="shop-item-name">Wild shrimp (frozen)</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Albacore tuna (cans)</span><span class="shop-item-qty">4 cans</span></div>
+      <div class="shop-item"><span class="shop-item-name">Sardines in water (cans)</span><span class="shop-item-qty">2 cans</span></div>
+      <div class="shop-item"><span class="shop-item-name">Light tuna (can)</span><span class="shop-item-qty">1 can</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🍗 Proteins — Poultry & Meat</div>
+      <div class="shop-item"><span class="shop-item-name">Chicken breasts</span><span class="shop-item-qty">2.5 lbs</span></div>
+      <div class="shop-item"><span class="shop-item-name">Ground turkey 93% lean</span><span class="shop-item-qty">2 lbs</span></div>
+      <div class="shop-item"><span class="shop-item-name">Grass-fed beef (stir-fry)</span><span class="shop-item-qty">¾ lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Low-sodium beef jerky</span><span class="shop-item-qty">1.5 oz</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🥚 Proteins — Eggs & Dairy</div>
+      <div class="shop-item"><span class="shop-item-name">Large eggs</span><span class="shop-item-qty">2 dozen</span></div>
+      <div class="shop-item"><span class="shop-item-name">Liquid egg whites</span><span class="shop-item-qty">1 carton (32 oz)</span></div>
+      <div class="shop-item"><span class="shop-item-name">0% Greek yogurt</span><span class="shop-item-qty">3 lbs (large tub)</span></div>
+      <div class="shop-item"><span class="shop-item-name">2% cottage cheese</span><span class="shop-item-qty">2 lbs</span></div>
+      <div class="shop-item"><span class="shop-item-name">Part-skim mozzarella sticks</span><span class="shop-item-qty">1 pack (8 ct)</span></div>
+      <div class="shop-item"><span class="shop-item-name">Feta cheese crumbles</span><span class="shop-item-qty">4 oz</span></div>
+      <div class="shop-item"><span class="shop-item-name">Low-fat chocolate milk</span><span class="shop-item-qty">12 oz</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🫘 Plant Proteins & Legumes</div>
+      <div class="shop-item"><span class="shop-item-name">Extra-firm tofu</span><span class="shop-item-qty">14 oz block</span></div>
+      <div class="shop-item"><span class="shop-item-name">Green lentils (dry)</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Canned chickpeas</span><span class="shop-item-qty">2 cans</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cannellini beans (can)</span><span class="shop-item-qty">1 can</span></div>
+      <div class="shop-item"><span class="shop-item-name">Black beans (can)</span><span class="shop-item-qty">1 can</span></div>
+      <div class="shop-item"><span class="shop-item-name">Edamame (frozen, shelled)</span><span class="shop-item-qty">1 bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Hummus</span><span class="shop-item-qty">1 container (10 oz)</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🥦 Vegetables</div>
+      <div class="shop-item"><span class="shop-item-name">Baby spinach</span><span class="shop-item-qty">2 bags (10 oz each)</span></div>
+      <div class="shop-item"><span class="shop-item-name">Broccoli florets</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Brussels sprouts</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Asparagus</span><span class="shop-item-qty">2 bunches</span></div>
+      <div class="shop-item"><span class="shop-item-name">Bok choy</span><span class="shop-item-qty">1 head</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cauliflower (large head)</span><span class="shop-item-qty">1 head</span></div>
+      <div class="shop-item"><span class="shop-item-name">Zucchini</span><span class="shop-item-qty">2 medium</span></div>
+      <div class="shop-item"><span class="shop-item-name">Bell peppers (mixed colors)</span><span class="shop-item-qty">6</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cherry tomatoes</span><span class="shop-item-qty">2 pints</span></div>
+      <div class="shop-item"><span class="shop-item-name">Tomatoes (for cooking)</span><span class="shop-item-qty">4 medium</span></div>
+      <div class="shop-item"><span class="shop-item-name">Mushrooms</span><span class="shop-item-qty">8 oz</span></div>
+      <div class="shop-item"><span class="shop-item-name">Celery</span><span class="shop-item-qty">1 bunch</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cucumber</span><span class="shop-item-qty">1</span></div>
+      <div class="shop-item"><span class="shop-item-name">Arugula / mixed greens</span><span class="shop-item-qty">2 bags</span></div>
+      <div class="shop-item"><span class="shop-item-name">Romaine lettuce</span><span class="shop-item-qty">1 head</span></div>
+      <div class="shop-item"><span class="shop-item-name">Red onion</span><span class="shop-item-qty">1</span></div>
+      <div class="shop-item"><span class="shop-item-name">Yellow onion</span><span class="shop-item-qty">2</span></div>
+      <div class="shop-item"><span class="shop-item-name">Garlic</span><span class="shop-item-qty">2 heads</span></div>
+      <div class="shop-item"><span class="shop-item-name">Fresh ginger root</span><span class="shop-item-qty">1 knob</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🍎 Fruits</div>
+      <div class="shop-item"><span class="shop-item-name">Bananas</span><span class="shop-item-qty">4</span></div>
+      <div class="shop-item"><span class="shop-item-name">Blueberries</span><span class="shop-item-qty">1 pint</span></div>
+      <div class="shop-item"><span class="shop-item-name">Raspberries</span><span class="shop-item-qty">1 pint</span></div>
+      <div class="shop-item"><span class="shop-item-name">Strawberries</span><span class="shop-item-qty">1 lb</span></div>
+      <div class="shop-item"><span class="shop-item-name">Mixed berries (frozen)</span><span class="shop-item-qty">1 bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Apples</span><span class="shop-item-qty">2</span></div>
+      <div class="shop-item"><span class="shop-item-name">Avocados</span><span class="shop-item-qty">3</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pineapple chunks (canned)</span><span class="shop-item-qty">1 can</span></div>
+      <div class="shop-item"><span class="shop-item-name">Lemons</span><span class="shop-item-qty">4</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🌾 Grains & Carbs</div>
+      <div class="shop-item"><span class="shop-item-name">Rolled oats</span><span class="shop-item-qty">1 canister</span></div>
+      <div class="shop-item"><span class="shop-item-name">Quinoa</span><span class="shop-item-qty">1 lb bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Brown rice</span><span class="shop-item-qty">2 lb bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Wild rice</span><span class="shop-item-qty">½ lb bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Ezekiel bread</span><span class="shop-item-qty">1 loaf</span></div>
+      <div class="shop-item"><span class="shop-item-name">Brown rice cakes</span><span class="shop-item-qty">1 pack</span></div>
+      <div class="shop-item"><span class="shop-item-name">Low-sugar granola</span><span class="shop-item-qty">1 small bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Sweet potatoes</span><span class="shop-item-qty">3 medium</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🥜 Fats, Nuts & Seeds</div>
+      <div class="shop-item"><span class="shop-item-name">Extra virgin olive oil</span><span class="shop-item-qty">1 bottle (16+ oz)</span></div>
+      <div class="shop-item"><span class="shop-item-name">Natural almond butter</span><span class="shop-item-qty">1 jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Natural peanut butter</span><span class="shop-item-qty">1 jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Walnuts</span><span class="shop-item-qty">8 oz bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Almonds (raw/roasted)</span><span class="shop-item-qty">8 oz bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pumpkin seeds</span><span class="shop-item-qty">4 oz bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Ground flaxseed</span><span class="shop-item-qty">1 bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Chia seeds</span><span class="shop-item-qty">1 small bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Hemp seeds</span><span class="shop-item-qty">1 small bag</span></div>
+      <div class="shop-item"><span class="shop-item-name">Dark chocolate (≥70%)</span><span class="shop-item-qty">1 bar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Kalamata olives</span><span class="shop-item-qty">1 jar</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🧂 Pantry & Condiments</div>
+      <div class="shop-item"><span class="shop-item-name">Low-sodium soy sauce</span><span class="shop-item-qty">1 bottle</span></div>
+      <div class="shop-item"><span class="shop-item-name">Avocado mayo</span><span class="shop-item-qty">1 small jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Dijon mustard</span><span class="shop-item-qty">1 jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Capers</span><span class="shop-item-qty">1 small jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Vegetable broth (low sodium)</span><span class="shop-item-qty">2 cartons</span></div>
+      <div class="shop-item"><span class="shop-item-name">Canned diced tomatoes</span><span class="shop-item-qty">1 can</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pico de gallo / salsa</span><span class="shop-item-qty">1 jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Almond milk (unsweetened)</span><span class="shop-item-qty">½ gallon</span></div>
+      <div class="shop-item"><span class="shop-item-name">Whey protein powder</span><span class="shop-item-qty">vanilla + chocolate</span></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-cat-title">🌿 Spices & Herbs</div>
+      <div class="shop-item"><span class="shop-item-name">Fresh parsley + basil</span><span class="shop-item-qty">1 bunch each</span></div>
+      <div class="shop-item"><span class="shop-item-name">Fresh rosemary</span><span class="shop-item-qty">1 pack</span></div>
+      <div class="shop-item"><span class="shop-item-name">Fresh cilantro</span><span class="shop-item-qty">1 bunch</span></div>
+      <div class="shop-item"><span class="shop-item-name">Turmeric (ground)</span><span class="shop-item-qty">if not stocked</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cumin (ground)</span><span class="shop-item-qty">if not stocked</span></div>
+      <div class="shop-item"><span class="shop-item-name">Curry powder</span><span class="shop-item-qty">if not stocked</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cinnamon</span><span class="shop-item-qty">if not stocked</span></div>
+      <div class="shop-item"><span class="shop-item-name">Everything bagel seasoning</span><span class="shop-item-qty">1 jar</span></div>
+      <div class="shop-item"><span class="shop-item-name">Black pepper + sea salt</span><span class="shop-item-qty">if not stocked</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BIOMARKER TARGETS -->
+<div class="section">
+  <div class="section-title">How This Plan Targets Your Biomarkers</div>
+  <div class="section-sub">Every food choice maps to a specific lab result</div>
+
+  <div class="biomarker-notes">
+    <div class="bio-note heart">
+      <h4>❤️ Heart (10/15 out of range)</h4>
+      <p>Omega-3 rich fish 3x/week (salmon, cod, sardines) + olive oil as primary fat directly lowers LDL and triglycerides. Walnuts, flaxseed, and chia add additional omega-3s. Soluble fiber from oats, lentils, and beans binds cholesterol. Avoid trans fats and refined carbs which worsen every cardiovascular marker.</p>
+    </div>
+    <div class="bio-note nutrient">
+      <h4>🌞 Nutrients (2/20 out of range — likely Vitamin D)</h4>
+      <p>Fatty fish, eggs (daily), and fortified almond milk provide dietary D3. However, food alone rarely fixes low Vitamin D — discuss a D3+K2 supplement (2,000–5,000 IU/day) with your doctor based on your specific level.</p>
+    </div>
+    <div class="bio-note">
+      <h4>🔥 Inflammation (hs-CRP)</h4>
+      <p>Turmeric (curry dish), ginger, dark berries, olive oil, fatty fish, and green leafy vegetables all have clinical evidence for lowering hs-CRP. Eliminating sugar and processed oils is equally important.</p>
+    </div>
+    <div class="bio-note">
+      <h4>💪 Muscle Building at 48</h4>
+      <p>At 48, testosterone and anabolic signaling decline. Counter this with: 185g+ protein daily, leucine-rich meals every 3–4 hours, zinc from pumpkin seeds and beef, and magnesium from spinach and nuts. Sleep 7–9 hours — growth hormone peaks during deep sleep.</p>
+    </div>
+    <div class="bio-note">
+      <h4>🧬 Metabolic Health (all in range!)</h4>
+      <p>Your metabolic markers are good — protect them by avoiding the refined carbs and sugar that would raise fasting glucose and insulin. This plan keeps carbs complex and fiber-rich to maintain your healthy metabolic baseline.</p>
+    </div>
+    <div class="bio-note">
+      <h4>🧠 Stress & Aging (in range)</h4>
+      <p>Maintain this by limiting alcohol, managing training recovery, and including adaptogens — the dark berries, olive oil, and leafy greens in this plan support cellular health and reduce oxidative stress markers.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- MEAL PREP INSTRUCTIONS -->
+<div class="section">
+  <div class="section-title">Sunday Prep Guide</div>
+  <div class="section-sub">2–3 hours of prep = effortless eating all week</div>
+  <div class="protocol-grid">
+    <div class="protocol-card">
+      <h4>🍳 Cook in Batches</h4>
+      <p>Grill 2 lbs chicken breast. Cook 3 cups brown rice. Cook 2 cups quinoa. Hard-boil 8–10 eggs. These become your building blocks for 5 days of lunches.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>🥗 Prep Vegetables</h4>
+      <p>Roast a large sheet pan of mixed veg (bell peppers, zucchini, Brussels sprouts). Wash and dry all greens. Slice cucumbers and celery. Store in airtight containers.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>🫙 Make Overnight Oats</h4>
+      <p>Prep Thursday's overnight oats on Wednesday night. Mix oats + protein powder + almond milk + chia seeds in a mason jar, refrigerate overnight.</p>
+    </div>
+    <div class="protocol-card">
+      <h4>❄️ Storage Tips</h4>
+      <p>Cooked proteins last 4 days in the fridge. Freeze any fish/meat beyond day 4. Keep cut avocado with lime juice to prevent browning. Portion snacks into bags on Sunday.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Built from your <span>Function Health</span> biomarker data · Heart health priority · 7-day protocol<br>
+  Always consult your physician before making significant dietary changes.
+</footer>
+
+<script>
+  function showDay(index) {
+    document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('day-' + index).classList.add('active');
+    document.querySelectorAll('.day-tab')[index].classList.add('active');
+  }
+</script>
+</body>
+</html>

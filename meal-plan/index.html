@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>7-Day Meal Prep Plan</title>
+<title>7-Day Meal Prep Plan v3</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
@@ -33,7 +33,6 @@
     line-height: 1.6;
   }
 
-  /* HEADER */
   .hero {
     background: var(--charcoal);
     border-bottom: 1px solid var(--border);
@@ -63,29 +62,106 @@
     margin: 0 auto 28px;
   }
 
-  /* BIOMARKER ALERT BAR */
   .alert-bar {
     background: #1a1208;
     border: 1px solid #4a3010;
     border-radius: 8px;
     padding: 16px 20px;
-    margin: 0 auto;
+    margin: 0 auto 12px;
     max-width: 700px;
     display: flex;
     align-items: flex-start;
     gap: 12px;
     text-align: left;
   }
+  .alert-bar.green { background: #0e1a12; border-color: #1f4a2c; }
   .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
   .alert-text { font-size: 13px; color: #c8a060; }
   .alert-text strong { color: var(--amber); }
+  .alert-bar.green .alert-text { color: #a9d4ba; }
+  .alert-bar.green .alert-text strong { color: var(--green); }
 
-  /* STATS ROW */
+  /* SERVING SELECTOR */
+  .serving-bar {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+  }
+  .serving-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .serving-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .serving-step {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .serving-step:hover { border-color: var(--green); color: var(--green); }
+  .serving-step:active { transform: scale(0.92); }
+  .serving-presets {
+    display: flex;
+    gap: 6px;
+  }
+  .serving-chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    transition: all 0.15s;
+  }
+  .serving-chip:hover { border-color: var(--green-dim); color: var(--white); }
+  .serving-chip.active {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--white);
+  }
+  .serving-count {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--green);
+    min-width: 34px;
+    text-align: center;
+  }
+  .serving-suffix {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
   .stats {
     display: flex;
     justify-content: center;
     gap: 0;
-    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     background: var(--charcoal);
   }
@@ -112,7 +188,6 @@
     margin-top: 4px;
   }
 
-  /* SECTION */
   .section {
     max-width: 900px;
     margin: 0 auto;
@@ -137,7 +212,6 @@
     margin: 0;
   }
 
-  /* PROTOCOL CARDS */
   .protocol-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -164,12 +238,11 @@
     line-height: 1.55;
   }
 
-  /* DAY TABS */
   .day-tabs {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
   .day-tab {
     background: var(--panel);
@@ -190,7 +263,14 @@
     color: var(--white);
   }
 
-  /* MEAL DAY CARD */
+  .hint-line {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+  }
+  .hint-line span { color: var(--green); }
+
   .day-card { display: none; }
   .day-card.active { display: block; }
 
@@ -229,7 +309,14 @@
     grid-template-columns: 90px 1fr auto;
     gap: 12px;
     align-items: start;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
   }
+  .meal-row:hover {
+    border-color: var(--green-dim);
+    background: #2a2a2a;
+  }
+  .meal-row:active { transform: scale(0.997); }
   .meal-type {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -248,6 +335,14 @@
     font-weight: 500;
     color: var(--white);
     margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meal-name .tap-icon {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
   }
   .meal-detail {
     font-size: 12px;
@@ -268,7 +363,6 @@
     margin-top: 2px;
   }
 
-  /* TRAINING BADGE */
   .training-badge {
     display: inline-block;
     background: #1a1208;
@@ -282,7 +376,217 @@
     letter-spacing: 0.05em;
   }
 
-  /* SHOPPING LIST */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 540px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px;
+    position: relative;
+    animation: modalIn 0.18s ease-out;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { color: var(--white); border-color: var(--green-dim); }
+  .modal-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .modal-type.breakfast { color: var(--amber); }
+  .modal-type.lunch { color: var(--blue); }
+  .modal-type.dinner { color: var(--purple); }
+  .modal-type.snack { color: var(--green); }
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--cream);
+    margin-bottom: 14px;
+    padding-right: 30px;
+  }
+  .modal-macros {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .modal-macros span { color: var(--green); }
+  .modal-serving-note {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+  }
+  .modal-serving-note span { color: var(--green); }
+  .modal-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 18px 0 10px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .modal-ingredients {
+    list-style: none;
+    font-size: 13px;
+    color: #ddd;
+  }
+  .modal-ingredients li {
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+  }
+  .modal-ingredients li::before {
+    content: "•";
+    color: var(--green);
+  }
+  .modal-ingredients li .qty {
+    color: var(--green);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .modal-steps {
+    list-style: none;
+    font-size: 13px;
+    color: #ddd;
+    counter-reset: step;
+  }
+  .modal-steps li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+    counter-increment: step;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .modal-steps li:last-child { border-bottom: none; }
+  .modal-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 20px;
+    height: 20px;
+    background: var(--green-dim);
+    color: var(--white);
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-impact {
+    background: #0e1a12;
+    border-left: 3px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #a9d4ba;
+    margin-top: 16px;
+  }
+
+  .store-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .store-tab {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .store-tab:hover { border-color: var(--green-dim); color: var(--white); }
+  .store-tab.active {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--white);
+  }
+  .store-panel { display: none; }
+  .store-panel.active { display: block; }
+
+  .shop-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .shop-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--panel);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .shop-progress-fill {
+    height: 100%;
+    background: var(--green);
+    width: 0%;
+    transition: width 0.2s;
+  }
+  .shop-reset {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .shop-reset:hover { border-color: var(--red); color: var(--red); }
+
   .shop-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -306,23 +610,55 @@
   }
   .shop-item {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
-    padding: 5px 0;
+    padding: 6px 0;
     border-bottom: 1px solid #2a2a2a;
     font-size: 13px;
-    gap: 8px;
+    gap: 10px;
+    cursor: pointer;
   }
   .shop-item:last-child { border-bottom: none; }
+  .shop-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--charcoal);
+    flex-shrink: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    margin-top: 1px;
+  }
+  .shop-checkbox:checked {
+    background: var(--green-dim);
+    border-color: var(--green);
+  }
+  .shop-checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    top: -3px;
+    left: 2px;
+    font-size: 11px;
+    color: var(--white);
+  }
+  .shop-item-name-qty { flex: 1; display: flex; justify-content: space-between; gap: 8px; }
   .shop-item-name { color: var(--white); }
+  .shop-item.checked .shop-item-name { color: var(--muted); text-decoration: line-through; }
   .shop-item-qty {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--muted);
     white-space: nowrap;
   }
+  .store-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
 
-  /* BIOMARKER NOTE */
   .biomarker-notes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -348,7 +684,107 @@
   .bio-note.nutrient h4 { color: var(--amber); }
   .bio-note p { font-size: 13px; color: #bbb; line-height: 1.55; }
 
-  /* FOOTER */
+  .prep-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .prep-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .prep-block-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #2a2a2a;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .prep-block-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+  .prep-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    background: #0e1a12;
+    border: 1px solid #1f4a2c;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .prep-block-body { padding: 16px 18px; }
+  .prep-steps {
+    list-style: none;
+    counter-reset: prepstep;
+  }
+  .prep-steps li {
+    padding: 9px 0 9px 32px;
+    position: relative;
+    counter-increment: prepstep;
+    font-size: 13px;
+    color: #ccc;
+    border-bottom: 1px solid #2a2a2a;
+    line-height: 1.55;
+  }
+  .prep-steps li:last-child { border-bottom: none; }
+  .prep-steps li::before {
+    content: counter(prepstep);
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 21px;
+    height: 21px;
+    background: var(--green-dim);
+    color: var(--white);
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .prep-steps li strong { color: var(--white); }
+  .prep-steps li .qty { color: var(--green); font-weight: 500; }
+  .prep-tip {
+    background: #1a1208;
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #c8a060;
+    margin-top: 12px;
+  }
+  .storage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .storage-table th {
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .storage-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #2a2a2a;
+    color: #ccc;
+  }
+  .storage-table td:first-child { color: var(--white); }
+
   footer {
     background: var(--charcoal);
     border-top: 1px solid var(--border);
@@ -364,14 +800,15 @@
     .meal-cal { display: none; }
     .stats { flex-wrap: wrap; }
     .stat { max-width: none; border-right: none; border-bottom: 1px solid var(--border); }
+    .modal-box { padding: 20px; }
+    .serving-bar { padding: 14px 16px; gap: 10px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow">Function Health · Personalized Protocol</div>
+  <div class="hero-eyebrow">Function Health · Personalized Protocol · v3</div>
   <h1>7-Day Meal Prep Plan</h1>
   <p class="hero-sub">Built around your biomarkers. Optimized for fat loss, muscle gain, and heart health — at 48 with 3–4x weekly strength training.</p>
 
@@ -381,17 +818,38 @@
       <strong>Your #1 priority:</strong> 10 of 15 Heart biomarkers are out of range. Every meal in this plan is designed around reducing LDL, lowering hs-CRP inflammation, and improving cardiovascular markers through Mediterranean-style eating, omega-3s, and fiber.
     </div>
   </div>
+  <div class="alert-bar green">
+    <div class="alert-icon">🐟</div>
+    <div class="alert-text"><strong>Fish note:</strong> Only fresh, grilled fish fillets (salmon and tuna steak) — no canned or smoked fish anywhere in this plan.</div>
+  </div>
 </div>
 
-<!-- STATS -->
+<!-- SERVING SELECTOR -->
+<div class="serving-bar">
+  <div class="serving-label">Serving for</div>
+  <div class="serving-controls">
+    <button class="serving-step" onclick="adjustServings(-1)" aria-label="Decrease servings">−</button>
+    <div class="serving-count" id="serving-count">1</div>
+    <button class="serving-step" onclick="adjustServings(1)" aria-label="Increase servings">+</button>
+  </div>
+  <span class="serving-suffix" id="serving-suffix">person</span>
+  <div class="serving-presets">
+    <button class="serving-chip active" data-n="1" onclick="setServings(1)">1</button>
+    <button class="serving-chip" data-n="2" onclick="setServings(2)">2</button>
+    <button class="serving-chip" data-n="3" onclick="setServings(3)">3</button>
+    <button class="serving-chip" data-n="4" onclick="setServings(4)">4</button>
+    <button class="serving-chip" data-n="6" onclick="setServings(6)">6</button>
+  </div>
+</div>
+
 <div class="stats">
   <div class="stat">
     <div class="stat-val">~2,200</div>
-    <div class="stat-label">Calories / day</div>
+    <div class="stat-label">Calories / day / person</div>
   </div>
   <div class="stat">
     <div class="stat-val">185g</div>
-    <div class="stat-label">Protein / day</div>
+    <div class="stat-label">Protein / day / person</div>
   </div>
   <div class="stat">
     <div class="stat-val">65 lbs</div>
@@ -403,7 +861,6 @@
   </div>
 </div>
 
-<!-- PROTOCOL -->
 <div class="section">
   <div class="section-title">Your Eating Protocol</div>
   <div class="section-sub">Principles driving every food choice this week</div>
@@ -411,11 +868,11 @@
   <div class="protocol-grid">
     <div class="protocol-card">
       <h4>🫀 Heart Priority</h4>
-      <p>Emphasize omega-3s (salmon, cod, sardines), soluble fiber (oats, lentils, beans), and olive oil. Limit saturated fat. These directly target your 10 out-of-range cardiovascular biomarkers.</p>
+      <p>Emphasize omega-3s (grilled salmon, grilled tuna steak), soluble fiber (oats, lentils, beans), and olive oil. Limit saturated fat. These directly target your 10 out-of-range cardiovascular biomarkers.</p>
     </div>
     <div class="protocol-card">
       <h4>💪 Muscle Preservation</h4>
-      <p>Target 0.7–0.8g protein per lb of goal bodyweight (~185g/day). Spread protein across 4–5 meals. Prioritize leucine-rich foods: eggs, chicken, Greek yogurt, fish.</p>
+      <p>Target 0.7–0.8g protein per lb of goal bodyweight (~185g/day for you). Spread protein across 4–5 meals. Prioritize leucine-rich foods: eggs, chicken, Greek yogurt, fish.</p>
     </div>
     <div class="protocol-card">
       <h4>🔥 Fat Loss Deficit</h4>
@@ -423,22 +880,21 @@
     </div>
     <div class="protocol-card">
       <h4>☀️ Vitamin D</h4>
-      <p>One of your 2 out-of-range nutrient markers. This plan includes fatty fish 3x/week, eggs daily, and fortified foods. Consider a D3 supplement (2,000–4,000 IU/day).</p>
+      <p>One of your 2 out-of-range nutrient markers. This plan includes grilled fatty fish 3x/week, eggs daily, and fortified foods. Consider a D3 supplement (2,000–4,000 IU/day).</p>
     </div>
     <div class="protocol-card">
       <h4>🕐 Meal Timing</h4>
       <p>On training days: eat a protein-rich meal 60–90 min before and within 60 min after training. This maximizes muscle protein synthesis and recovery.</p>
     </div>
     <div class="protocol-card">
-      <h4>🚫 Avoid</h4>
-      <p>Ultra-processed foods, refined seed oils, sugary drinks, white bread. These drive up inflammation markers (hs-CRP) and directly worsen your heart biomarkers.</p>
+      <h4>👥 Scaling for Others</h4>
+      <p>Use the serving selector above to scale the whole plan up. Calorie and protein targets shown stay per-person — only ingredient amounts, shopping quantities, and prep batch sizes scale.</p>
     </div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- MEAL PLAN -->
 <div class="section">
   <div class="section-title">Weekly Meal Plan</div>
   <div class="section-sub">Click any day to see your full meal schedule</div>
@@ -452,462 +908,351 @@
     <button class="day-tab" onclick="showDay(5)">SAT</button>
     <button class="day-tab" onclick="showDay(6)">SUN</button>
   </div>
+  <div class="hint-line"><span>Tip:</span> tap any meal card below to see its full recipe, scaled to your serving size.</div>
 
-  <!-- MONDAY -->
   <div class="day-card active" id="day-0">
     <div class="day-header">
       <div class="day-title">Monday</div>
-      <div class="day-macros">~2,230 cal · <span class="macro">188g protein</span> · 165g carbs · 68g fat</div>
+      <div class="day-macros">~2,230 cal · <span class="macro">186g protein</span> · 164g carbs · 68g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="training-badge">🏋️ TRAINING DAY</div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('mon-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">Greek Yogurt Power Bowl</div>
-          <div class="meal-detail">1.5 cups 0% Greek yogurt · ½ cup blueberries · 2 tbsp ground flaxseed · 1 oz walnuts · 1 tsp honey</div>
+          <div class="meal-name">Greek Yogurt Power Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Greek yogurt, blueberries, ground flaxseed, walnuts, honey</div>
         </div>
-        <div>
-          <div class="meal-cal">430 cal</div>
-          <div class="meal-protein">42g protein</div>
-        </div>
+        <div><div class="meal-cal">430 cal</div><div class="meal-protein">42g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('mon-s1')">
         <div class="meal-type snack">Pre-Workout</div>
         <div>
-          <div class="meal-name">Cottage Cheese + Apple</div>
-          <div class="meal-detail">1 cup 2% cottage cheese · 1 medium apple · cinnamon</div>
+          <div class="meal-name">Cottage Cheese + Apple <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Cottage cheese, apple, cinnamon</div>
         </div>
-        <div>
-          <div class="meal-cal">280 cal</div>
-          <div class="meal-protein">28g protein</div>
-        </div>
+        <div><div class="meal-cal">280 cal</div><div class="meal-protein">28g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('mon-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Turkey & Avocado Power Bowl</div>
-          <div class="meal-detail">6 oz ground turkey (93% lean) · ½ avocado · 1 cup brown rice · 2 cups mixed greens · 1 tbsp olive oil & lemon dressing</div>
+          <div class="meal-name">Turkey & Avocado Power Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Ground turkey, avocado, brown rice, mixed greens, olive oil dressing</div>
         </div>
-        <div>
-          <div class="meal-cal">620 cal</div>
-          <div class="meal-protein">52g protein</div>
-        </div>
+        <div><div class="meal-cal">620 cal</div><div class="meal-protein">52g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('mon-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Hard-Boiled Eggs + Celery</div>
-          <div class="meal-detail">3 hard-boiled eggs · 3 celery stalks · 1 tbsp almond butter</div>
+          <div class="meal-name">Hard-Boiled Eggs + Celery <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Hard-boiled eggs, celery, almond butter</div>
         </div>
-        <div>
-          <div class="meal-cal">280 cal</div>
-          <div class="meal-protein">22g protein</div>
-        </div>
+        <div><div class="meal-cal">280 cal</div><div class="meal-protein">22g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('mon-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Grilled Salmon with Roasted Veg & Quinoa</div>
-          <div class="meal-detail">6 oz salmon · ½ cup quinoa · 2 cups roasted bell peppers, zucchini, tomatoes · olive oil, lemon, garlic, herbs</div>
+          <div class="meal-name">Grilled Salmon with Roasted Veg & Quinoa <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grilled salmon fillet, quinoa, roasted peppers, zucchini, tomatoes</div>
         </div>
-        <div>
-          <div class="meal-cal">620 cal</div>
-          <div class="meal-protein">44g protein</div>
-        </div>
+        <div><div class="meal-cal">620 cal</div><div class="meal-protein">44g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- TUESDAY -->
   <div class="day-card" id="day-1">
     <div class="day-header">
       <div class="day-title">Tuesday</div>
-      <div class="day-macros">~2,180 cal · <span class="macro">182g protein</span> · 158g carbs · 66g fat</div>
+      <div class="day-macros">~2,180 cal · <span class="macro">180g protein</span> · 158g carbs · 66g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('tue-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">Egg White Oatmeal Scramble</div>
-          <div class="meal-detail">½ cup rolled oats (cooked) · 4 egg whites + 2 whole eggs scrambled · 1 cup spinach · ¼ cup salsa</div>
+          <div class="meal-name">Egg White Oatmeal Scramble <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Rolled oats, egg whites, whole eggs, spinach, salsa</div>
         </div>
-        <div>
-          <div class="meal-cal">420 cal</div>
-          <div class="meal-protein">38g protein</div>
-        </div>
+        <div><div class="meal-cal">420 cal</div><div class="meal-protein">38g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('tue-s1')">
         <div class="meal-type snack">Mid-Morning</div>
         <div>
-          <div class="meal-name">Protein Shake + Banana</div>
-          <div class="meal-detail">1 scoop whey protein · 1 cup unsweetened almond milk · 1 banana · 1 tbsp natural peanut butter</div>
+          <div class="meal-name">Protein Shake + Banana <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Whey protein, almond milk, banana, peanut butter</div>
         </div>
-        <div>
-          <div class="meal-cal">320 cal</div>
-          <div class="meal-protein">32g protein</div>
-        </div>
+        <div><div class="meal-cal">320 cal</div><div class="meal-protein">32g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('tue-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Tuna Salad Lettuce Wraps</div>
-          <div class="meal-detail">2 cans albacore tuna · 1 tbsp avocado mayo · dijon mustard · romaine leaves · cherry tomatoes · cucumber · ½ cup chickpeas</div>
+          <div class="meal-name">Grilled Tuna Steak Salad <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Fresh grilled tuna steak, romaine, cherry tomatoes, cucumber, chickpeas</div>
         </div>
-        <div>
-          <div class="meal-cal">480 cal</div>
-          <div class="meal-protein">56g protein</div>
-        </div>
+        <div><div class="meal-cal">490 cal</div><div class="meal-protein">54g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('tue-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Greek Yogurt + Pumpkin Seeds</div>
-          <div class="meal-detail">1 cup 0% Greek yogurt · 2 tbsp pumpkin seeds · ½ cup raspberries</div>
+          <div class="meal-name">Greek Yogurt + Pumpkin Seeds <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Greek yogurt, pumpkin seeds, raspberries</div>
         </div>
-        <div>
-          <div class="meal-cal">230 cal</div>
-          <div class="meal-protein">22g protein</div>
-        </div>
+        <div><div class="meal-cal">230 cal</div><div class="meal-protein">22g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('tue-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Lentil & Spinach Stew</div>
-          <div class="meal-detail">1.5 cups green lentils · 4 cups spinach · onion, garlic · vegetable broth · EVOO · lemon · black pepper</div>
+          <div class="meal-name">Lentil & Spinach Stew <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Green lentils, spinach, onion, garlic, vegetable broth, olive oil</div>
         </div>
-        <div>
-          <div class="meal-cal">400 cal</div>
-          <div class="meal-protein">34g protein</div>
-        </div>
+        <div><div class="meal-cal">400 cal</div><div class="meal-protein">22g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- WEDNESDAY -->
   <div class="day-card" id="day-2">
     <div class="day-header">
       <div class="day-title">Wednesday</div>
-      <div class="day-macros">~2,250 cal · <span class="macro">190g protein</span> · 172g carbs · 65g fat</div>
+      <div class="day-macros">~2,250 cal · <span class="macro">188g protein</span> · 172g carbs · 65g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="training-badge">🏋️ TRAINING DAY — increase pre-workout carbs</div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('wed-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">Smoked Salmon Egg Scramble</div>
-          <div class="meal-detail">3 whole eggs + 2 egg whites · 2 oz smoked salmon · ½ cup baby spinach · 1 slice Ezekiel toast · 1 tsp EVOO</div>
+          <div class="meal-name">Veggie Egg Scramble + Toast <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Whole eggs, egg whites, spinach, tomato, Ezekiel toast, olive oil</div>
         </div>
-        <div>
-          <div class="meal-cal">450 cal</div>
-          <div class="meal-protein">46g protein</div>
-        </div>
+        <div><div class="meal-cal">440 cal</div><div class="meal-protein">38g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('wed-s1')">
         <div class="meal-type snack">Pre-Workout</div>
         <div>
-          <div class="meal-name">Rice Cake + Almond Butter</div>
-          <div class="meal-detail">2 brown rice cakes · 2 tbsp natural almond butter · 1 scoop protein powder + water</div>
+          <div class="meal-name">Rice Cake + Almond Butter <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Brown rice cakes, almond butter, protein powder shake</div>
         </div>
-        <div>
-          <div class="meal-cal">340 cal</div>
-          <div class="meal-protein">34g protein</div>
-        </div>
+        <div><div class="meal-cal">340 cal</div><div class="meal-protein">34g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('wed-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Chicken & Sweet Potato Bowl</div>
-          <div class="meal-detail">7 oz grilled chicken breast · 1 medium sweet potato (baked) · 2 cups arugula · ¼ avocado · balsamic drizzle</div>
+          <div class="meal-name">Chicken & Sweet Potato Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grilled chicken breast, baked sweet potato, arugula, avocado, balsamic</div>
         </div>
-        <div>
-          <div class="meal-cal">560 cal</div>
-          <div class="meal-protein">58g protein</div>
-        </div>
+        <div><div class="meal-cal">560 cal</div><div class="meal-protein">58g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('wed-s2')">
         <div class="meal-type snack">Post-Workout</div>
         <div>
-          <div class="meal-name">Chocolate Milk + Banana</div>
-          <div class="meal-detail">12 oz low-fat chocolate milk · 1 banana (fast recovery: simple carbs + protein)</div>
+          <div class="meal-name">Chocolate Milk + Banana <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Low-fat chocolate milk, banana — fast recovery carbs + protein</div>
         </div>
-        <div>
-          <div class="meal-cal">290 cal</div>
-          <div class="meal-protein">14g protein</div>
-        </div>
+        <div><div class="meal-cal">290 cal</div><div class="meal-protein">14g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('wed-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Herb-Crusted Chicken + Brussels + Sweet Potato</div>
-          <div class="meal-detail">6 oz chicken breast · rosemary, garlic · 1 cup Brussels sprouts · 1 medium sweet potato · olive oil · lemon</div>
+          <div class="meal-name">Herb-Crusted Chicken + Brussels + Sweet Potato <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Chicken breast, rosemary, garlic, Brussels sprouts, sweet potato</div>
         </div>
-        <div>
-          <div class="meal-cal">450 cal</div>
-          <div class="meal-protein">45g protein</div>
-        </div>
+        <div><div class="meal-cal">450 cal</div><div class="meal-protein">45g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- THURSDAY -->
   <div class="day-card" id="day-3">
     <div class="day-header">
       <div class="day-title">Thursday</div>
-      <div class="day-macros">~2,160 cal · <span class="macro">178g protein</span> · 155g carbs · 62g fat</div>
+      <div class="day-macros">~2,170 cal · <span class="macro">180g protein</span> · 156g carbs · 64g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('thu-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">High-Protein Overnight Oats</div>
-          <div class="meal-detail">½ cup rolled oats · 1 scoop vanilla protein · 1 cup almond milk · 1 tbsp chia seeds · ½ cup strawberries — prep night before</div>
+          <div class="meal-name">High-Protein Overnight Oats <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Rolled oats, vanilla protein, almond milk, chia seeds, strawberries — prep night before</div>
         </div>
-        <div>
-          <div class="meal-cal">420 cal</div>
-          <div class="meal-protein">40g protein</div>
-        </div>
+        <div><div class="meal-cal">420 cal</div><div class="meal-protein">40g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('thu-s1')">
         <div class="meal-type snack">Mid-Morning</div>
         <div>
-          <div class="meal-name">Edamame + String Cheese</div>
-          <div class="meal-detail">1 cup shelled edamame · 2 sticks part-skim mozzarella</div>
+          <div class="meal-name">Edamame + String Cheese <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Shelled edamame, part-skim mozzarella sticks</div>
         </div>
-        <div>
-          <div class="meal-cal">300 cal</div>
-          <div class="meal-protein">30g protein</div>
-        </div>
+        <div><div class="meal-cal">300 cal</div><div class="meal-protein">30g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('thu-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Sardine & White Bean Salad</div>
-          <div class="meal-detail">2 cans sardines in water · ½ cup cannellini beans · 2 cups arugula · ½ cup cherry tomatoes · red onion · EVOO · red wine vinegar · capers</div>
+          <div class="meal-name">Grilled Salmon & White Bean Salad <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grilled salmon fillet (leftover from prep), cannellini beans, arugula, tomatoes, olive oil</div>
         </div>
-        <div>
-          <div class="meal-cal">480 cal</div>
-          <div class="meal-protein">52g protein</div>
-        </div>
+        <div><div class="meal-cal">500 cal</div><div class="meal-protein">48g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('thu-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Beef Jerky + Walnuts</div>
-          <div class="meal-detail">1.5 oz low-sodium beef jerky · 1 oz walnuts (omega-3 boost)</div>
+          <div class="meal-name">Turkey Slices + Walnuts <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Sliced turkey breast, walnuts — omega-3 boost</div>
         </div>
-        <div>
-          <div class="meal-cal">240 cal</div>
-          <div class="meal-protein">22g protein</div>
-        </div>
+        <div><div class="meal-cal">250 cal</div><div class="meal-protein">24g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('thu-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Tofu Stir-Fry with Broccoli, Bell Peppers & Brown Rice</div>
-          <div class="meal-detail">200g extra-firm tofu · 150g broccoli · 2 bell peppers · 1 cup brown rice · olive oil · garlic · low-sodium soy sauce</div>
+          <div class="meal-name">Tofu Stir-Fry with Broccoli & Brown Rice <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Extra-firm tofu, broccoli, bell peppers, brown rice, olive oil, garlic</div>
         </div>
-        <div>
-          <div class="meal-cal">520 cal</div>
-          <div class="meal-protein">34g protein</div>
-        </div>
+        <div><div class="meal-cal">520 cal</div><div class="meal-protein">34g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- FRIDAY -->
   <div class="day-card" id="day-4">
     <div class="day-header">
       <div class="day-title">Friday</div>
-      <div class="day-macros">~2,240 cal · <span class="macro">186g protein</span> · 162g carbs · 67g fat</div>
+      <div class="day-macros">~2,240 cal · <span class="macro">184g protein</span> · 162g carbs · 67g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="training-badge">🏋️ TRAINING DAY</div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('fri-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">3-Egg Veggie Omelet</div>
-          <div class="meal-detail">3 whole eggs · ½ cup egg whites · spinach, mushrooms, bell pepper · ¼ cup feta crumble · 1 slice Ezekiel toast</div>
+          <div class="meal-name">3-Egg Veggie Omelet <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Whole eggs, egg whites, spinach, mushrooms, bell pepper, feta, Ezekiel toast</div>
         </div>
-        <div>
-          <div class="meal-cal">460 cal</div>
-          <div class="meal-protein">44g protein</div>
-        </div>
+        <div><div class="meal-cal">460 cal</div><div class="meal-protein">44g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('fri-s1')">
         <div class="meal-type snack">Pre-Workout</div>
         <div>
-          <div class="meal-name">Banana + Protein Shake</div>
-          <div class="meal-detail">1 banana · 1 scoop whey isolate + water · 1 tbsp peanut butter</div>
+          <div class="meal-name">Banana + Protein Shake <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Banana, whey isolate, peanut butter</div>
         </div>
-        <div>
-          <div class="meal-cal">340 cal</div>
-          <div class="meal-protein">30g protein</div>
-        </div>
+        <div><div class="meal-cal">340 cal</div><div class="meal-protein">30g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('fri-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Ground Turkey Taco Bowl</div>
-          <div class="meal-detail">6 oz 93% lean turkey · ½ cup black beans · ½ cup brown rice · pico de gallo · ¼ avocado · lime · cumin · garlic</div>
+          <div class="meal-name">Ground Turkey Taco Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Lean ground turkey, black beans, brown rice, pico de gallo, avocado, lime</div>
         </div>
-        <div>
-          <div class="meal-cal">580 cal</div>
-          <div class="meal-protein">56g protein</div>
-        </div>
+        <div><div class="meal-cal">580 cal</div><div class="meal-protein">56g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('fri-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Cottage Cheese + Pineapple</div>
-          <div class="meal-detail">1 cup 1% cottage cheese · ½ cup pineapple chunks · 1 tbsp hemp seeds</div>
+          <div class="meal-name">Cottage Cheese + Pineapple <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Cottage cheese, pineapple chunks, hemp seeds</div>
         </div>
-        <div>
-          <div class="meal-cal">260 cal</div>
-          <div class="meal-protein">28g protein</div>
-        </div>
+        <div><div class="meal-cal">260 cal</div><div class="meal-protein">28g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('fri-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Baked Cod with Tomato-Olive Salsa & Asparagus</div>
-          <div class="meal-detail">6 oz cod · 1 cup cherry tomatoes · ½ cup kalamata olives · fresh basil · 1 bunch asparagus · EVOO · lemon · garlic</div>
+          <div class="meal-name">Grilled Salmon with Tomato-Olive Salsa & Asparagus <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grilled salmon fillet, cherry tomatoes, kalamata olives, basil, asparagus</div>
         </div>
-        <div>
-          <div class="meal-cal">450 cal</div>
-          <div class="meal-protein">32g protein</div>
-        </div>
+        <div><div class="meal-cal">480 cal</div><div class="meal-protein">42g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- SATURDAY -->
   <div class="day-card" id="day-5">
     <div class="day-header">
       <div class="day-title">Saturday</div>
-      <div class="day-macros">~2,200 cal · <span class="macro">180g protein</span> · 160g carbs · 65g fat</div>
+      <div class="day-macros">~2,200 cal · <span class="macro">182g protein</span> · 160g carbs · 65g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="training-badge">🏋️ OPTIONAL TRAINING DAY</div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sat-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">Protein Pancakes</div>
-          <div class="meal-detail">1 scoop protein powder + 2 eggs + ½ cup oats (blended) + ½ banana — cook 4 pancakes · top with berries, 1 tbsp almond butter, no syrup</div>
+          <div class="meal-name">Protein Pancakes <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Protein powder, eggs, oats, banana, berries, almond butter — no syrup</div>
         </div>
-        <div>
-          <div class="meal-cal">490 cal</div>
-          <div class="meal-protein">46g protein</div>
-        </div>
+        <div><div class="meal-cal">490 cal</div><div class="meal-protein">46g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sat-s1')">
         <div class="meal-type snack">Mid-Morning</div>
         <div>
-          <div class="meal-name">Nut & Seed Mix</div>
-          <div class="meal-detail">1 oz almonds · 1 oz pumpkin seeds · 1 tbsp dark chocolate chips (≥70%) · 1 string cheese</div>
+          <div class="meal-name">Nut & Seed Mix <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Almonds, pumpkin seeds, dark chocolate, string cheese</div>
         </div>
-        <div>
-          <div class="meal-cal">280 cal</div>
-          <div class="meal-protein">14g protein</div>
-        </div>
+        <div><div class="meal-cal">280 cal</div><div class="meal-protein">14g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sat-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Shrimp & Quinoa Mediterranean Bowl</div>
-          <div class="meal-detail">6 oz wild-caught shrimp · ½ cup quinoa · cucumber, roasted red pepper · 2 tbsp hummus · lemon-herb drizzle · kalamata olives</div>
+          <div class="meal-name">Grilled Shrimp & Quinoa Mediterranean Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grilled shrimp skewers, quinoa, cucumber, roasted red pepper, hummus, olives</div>
         </div>
-        <div>
-          <div class="meal-cal">480 cal</div>
-          <div class="meal-protein">48g protein</div>
-        </div>
+        <div><div class="meal-cal">480 cal</div><div class="meal-protein">46g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sat-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Celery + Hummus + Tuna</div>
-          <div class="meal-detail">4 celery sticks · 3 tbsp hummus · 1 can light tuna in water</div>
+          <div class="meal-name">Celery + Hummus + Turkey <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Celery sticks, hummus, sliced turkey breast</div>
         </div>
-        <div>
-          <div class="meal-cal">220 cal</div>
-          <div class="meal-protein">28g protein</div>
-        </div>
+        <div><div class="meal-cal">220 cal</div><div class="meal-protein">26g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sat-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Chickpea & Vegetable Curry with Cauliflower Rice</div>
-          <div class="meal-detail">1 cup chickpeas · cauliflower rice · spinach · tomatoes · turmeric, cumin, curry · garlic, ginger · olive oil · cilantro</div>
+          <div class="meal-name">Chickpea & Vegetable Curry with Cauliflower Rice <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Chickpeas, cauliflower rice, spinach, tomatoes, turmeric, cumin, curry</div>
         </div>
-        <div>
-          <div class="meal-cal">420 cal</div>
-          <div class="meal-protein">34g protein</div>
-        </div>
+        <div><div class="meal-cal">420 cal</div><div class="meal-protein">17g protein</div></div>
       </div>
     </div>
   </div>
 
-  <!-- SUNDAY -->
   <div class="day-card" id="day-6">
     <div class="day-header">
       <div class="day-title">Sunday — Meal Prep Day</div>
-      <div class="day-macros">~2,170 cal · <span class="macro">176g protein</span> · 150g carbs · 70g fat</div>
+      <div class="day-macros">~2,170 cal · <span class="macro">178g protein</span> · 150g carbs · 70g fat <span style="color:var(--muted)">/ person</span></div>
     </div>
     <div class="meals-grid">
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sun-b')">
         <div class="meal-type breakfast">Breakfast</div>
         <div>
-          <div class="meal-name">Smoked Salmon Avocado Toast</div>
-          <div class="meal-detail">2 slices Ezekiel bread · ½ avocado mashed · 3 oz smoked salmon · 2 poached eggs · capers · red onion · everything bagel seasoning</div>
+          <div class="meal-name">Avocado Toast with Soft-Boiled Eggs <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Ezekiel bread, avocado, soft-boiled eggs, everything bagel seasoning</div>
         </div>
-        <div>
-          <div class="meal-cal">480 cal</div>
-          <div class="meal-protein">42g protein</div>
-        </div>
+        <div><div class="meal-cal">460 cal</div><div class="meal-protein">26g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sun-s1')">
         <div class="meal-type snack">Mid-Morning</div>
         <div>
-          <div class="meal-name">Greek Yogurt Parfait</div>
-          <div class="meal-detail">1 cup 0% Greek yogurt · ¼ cup granola (low sugar) · ½ cup mixed berries · 1 tbsp ground flaxseed</div>
+          <div class="meal-name">Greek Yogurt Parfait <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Greek yogurt, low-sugar granola, mixed berries, ground flaxseed</div>
         </div>
-        <div>
-          <div class="meal-cal">310 cal</div>
-          <div class="meal-protein">24g protein</div>
-        </div>
+        <div><div class="meal-cal">310 cal</div><div class="meal-protein">24g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sun-l')">
         <div class="meal-type lunch">Lunch</div>
         <div>
-          <div class="meal-name">Leftover Batch Protein Bowl</div>
-          <div class="meal-detail">Use prepped chicken or turkey · ½ cup lentils or beans · 2 cups roasted veg from prep · olive oil, lemon, herbs</div>
+          <div class="meal-name">Leftover Batch Protein Bowl <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Prepped chicken or turkey, lentils or beans, roasted veg, olive oil, lemon</div>
         </div>
-        <div>
-          <div class="meal-cal">520 cal</div>
-          <div class="meal-protein">52g protein</div>
-        </div>
+        <div><div class="meal-cal">520 cal</div><div class="meal-protein">52g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sun-s2')">
         <div class="meal-type snack">Snack</div>
         <div>
-          <div class="meal-name">Hard-Boiled Eggs + Almonds</div>
-          <div class="meal-detail">3 hard-boiled eggs · 1 oz roasted almonds · pinch sea salt</div>
+          <div class="meal-name">Hard-Boiled Eggs + Almonds <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Hard-boiled eggs, roasted almonds, sea salt</div>
         </div>
-        <div>
-          <div class="meal-cal">280 cal</div>
-          <div class="meal-protein">24g protein</div>
-        </div>
+        <div><div class="meal-cal">280 cal</div><div class="meal-protein">24g protein</div></div>
       </div>
-      <div class="meal-row">
+      <div class="meal-row" onclick="openRecipe('sun-d')">
         <div class="meal-type dinner">Dinner</div>
         <div>
-          <div class="meal-name">Grass-Fed Beef Stir-Fry with Bok Choy, Mushrooms & Wild Rice</div>
-          <div class="meal-detail">6 oz grass-fed beef · 2 cups bok choy · 1 cup mushrooms · ½ cup wild rice · olive oil · garlic, ginger · low-sodium soy sauce</div>
+          <div class="meal-name">Grass-Fed Beef Stir-Fry with Bok Choy & Wild Rice <span class="tap-icon">(tap for recipe)</span></div>
+          <div class="meal-detail">Grass-fed beef, bok choy, mushrooms, wild rice, garlic, ginger, soy sauce</div>
         </div>
-        <div>
-          <div class="meal-cal">550 cal</div>
-          <div class="meal-protein">48g protein</div>
-        </div>
+        <div><div class="meal-cal">550 cal</div><div class="meal-protein">48g protein</div></div>
       </div>
     </div>
   </div>
@@ -915,147 +1260,317 @@
 
 <hr class="divider">
 
-<!-- SHOPPING LIST -->
+<div class="section">
+  <div class="section-title">Sunday Prep Guide</div>
+  <div class="section-sub" id="prep-sub">A full sequence to cook the whole week in one focused session — about 3 hours total</div>
+
+  <div class="prep-timeline">
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">1. Before You Start</div>
+        <div class="prep-time">10 min</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Pull out <span class="qty" data-prep="containers">8–10</span> storage containers (mix of large for proteins/grains, small for snacks). Label lids with a piece of tape: <strong>"Chicken," "Salmon," "Rice," "Veg," "Snacks."</strong></li>
+          <li>Preheat the oven to <strong>400°F</strong> — it'll be used for roasting veg, sweet potatoes, and one fish fillet.</li>
+          <li>Fill your largest pot with water for grains, and a second medium pot for eggs. Get both heating now so they're ready when you need them.</li>
+          <li>Set out 2 sheet pans (more if scaling past 4 people) and line with foil or parchment for easy cleanup.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">2. Start the Slow Stuff (grains, eggs, beans)</div>
+        <div class="prep-time">40 min, mostly hands-off</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li><strong>Eggs:</strong> Lower <span class="qty" data-prep="eggs">10</span> eggs into boiling water. Hard-boil most of them for 10 minutes, then ice-bath and peel — these cover Monday, Sunday snacks and breakfasts. Soft-boil 2 per person separately for 6 minutes for Sunday's breakfast.</li>
+          <li><strong>Brown rice (<span class="qty" data-prep="brownRiceCups">3 cups</span> dry):</strong> Start in a rice cooker or on the stovetop now — it needs ~40 minutes and covers Monday lunch, Friday lunch, and Thursday dinner.</li>
+          <li><strong>Wild rice (<span class="qty" data-prep="wildRiceCups">½ cup</span> dry):</strong> Start in a separate small pot — needs ~40–45 minutes, used Sunday dinner.</li>
+          <li><strong>Quinoa (<span class="qty" data-prep="quinoaCups">1 cup</span> dry):</strong> Rinse and simmer 15 minutes — covers Monday dinner and Saturday lunch. Start this partway through the rice cook time so both finish close together.</li>
+          <li><strong>Lentils (<span class="qty" data-prep="lentilsCups">1.5 cups</span> dry):</strong> Simmer in vegetable broth for 25 minutes — used Tuesday dinner. Can run on a back burner alongside the rice.</li>
+          <li>While these simmer, drain and rinse your canned chickpeas, cannellini beans, and black beans — have them ready in separate bowls. You'll need <span class="qty" data-prep="canCount">~4 cans</span> total across the week.</li>
+        </ol>
+        <div class="prep-tip">💡 Stagger start times so the rice, quinoa, and lentils all finish within about 10 minutes of each other — that way you're not babysitting the stove all afternoon. If you're scaling past 4–6 people, cook grains in two batches rather than one oversized pot — it cooks more evenly.</div>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">3. Oven Batch: Sweet Potatoes & Roasted Vegetables</div>
+        <div class="prep-time">30 min, hands-off once loaded</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Pierce <span class="qty" data-prep="sweetPotatoes">3</span> sweet potatoes with a fork and place directly on the oven rack at 400°F — roast 40–45 minutes total (set a timer, you'll pull these while doing other prep). Used Wednesday lunch and dinner.</li>
+          <li>On sheet pan 1: toss <span class="qty" data-prep="bellPeppers">6</span> bell peppers, <span class="qty" data-prep="zucchini">2</span> zucchini, and <span class="qty" data-prep="cherryTomatoPints">2 pints</span> cherry tomatoes with olive oil, salt, and pepper. Roast 20–25 minutes — used Monday dinner.</li>
+          <li>On sheet pan 2: toss <span class="qty" data-prep="brusselsLb">1 lb</span> Brussels sprouts with olive oil. Roast 25–30 minutes — used Wednesday dinner.</li>
+          <li>Separately, steam or roast <span class="qty" data-prep="broccoliLb">1 lb</span> broccoli florets for 8–10 minutes (steaming keeps it crisp for the Thursday stir-fry, where it'll be reheated briefly).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">4. Fire Up the Grill (or grill pan)</div>
+        <div class="prep-time">35–40 min</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Pat dry and season <span class="qty" data-prep="salmonFillets">4</span> salmon fillets (about 6 oz each, per person) with salt, pepper, and a little olive oil. Grill 4–5 minutes per side until just cooked through. These cover <strong>Monday dinner, Thursday lunch (cold/flaked over salad), and Friday dinner</strong> — grill one or two extra fillets in case portions run short.</li>
+          <li>Season and grill <span class="qty" data-prep="tunaSteaks">1</span> tuna steak (6–7 oz per person) for about 2 minutes per side — keep it slightly pink in the center, it overcooks fast. This is for <strong>Tuesday's lunch salad</strong> — slice once cooled.</li>
+          <li>Season <span class="qty" data-prep="chickenLb">2.5 lbs</span> chicken breast with salt, pepper, and a little olive oil. Grill in batches, about 6–7 minutes per side, until internal temp hits 165°F. This covers <strong>Wednesday lunch, Wednesday dinner (the herb-crusted version can be seasoned differently — see note below), and Sunday's leftover bowl</strong>.</li>
+          <li>Grill or pan-sear <span class="qty" data-prep="shrimpLb">1 lb</span> shrimp on skewers, about 2 minutes per side until pink and opaque — for <strong>Saturday lunch</strong>. This is quick, do it last so it doesn't sit out.</li>
+        </ol>
+        <div class="prep-tip">💡 Reserve a small portion of plain grilled chicken before seasoning the rest with rosemary and garlic for Wednesday's herb-crusted version — that way Sunday's leftover bowl isn't overly herby. At larger serving sizes, grill in relay batches rather than crowding the grill — crowded fillets steam instead of sear.</div>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">5. Stovetop Batch: Ground Meats</div>
+        <div class="prep-time">20 min</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Brown <span class="qty" data-prep="turkeyLb">2 lbs</span> ground turkey (93% lean) in a large skillet with garlic and onion, breaking it up as it cooks, about 8–10 minutes. Split into two batches mentally: one plain for <strong>Monday lunch</strong>, one seasoned with cumin and lime for <strong>Friday's taco bowl</strong>.</li>
+          <li>In the same pan (no need to wash), sear <span class="qty" data-prep="beefLb">0.75 lb</span> grass-fed beef strips for Sunday's stir-fry — about 4–5 minutes until browned. Set aside; you'll reheat with the bok choy and mushrooms fresh on Sunday for best texture.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">6. Quick Items: Tofu & Fresh Veg Wash</div>
+        <div class="prep-time">15 min</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Press <span class="qty" data-prep="tofuBlocks">1 block</span> of tofu now (wrap in a towel, weight with a pan) so it's ready to pan-fry fresh on Thursday — pressing ahead saves time mid-week.</li>
+          <li>Wash and dry all leafy greens (spinach, arugula, romaine) and store with a paper towel in the container to keep them crisp through the week.</li>
+          <li>Slice cucumber, celery, and bell peppers for snacks; portion into small containers or zip bags.</li>
+          <li>Cut <span class="qty" data-prep="avocados">3</span> avocados in half — wrap unused halves tightly with the pit left in and a squeeze of lime juice to slow browning. Realistically, buy avocados in smaller batches across the week if you can — they ripen better fresh.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prep-block">
+      <div class="prep-block-head">
+        <div class="prep-block-title">7. Portion & Pack</div>
+        <div class="prep-time">20 min</div>
+      </div>
+      <div class="prep-block-body">
+        <ol class="prep-steps">
+          <li>Portion the grilled chicken into 6 oz servings per person, across <span class="qty" data-prep="chickenContainers">3–4</span> containers.</li>
+          <li>Portion most of the grilled salmon fillets into individual containers (keep one set aside for Monday's fresh dinner, no need to portion that one yet).</li>
+          <li>Divide the cooked rice, quinoa, and wild rice into separate containers — don't mix grains together, since they're used in different meals.</li>
+          <li>Pack snack bags: nuts into 1 oz portions per person, cut veggies with hummus cups, hard-boiled eggs in their own container.</li>
+          <li>Label everything with the day it's intended for, written on tape — future-you will thank present-you.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-title" style="font-size: 1.2rem; margin-top: 32px;">Storage & Reheating Guide</div>
+  <table class="storage-table">
+    <tr><th>Food</th><th>Fridge Life</th><th>Reheat / Serve</th></tr>
+    <tr><td>Grilled chicken breast</td><td>4 days</td><td>Reheat covered, 1–2 min microwave, or serve cold over salads</td></tr>
+    <tr><td>Grilled salmon</td><td>3 days</td><td>Best served cold or at room temp over salad (Thursday); gently warm covered for hot meals</td></tr>
+    <tr><td>Grilled tuna steak</td><td>2 days</td><td>Serve cold, sliced — do not reheat, it overcooks and turns dry</td></tr>
+    <tr><td>Ground turkey (cooked)</td><td>4 days</td><td>Reheat in skillet or microwave with a splash of water</td></tr>
+    <tr><td>Grass-fed beef (seared)</td><td>3 days</td><td>Quick re-sear with fresh veg on the day you eat it</td></tr>
+    <tr><td>Shrimp (cooked)</td><td>2–3 days</td><td>Serve cold over the quinoa bowl, or warm gently — don't overcook on reheat</td></tr>
+    <tr><td>Cooked grains (rice, quinoa, wild rice)</td><td>5 days</td><td>Add a splash of water before microwaving to restore moisture</td></tr>
+    <tr><td>Cooked lentils & beans</td><td>5 days</td><td>Reheat on stovetop or microwave, add a little broth if dry</td></tr>
+    <tr><td>Roasted vegetables</td><td>4–5 days</td><td>Reheat in a hot skillet to re-crisp, or eat cold over salads</td></tr>
+    <tr><td>Hard-boiled eggs (peeled)</td><td>5–6 days</td><td>Eat cold straight from the fridge</td></tr>
+    <tr><td>Tofu (pressed, raw)</td><td>3 days</td><td>Cook fresh — best pan-fried just before eating, not reheated</td></tr>
+    <tr><td>Cut avocado</td><td>1–2 days</td><td>Add lime juice, press plastic wrap directly onto the surface</td></tr>
+    <tr><td>Washed greens</td><td>5–6 days</td><td>Store with a dry paper towel in a sealed container</td></tr>
+  </table>
+
+  <div class="prep-tip" style="margin-top:20px;">💡 If 3 hours feels like too much in one sitting, split it: do steps 1–4 (grains, eggs, oven items, grilling) on Sunday afternoon, and steps 5–7 (ground meats, tofu prep, final portioning) Sunday evening or even Monday morning before work. At larger serving sizes, plan for extra time — doubling or tripling a recipe rarely doubles the cook time, but it does add meaningfully more chopping and portioning.</div>
+</div>
+
+<hr class="divider">
+
 <div class="section">
   <div class="section-title">Shopping List</div>
-  <div class="section-sub">One week of groceries — buy Sunday, prep Sunday afternoon</div>
+  <div class="section-sub" id="shop-sub">Organized by the stores you actually shop at — quantities scale with your serving size</div>
 
-  <div class="shop-grid">
-    <div class="shop-category">
-      <div class="shop-cat-title">🐟 Proteins — Fish & Seafood</div>
-      <div class="shop-item"><span class="shop-item-name">Salmon fillets</span><span class="shop-item-qty">1.5 lbs</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cod fillets</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Smoked salmon</span><span class="shop-item-qty">5 oz</span></div>
-      <div class="shop-item"><span class="shop-item-name">Wild shrimp (frozen)</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Albacore tuna (cans)</span><span class="shop-item-qty">4 cans</span></div>
-      <div class="shop-item"><span class="shop-item-name">Sardines in water (cans)</span><span class="shop-item-qty">2 cans</span></div>
-      <div class="shop-item"><span class="shop-item-name">Light tuna (can)</span><span class="shop-item-qty">1 can</span></div>
+  <div class="shop-progress">
+    <span id="shop-progress-text">0 of 0 checked</span>
+    <div class="shop-progress-bar"><div class="shop-progress-fill" id="shop-progress-fill"></div></div>
+    <button class="shop-reset" onclick="resetShoppingChecks()">Reset checks</button>
+  </div>
+
+  <div class="store-tabs">
+    <button class="store-tab active" onclick="showStore(0)">Costco</button>
+    <button class="store-tab" onclick="showStore(1)">Whole Foods</button>
+    <button class="store-tab" onclick="showStore(2)">Trader Joe's</button>
+    <button class="store-tab" onclick="showStore(3)">Aldi</button>
+  </div>
+
+  <div class="store-panel active" id="store-0">
+    <div class="store-note">Costco for the bulk staples: proteins, grains, nuts, and anything you'll use across multiple weeks.</div>
+    <div class="shop-grid">
+      <div class="shop-category">
+        <div class="shop-cat-title">🐟 Fish (fresh, for grilling)</div>
+        <div class="shop-item" data-shop-id="salmon"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh salmon fillets</span><span class="shop-item-qty" data-shop="salmonFillets"></span></span></div>
+        <div class="shop-item" data-shop-id="tuna"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh tuna steak</span><span class="shop-item-qty" data-shop="tunaSteaks"></span></span></div>
+        <div class="shop-item" data-shop-id="shrimp"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Frozen wild shrimp, raw</span><span class="shop-item-qty" data-shop="shrimpBags"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🍗 Poultry & Meat</div>
+        <div class="shop-item" data-shop-id="chicken"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Chicken breast, boneless</span><span class="shop-item-qty" data-shop="chickenLb"></span></span></div>
+        <div class="shop-item" data-shop-id="turkey"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Ground turkey, 93% lean</span><span class="shop-item-qty" data-shop="turkeyLb"></span></span></div>
+        <div class="shop-item" data-shop-id="beef"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Grass-fed beef (sirloin or strips)</span><span class="shop-item-qty" data-shop="beefLb"></span></span></div>
+        <div class="shop-item" data-shop-id="deliturkey"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Sliced turkey breast (deli)</span><span class="shop-item-qty" data-shop="deliTurkeyPacks"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🥚 Eggs & Dairy</div>
+        <div class="shop-item" data-shop-id="eggs"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Large eggs</span><span class="shop-item-qty" data-shop="eggDozens"></span></span></div>
+        <div class="shop-item" data-shop-id="yogurt"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Plain Greek yogurt, large tub</span><span class="shop-item-qty" data-shop="yogurtTubs"></span></span></div>
+        <div class="shop-item" data-shop-id="cottage"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cottage cheese, large tub</span><span class="shop-item-qty" data-shop="cottageTubs"></span></span></div>
+        <div class="shop-item" data-shop-id="string"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">String cheese</span><span class="shop-item-qty" data-shop="stringBoxes"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🌾 Grains & Carbs</div>
+        <div class="shop-item" data-shop-id="quinoa"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Quinoa, bag</span><span class="shop-item-qty" data-shop="quinoaBags"></span></span></div>
+        <div class="shop-item" data-shop-id="brownrice"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Brown rice, bag</span><span class="shop-item-qty" data-shop="brownRiceBags"></span></span></div>
+        <div class="shop-item" data-shop-id="oats"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Rolled oats, container</span><span class="shop-item-qty" data-shop="oatsContainers"></span></span></div>
+        <div class="shop-item" data-shop-id="sweetpotato"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Sweet potatoes, bag</span><span class="shop-item-qty" data-shop="sweetPotatoes"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🥜 Nuts, Seeds & Oils</div>
+        <div class="shop-item" data-shop-id="oliveoil"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Extra virgin olive oil</span><span class="shop-item-qty" data-shop="oliveOilBottles"></span></span></div>
+        <div class="shop-item" data-shop-id="walnuts"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Walnuts, bag</span><span class="shop-item-qty" data-shop="walnutBags"></span></span></div>
+        <div class="shop-item" data-shop-id="almonds"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Almonds, bag</span><span class="shop-item-qty" data-shop="almondBags"></span></span></div>
+        <div class="shop-item" data-shop-id="almondbutter"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Natural almond butter, jar</span><span class="shop-item-qty" data-shop="almondButterJars"></span></span></div>
+        <div class="shop-item" data-shop-id="peanutbutter"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Natural peanut butter, jar</span><span class="shop-item-qty" data-shop="peanutButterJars"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🍓 Produce (bulk)</div>
+        <div class="shop-item" data-shop-id="bananas"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Bananas</span><span class="shop-item-qty" data-shop="bananaBunches"></span></span></div>
+        <div class="shop-item" data-shop-id="berries"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Mixed berries, bag</span><span class="shop-item-qty" data-shop="berryBags"></span></span></div>
+        <div class="shop-item" data-shop-id="spinach"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Baby spinach, large container</span><span class="shop-item-qty" data-shop="spinachContainers"></span></span></div>
+        <div class="shop-item" data-shop-id="avocados"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Avocados</span><span class="shop-item-qty" data-shop="avocados"></span></span></div>
+      </div>
     </div>
+  </div>
 
-    <div class="shop-category">
-      <div class="shop-cat-title">🍗 Proteins — Poultry & Meat</div>
-      <div class="shop-item"><span class="shop-item-name">Chicken breasts</span><span class="shop-item-qty">2.5 lbs</span></div>
-      <div class="shop-item"><span class="shop-item-name">Ground turkey 93% lean</span><span class="shop-item-qty">2 lbs</span></div>
-      <div class="shop-item"><span class="shop-item-name">Grass-fed beef (stir-fry)</span><span class="shop-item-qty">¾ lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Low-sodium beef jerky</span><span class="shop-item-qty">1.5 oz</span></div>
+  <div class="store-panel" id="store-1">
+    <div class="store-note">Whole Foods for quality fresh fish, specialty produce, and a few pantry items worth the upgrade.</div>
+    <div class="shop-grid">
+      <div class="shop-category">
+        <div class="shop-cat-title">🥦 Fresh Produce</div>
+        <div class="shop-item" data-shop-id="broccoli"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Broccoli florets</span><span class="shop-item-qty" data-shop="broccoliBags"></span></span></div>
+        <div class="shop-item" data-shop-id="brussels"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Brussels sprouts</span><span class="shop-item-qty" data-shop="brusselsBags"></span></span></div>
+        <div class="shop-item" data-shop-id="asparagus"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Asparagus</span><span class="shop-item-qty" data-shop="asparagusBunches"></span></span></div>
+        <div class="shop-item" data-shop-id="bokchoy"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Bok choy</span><span class="shop-item-qty" data-shop="bokChoyHeads"></span></span></div>
+        <div class="shop-item" data-shop-id="cauliflower"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cauliflower</span><span class="shop-item-qty" data-shop="cauliflowerHeads"></span></span></div>
+        <div class="shop-item" data-shop-id="zucchini"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Zucchini</span><span class="shop-item-qty" data-shop="zucchini"></span></span></div>
+        <div class="shop-item" data-shop-id="bellpeppers"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Bell peppers</span><span class="shop-item-qty" data-shop="bellPeppers"></span></span></div>
+        <div class="shop-item" data-shop-id="cherrytom"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cherry tomatoes</span><span class="shop-item-qty" data-shop="cherryTomatoPints"></span></span></div>
+        <div class="shop-item" data-shop-id="tomatoes"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Tomatoes (regular)</span><span class="shop-item-qty" data-shop="tomatoes"></span></span></div>
+        <div class="shop-item" data-shop-id="mushrooms"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Mushrooms</span><span class="shop-item-qty" data-shop="mushroomPackages"></span></span></div>
+        <div class="shop-item" data-shop-id="arugula"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Arugula</span><span class="shop-item-qty" data-shop="arugulaBags"></span></span></div>
+        <div class="shop-item" data-shop-id="romaine"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Romaine lettuce</span><span class="shop-item-qty" data-shop="romaineHeads"></span></span></div>
+        <div class="shop-item" data-shop-id="cucumber"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cucumber</span><span class="shop-item-qty" data-shop="cucumbers"></span></span></div>
+        <div class="shop-item" data-shop-id="celery"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Celery</span><span class="shop-item-qty" data-shop="celeryBunches"></span></span></div>
+        <div class="shop-item" data-shop-id="garlic"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Garlic</span><span class="shop-item-qty" data-shop="garlicBulbs"></span></span></div>
+        <div class="shop-item" data-shop-id="ginger"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh ginger</span><span class="shop-item-qty" data-shop="gingerPieces"></span></span></div>
+        <div class="shop-item" data-shop-id="redonion"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Red onion</span><span class="shop-item-qty" data-shop="redOnions"></span></span></div>
+        <div class="shop-item" data-shop-id="yellowonion"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Yellow onion</span><span class="shop-item-qty" data-shop="yellowOnions"></span></span></div>
+        <div class="shop-item" data-shop-id="lemons"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Lemons</span><span class="shop-item-qty" data-shop="lemons"></span></span></div>
+        <div class="shop-item" data-shop-id="apples"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Apples</span><span class="shop-item-qty" data-shop="apples"></span></span></div>
+        <div class="shop-item" data-shop-id="rosemary"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh rosemary</span><span class="shop-item-qty" data-shop="rosemaryPacks"></span></span></div>
+        <div class="shop-item" data-shop-id="basil"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh basil</span><span class="shop-item-qty" data-shop="basilPacks"></span></span></div>
+        <div class="shop-item" data-shop-id="cilantro"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Fresh cilantro</span><span class="shop-item-qty" data-shop="cilantroBunches"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🧂 Specialty Pantry</div>
+        <div class="shop-item" data-shop-id="olives"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Kalamata olives, jar</span><span class="shop-item-qty" data-shop="oliveJars"></span></span></div>
+        <div class="shop-item" data-shop-id="hummus"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Hummus, container</span><span class="shop-item-qty" data-shop="hummusContainers"></span></span></div>
+        <div class="shop-item" data-shop-id="feta"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Feta cheese, block or tub</span><span class="shop-item-qty" data-shop="fetaContainers"></span></span></div>
+        <div class="shop-item" data-shop-id="ezekiel"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Ezekiel bread, loaf</span><span class="shop-item-qty" data-shop="ezekielLoaves"></span></span></div>
+        <div class="shop-item" data-shop-id="tofu"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Extra-firm tofu</span><span class="shop-item-qty" data-shop="tofuBlocks"></span></span></div>
+        <div class="shop-item" data-shop-id="protein"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Whey protein powder (vanilla + chocolate)</span><span class="shop-item-qty" data-shop="proteinContainers"></span></span></div>
+      </div>
     </div>
+  </div>
 
-    <div class="shop-category">
-      <div class="shop-cat-title">🥚 Proteins — Eggs & Dairy</div>
-      <div class="shop-item"><span class="shop-item-name">Large eggs</span><span class="shop-item-qty">2 dozen</span></div>
-      <div class="shop-item"><span class="shop-item-name">Liquid egg whites</span><span class="shop-item-qty">1 carton (32 oz)</span></div>
-      <div class="shop-item"><span class="shop-item-name">0% Greek yogurt</span><span class="shop-item-qty">3 lbs (large tub)</span></div>
-      <div class="shop-item"><span class="shop-item-name">2% cottage cheese</span><span class="shop-item-qty">2 lbs</span></div>
-      <div class="shop-item"><span class="shop-item-name">Part-skim mozzarella sticks</span><span class="shop-item-qty">1 pack (8 ct)</span></div>
-      <div class="shop-item"><span class="shop-item-name">Feta cheese crumbles</span><span class="shop-item-qty">4 oz</span></div>
-      <div class="shop-item"><span class="shop-item-name">Low-fat chocolate milk</span><span class="shop-item-qty">12 oz</span></div>
+  <div class="store-panel" id="store-2">
+    <div class="store-note">Trader Joe's for easy, well-priced pantry items and a few prepared shortcuts that save time.</div>
+    <div class="shop-grid">
+      <div class="shop-category">
+        <div class="shop-cat-title">🫘 Beans & Legumes</div>
+        <div class="shop-item" data-shop-id="lentils"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Green lentils, dry bag</span><span class="shop-item-qty" data-shop="lentilBags"></span></span></div>
+        <div class="shop-item" data-shop-id="chickpeas"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Chickpeas, cans</span><span class="shop-item-qty" data-shop="chickpeaCans"></span></span></div>
+        <div class="shop-item" data-shop-id="cannellini"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cannellini beans, can</span><span class="shop-item-qty" data-shop="cannelliniCans"></span></span></div>
+        <div class="shop-item" data-shop-id="blackbeans"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Black beans, can</span><span class="shop-item-qty" data-shop="blackBeanCans"></span></span></div>
+        <div class="shop-item" data-shop-id="edamame"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Frozen shelled edamame</span><span class="shop-item-qty" data-shop="edamameBags"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🌾 Grains & Carbs</div>
+        <div class="shop-item" data-shop-id="wildrice"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Wild rice, bag</span><span class="shop-item-qty" data-shop="wildRiceBags"></span></span></div>
+        <div class="shop-item" data-shop-id="ricecakes"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Brown rice cakes</span><span class="shop-item-qty" data-shop="riceCakePacks"></span></span></div>
+        <div class="shop-item" data-shop-id="granola"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Low-sugar granola</span><span class="shop-item-qty" data-shop="granolaBags"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🥜 Seeds & Snacks</div>
+        <div class="shop-item" data-shop-id="pumpkinseeds"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Pumpkin seeds, bag</span><span class="shop-item-qty" data-shop="pumpkinSeedBags"></span></span></div>
+        <div class="shop-item" data-shop-id="flax"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Ground flaxseed, bag</span><span class="shop-item-qty" data-shop="flaxBags"></span></span></div>
+        <div class="shop-item" data-shop-id="chia"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Chia seeds, bag</span><span class="shop-item-qty" data-shop="chiaBags"></span></span></div>
+        <div class="shop-item" data-shop-id="hemp"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Hemp seeds, bag</span><span class="shop-item-qty" data-shop="hempBags"></span></span></div>
+        <div class="shop-item" data-shop-id="darkchoc"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Dark chocolate bar (70%+)</span><span class="shop-item-qty" data-shop="darkChocBars"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🧂 Pantry & Condiments</div>
+        <div class="shop-item" data-shop-id="almondmilk"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Unsweetened almond milk</span><span class="shop-item-qty" data-shop="almondMilkCartons"></span></span></div>
+        <div class="shop-item" data-shop-id="chocmilk"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Low-fat chocolate milk</span><span class="shop-item-qty" data-shop="chocMilkCartons"></span></span></div>
+        <div class="shop-item" data-shop-id="soysauce"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Low-sodium soy sauce</span><span class="shop-item-qty" data-shop="soySauceBottles"></span></span></div>
+        <div class="shop-item" data-shop-id="pico"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Pico de gallo (refrigerated)</span><span class="shop-item-qty" data-shop="picoContainers"></span></span></div>
+        <div class="shop-item" data-shop-id="pineapple"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Canned pineapple chunks</span><span class="shop-item-qty" data-shop="pineappleCans"></span></span></div>
+        <div class="shop-item" data-shop-id="bagelseasoning"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Everything bagel seasoning</span><span class="shop-item-qty" data-shop="bagelSeasoningJars"></span></span></div>
+      </div>
     </div>
+  </div>
 
-    <div class="shop-category">
-      <div class="shop-cat-title">🫘 Plant Proteins & Legumes</div>
-      <div class="shop-item"><span class="shop-item-name">Extra-firm tofu</span><span class="shop-item-qty">14 oz block</span></div>
-      <div class="shop-item"><span class="shop-item-name">Green lentils (dry)</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Canned chickpeas</span><span class="shop-item-qty">2 cans</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cannellini beans (can)</span><span class="shop-item-qty">1 can</span></div>
-      <div class="shop-item"><span class="shop-item-name">Black beans (can)</span><span class="shop-item-qty">1 can</span></div>
-      <div class="shop-item"><span class="shop-item-name">Edamame (frozen, shelled)</span><span class="shop-item-qty">1 bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Hummus</span><span class="shop-item-qty">1 container (10 oz)</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🥦 Vegetables</div>
-      <div class="shop-item"><span class="shop-item-name">Baby spinach</span><span class="shop-item-qty">2 bags (10 oz each)</span></div>
-      <div class="shop-item"><span class="shop-item-name">Broccoli florets</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Brussels sprouts</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Asparagus</span><span class="shop-item-qty">2 bunches</span></div>
-      <div class="shop-item"><span class="shop-item-name">Bok choy</span><span class="shop-item-qty">1 head</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cauliflower (large head)</span><span class="shop-item-qty">1 head</span></div>
-      <div class="shop-item"><span class="shop-item-name">Zucchini</span><span class="shop-item-qty">2 medium</span></div>
-      <div class="shop-item"><span class="shop-item-name">Bell peppers (mixed colors)</span><span class="shop-item-qty">6</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cherry tomatoes</span><span class="shop-item-qty">2 pints</span></div>
-      <div class="shop-item"><span class="shop-item-name">Tomatoes (for cooking)</span><span class="shop-item-qty">4 medium</span></div>
-      <div class="shop-item"><span class="shop-item-name">Mushrooms</span><span class="shop-item-qty">8 oz</span></div>
-      <div class="shop-item"><span class="shop-item-name">Celery</span><span class="shop-item-qty">1 bunch</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cucumber</span><span class="shop-item-qty">1</span></div>
-      <div class="shop-item"><span class="shop-item-name">Arugula / mixed greens</span><span class="shop-item-qty">2 bags</span></div>
-      <div class="shop-item"><span class="shop-item-name">Romaine lettuce</span><span class="shop-item-qty">1 head</span></div>
-      <div class="shop-item"><span class="shop-item-name">Red onion</span><span class="shop-item-qty">1</span></div>
-      <div class="shop-item"><span class="shop-item-name">Yellow onion</span><span class="shop-item-qty">2</span></div>
-      <div class="shop-item"><span class="shop-item-name">Garlic</span><span class="shop-item-qty">2 heads</span></div>
-      <div class="shop-item"><span class="shop-item-name">Fresh ginger root</span><span class="shop-item-qty">1 knob</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🍎 Fruits</div>
-      <div class="shop-item"><span class="shop-item-name">Bananas</span><span class="shop-item-qty">4</span></div>
-      <div class="shop-item"><span class="shop-item-name">Blueberries</span><span class="shop-item-qty">1 pint</span></div>
-      <div class="shop-item"><span class="shop-item-name">Raspberries</span><span class="shop-item-qty">1 pint</span></div>
-      <div class="shop-item"><span class="shop-item-name">Strawberries</span><span class="shop-item-qty">1 lb</span></div>
-      <div class="shop-item"><span class="shop-item-name">Mixed berries (frozen)</span><span class="shop-item-qty">1 bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Apples</span><span class="shop-item-qty">2</span></div>
-      <div class="shop-item"><span class="shop-item-name">Avocados</span><span class="shop-item-qty">3</span></div>
-      <div class="shop-item"><span class="shop-item-name">Pineapple chunks (canned)</span><span class="shop-item-qty">1 can</span></div>
-      <div class="shop-item"><span class="shop-item-name">Lemons</span><span class="shop-item-qty">4</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🌾 Grains & Carbs</div>
-      <div class="shop-item"><span class="shop-item-name">Rolled oats</span><span class="shop-item-qty">1 canister</span></div>
-      <div class="shop-item"><span class="shop-item-name">Quinoa</span><span class="shop-item-qty">1 lb bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Brown rice</span><span class="shop-item-qty">2 lb bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Wild rice</span><span class="shop-item-qty">½ lb bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Ezekiel bread</span><span class="shop-item-qty">1 loaf</span></div>
-      <div class="shop-item"><span class="shop-item-name">Brown rice cakes</span><span class="shop-item-qty">1 pack</span></div>
-      <div class="shop-item"><span class="shop-item-name">Low-sugar granola</span><span class="shop-item-qty">1 small bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Sweet potatoes</span><span class="shop-item-qty">3 medium</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🥜 Fats, Nuts & Seeds</div>
-      <div class="shop-item"><span class="shop-item-name">Extra virgin olive oil</span><span class="shop-item-qty">1 bottle (16+ oz)</span></div>
-      <div class="shop-item"><span class="shop-item-name">Natural almond butter</span><span class="shop-item-qty">1 jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Natural peanut butter</span><span class="shop-item-qty">1 jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Walnuts</span><span class="shop-item-qty">8 oz bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Almonds (raw/roasted)</span><span class="shop-item-qty">8 oz bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Pumpkin seeds</span><span class="shop-item-qty">4 oz bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Ground flaxseed</span><span class="shop-item-qty">1 bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Chia seeds</span><span class="shop-item-qty">1 small bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Hemp seeds</span><span class="shop-item-qty">1 small bag</span></div>
-      <div class="shop-item"><span class="shop-item-name">Dark chocolate (≥70%)</span><span class="shop-item-qty">1 bar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Kalamata olives</span><span class="shop-item-qty">1 jar</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🧂 Pantry & Condiments</div>
-      <div class="shop-item"><span class="shop-item-name">Low-sodium soy sauce</span><span class="shop-item-qty">1 bottle</span></div>
-      <div class="shop-item"><span class="shop-item-name">Avocado mayo</span><span class="shop-item-qty">1 small jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Dijon mustard</span><span class="shop-item-qty">1 jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Capers</span><span class="shop-item-qty">1 small jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Vegetable broth (low sodium)</span><span class="shop-item-qty">2 cartons</span></div>
-      <div class="shop-item"><span class="shop-item-name">Canned diced tomatoes</span><span class="shop-item-qty">1 can</span></div>
-      <div class="shop-item"><span class="shop-item-name">Pico de gallo / salsa</span><span class="shop-item-qty">1 jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Almond milk (unsweetened)</span><span class="shop-item-qty">½ gallon</span></div>
-      <div class="shop-item"><span class="shop-item-name">Whey protein powder</span><span class="shop-item-qty">vanilla + chocolate</span></div>
-    </div>
-
-    <div class="shop-category">
-      <div class="shop-cat-title">🌿 Spices & Herbs</div>
-      <div class="shop-item"><span class="shop-item-name">Fresh parsley + basil</span><span class="shop-item-qty">1 bunch each</span></div>
-      <div class="shop-item"><span class="shop-item-name">Fresh rosemary</span><span class="shop-item-qty">1 pack</span></div>
-      <div class="shop-item"><span class="shop-item-name">Fresh cilantro</span><span class="shop-item-qty">1 bunch</span></div>
-      <div class="shop-item"><span class="shop-item-name">Turmeric (ground)</span><span class="shop-item-qty">if not stocked</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cumin (ground)</span><span class="shop-item-qty">if not stocked</span></div>
-      <div class="shop-item"><span class="shop-item-name">Curry powder</span><span class="shop-item-qty">if not stocked</span></div>
-      <div class="shop-item"><span class="shop-item-name">Cinnamon</span><span class="shop-item-qty">if not stocked</span></div>
-      <div class="shop-item"><span class="shop-item-name">Everything bagel seasoning</span><span class="shop-item-qty">1 jar</span></div>
-      <div class="shop-item"><span class="shop-item-name">Black pepper + sea salt</span><span class="shop-item-qty">if not stocked</span></div>
+  <div class="store-panel" id="store-3">
+    <div class="store-note">Aldi for everyday basics and condiments where the name brand doesn't matter.</div>
+    <div class="shop-grid">
+      <div class="shop-category">
+        <div class="shop-cat-title">🧂 Condiments & Basics</div>
+        <div class="shop-item" data-shop-id="mayo"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Avocado mayo or regular mayo</span><span class="shop-item-qty" data-shop="mayoJars"></span></span></div>
+        <div class="shop-item" data-shop-id="dijon"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Dijon mustard</span><span class="shop-item-qty" data-shop="dijonJars"></span></span></div>
+        <div class="shop-item" data-shop-id="balsamic"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Balsamic vinaigrette or vinegar</span><span class="shop-item-qty" data-shop="balsamicBottles"></span></span></div>
+        <div class="shop-item" data-shop-id="redwinevin"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Red wine vinegar</span><span class="shop-item-qty" data-shop="redWineVinBottles"></span></span></div>
+        <div class="shop-item" data-shop-id="broth"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Vegetable broth, low sodium</span><span class="shop-item-qty" data-shop="brothCartons"></span></span></div>
+        <div class="shop-item" data-shop-id="dicedtom"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Diced tomatoes, can</span><span class="shop-item-qty" data-shop="dicedTomatoCans"></span></span></div>
+        <div class="shop-item" data-shop-id="salsa"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Salsa, jar</span><span class="shop-item-qty" data-shop="salsaJars"></span></span></div>
+        <div class="shop-item" data-shop-id="limes"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Limes</span><span class="shop-item-qty" data-shop="limes"></span></span></div>
+      </div>
+      <div class="shop-category">
+        <div class="shop-cat-title">🌿 Spices (check your rack first)</div>
+        <div class="shop-item" data-shop-id="turmeric"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Turmeric, ground</span><span class="shop-item-qty">1 jar if needed</span></span></div>
+        <div class="shop-item" data-shop-id="cumin"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cumin, ground</span><span class="shop-item-qty">1 jar if needed</span></span></div>
+        <div class="shop-item" data-shop-id="curry"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Curry powder</span><span class="shop-item-qty">1 jar if needed</span></span></div>
+        <div class="shop-item" data-shop-id="cinnamon"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Cinnamon, ground</span><span class="shop-item-qty">1 jar if needed</span></span></div>
+        <div class="shop-item" data-shop-id="pepper"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Black pepper</span><span class="shop-item-qty">1 jar if needed</span></span></div>
+        <div class="shop-item" data-shop-id="seasalt"><input type="checkbox" class="shop-checkbox"><span class="shop-item-name-qty"><span class="shop-item-name">Sea salt</span><span class="shop-item-qty">1 container if needed</span></span></div>
+      </div>
     </div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- BIOMARKER TARGETS -->
 <div class="section">
   <div class="section-title">How This Plan Targets Your Biomarkers</div>
   <div class="section-sub">Every food choice maps to a specific lab result</div>
@@ -1063,11 +1578,11 @@
   <div class="biomarker-notes">
     <div class="bio-note heart">
       <h4>❤️ Heart (10/15 out of range)</h4>
-      <p>Omega-3 rich fish 3x/week (salmon, cod, sardines) + olive oil as primary fat directly lowers LDL and triglycerides. Walnuts, flaxseed, and chia add additional omega-3s. Soluble fiber from oats, lentils, and beans binds cholesterol. Avoid trans fats and refined carbs which worsen every cardiovascular marker.</p>
+      <p>Grilled salmon and tuna 3x/week + olive oil as primary fat directly lowers LDL and triglycerides. Walnuts, flaxseed, and chia add additional omega-3s. Soluble fiber from oats, lentils, and beans binds cholesterol. Avoid trans fats and refined carbs which worsen every cardiovascular marker.</p>
     </div>
     <div class="bio-note nutrient">
       <h4>🌞 Nutrients (2/20 out of range — likely Vitamin D)</h4>
-      <p>Fatty fish, eggs (daily), and fortified almond milk provide dietary D3. However, food alone rarely fixes low Vitamin D — discuss a D3+K2 supplement (2,000–5,000 IU/day) with your doctor based on your specific level.</p>
+      <p>Grilled fatty fish, eggs (daily), and fortified almond milk provide dietary D3. However, food alone rarely fixes low Vitamin D — discuss a D3+K2 supplement (2,000–5,000 IU/day) with your doctor based on your specific level.</p>
     </div>
     <div class="bio-note">
       <h4>🔥 Inflammation (hs-CRP)</h4>
@@ -1075,7 +1590,7 @@
     </div>
     <div class="bio-note">
       <h4>💪 Muscle Building at 48</h4>
-      <p>At 48, testosterone and anabolic signaling decline. Counter this with: 185g+ protein daily, leucine-rich meals every 3–4 hours, zinc from pumpkin seeds and beef, and magnesium from spinach and nuts. Sleep 7–9 hours — growth hormone peaks during deep sleep.</p>
+      <p>At 48, testosterone and anabolic signaling decline. Counter this with: 180g+ protein daily, leucine-rich meals every 3–4 hours, zinc from pumpkin seeds and beef, and magnesium from spinach and nuts. Sleep 7–9 hours — growth hormone peaks during deep sleep.</p>
     </div>
     <div class="bio-note">
       <h4>🧬 Metabolic Health (all in range!)</h4>
@@ -1088,44 +1603,730 @@
   </div>
 </div>
 
-<hr class="divider">
-
-<!-- MEAL PREP INSTRUCTIONS -->
-<div class="section">
-  <div class="section-title">Sunday Prep Guide</div>
-  <div class="section-sub">2–3 hours of prep = effortless eating all week</div>
-  <div class="protocol-grid">
-    <div class="protocol-card">
-      <h4>🍳 Cook in Batches</h4>
-      <p>Grill 2 lbs chicken breast. Cook 3 cups brown rice. Cook 2 cups quinoa. Hard-boil 8–10 eggs. These become your building blocks for 5 days of lunches.</p>
-    </div>
-    <div class="protocol-card">
-      <h4>🥗 Prep Vegetables</h4>
-      <p>Roast a large sheet pan of mixed veg (bell peppers, zucchini, Brussels sprouts). Wash and dry all greens. Slice cucumbers and celery. Store in airtight containers.</p>
-    </div>
-    <div class="protocol-card">
-      <h4>🫙 Make Overnight Oats</h4>
-      <p>Prep Thursday's overnight oats on Wednesday night. Mix oats + protein powder + almond milk + chia seeds in a mason jar, refrigerate overnight.</p>
-    </div>
-    <div class="protocol-card">
-      <h4>❄️ Storage Tips</h4>
-      <p>Cooked proteins last 4 days in the fridge. Freeze any fish/meat beyond day 4. Keep cut avocado with lime juice to prevent browning. Portion snacks into bags on Sunday.</p>
-    </div>
-  </div>
-</div>
-
 <footer>
-  Built from your <span>Function Health</span> biomarker data · Heart health priority · 7-day protocol<br>
+  Built from your <span>Function Health</span> biomarker data · Heart health priority · 7-day protocol · v3 — serving size scaling + shopping checkboxes<br>
   Always consult your physician before making significant dietary changes.
 </footer>
 
+<div class="modal-overlay" id="recipe-modal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box" id="modal-box-content">
+  </div>
+</div>
+
 <script>
+  /* ================= SERVING STATE ================= */
+  let servings = 1;
+
+  function setServings(n) {
+    servings = Math.max(1, Math.min(12, n));
+    updateServingUI();
+    renderShoppingList();
+    if (currentRecipeId) openRecipe(currentRecipeId); // re-render open modal if any
+  }
+  function adjustServings(delta) { setServings(servings + delta); }
+
+  function updateServingUI() {
+    document.getElementById('serving-count').textContent = servings;
+    document.getElementById('serving-suffix').textContent = servings === 1 ? 'person' : 'people';
+    document.querySelectorAll('.serving-chip').forEach(chip => {
+      chip.classList.toggle('active', parseInt(chip.dataset.n, 10) === servings);
+    });
+    document.getElementById('prep-sub').innerHTML =
+      'A full sequence to cook the whole week in one focused session — about 3 hours total, scaled for <span style="color:var(--green)">' + servings + (servings === 1 ? ' person' : ' people') + '</span>';
+    document.getElementById('shop-sub').innerHTML =
+      'Organized by the stores you actually shop at — quantities scaled for <span style="color:var(--green)">' + servings + (servings === 1 ? ' person' : ' people') + '</span>';
+    updatePrepQuantities();
+  }
+
+  /* ================= NUMBER FORMATTING ================= */
+  // Format a scaled number nicely: whole numbers stay whole, halves/quarters show as fractions where sensible.
+  function fmtNum(n) {
+    const rounded4 = Math.round(n * 4) / 4;
+    if (Math.abs(rounded4 - Math.round(rounded4)) < 0.001) return String(Math.round(rounded4));
+    const whole = Math.floor(rounded4);
+    const frac = rounded4 - whole;
+    let fracStr = '';
+    if (Math.abs(frac - 0.25) < 0.01) fracStr = '¼';
+    else if (Math.abs(frac - 0.5) < 0.01) fracStr = '½';
+    else if (Math.abs(frac - 0.75) < 0.01) fracStr = '¾';
+    else return String(Math.round(rounded4 * 10) / 10);
+    return (whole > 0 ? whole + ' ' : '') + fracStr;
+  }
+
+  function pluralize(word, n) {
+    if (Math.round(n * 100) / 100 === 1) return word;
+    if (word.endsWith('s') || word.endsWith('x') || word.endsWith('ch')) return word + 'es';
+    if (word.endsWith('fe')) return word.slice(0, -2) + 'ves';
+    return word + 's';
+  }
+
+  /* ================= PREP GUIDE QUANTITIES =================
+     Each value below is the amount needed for 1 person; we scale by `servings`
+     and round up to the nearest practical purchasing/cooking unit. */
+  const prepBase = {
+    containers:        { base: 8,    round: 1,    unit: '', label: n => fmtNum(n) },
+    eggs:               { base: 10,   round: 2,    unit: 'eggs' },
+    brownRiceCups:      { base: 3,    round: 0.5,  unit: 'cups' },
+    wildRiceCups:       { base: 0.5,  round: 0.25, unit: 'cup' },
+    quinoaCups:         { base: 1,    round: 0.5,  unit: 'cup' },
+    lentilsCups:        { base: 1.5,  round: 0.5,  unit: 'cups' },
+    canCount:           { base: 4,    round: 1,    unit: 'cans', prefix: '~' },
+    sweetPotatoes:      { base: 3,    round: 1,    unit: '' },
+    bellPeppers:        { base: 6,    round: 1,    unit: '' },
+    zucchini:           { base: 2,    round: 1,    unit: '' },
+    cherryTomatoPints:  { base: 2,    round: 1,    unit: 'pints' },
+    brusselsLb:         { base: 1,    round: 0.5,  unit: 'lb' },
+    broccoliLb:         { base: 1,    round: 0.5,  unit: 'lb' },
+    salmonFillets:      { base: 4,    round: 1,    unit: '' },
+    tunaSteaks:         { base: 1,    round: 1,    unit: '' },
+    chickenLb:          { base: 2.5,  round: 0.5,  unit: 'lbs' },
+    shrimpLb:           { base: 1,    round: 0.5,  unit: 'lb' },
+    turkeyLb:           { base: 2,    round: 0.5,  unit: 'lbs' },
+    beefLb:             { base: 0.75, round: 0.25, unit: 'lb' },
+    tofuBlocks:         { base: 1,    round: 1,    unit: 'block', pluralUnit: 'blocks' },
+    avocados:           { base: 3,    round: 1,    unit: '' },
+    chickenContainers:  { base: 3.5,  round: 1,    unit: '', label: n => fmtNum(Math.ceil(n)) + '–' + fmtNum(Math.ceil(n) + 1) }
+  };
+
+  function scaledValue(key) {
+    const def = prepBase[key];
+    if (!def) return null;
+    const raw = def.base * servings;
+    const rounded = Math.ceil(raw / def.round) * def.round;
+    return rounded;
+  }
+
+  function updatePrepQuantities() {
+    document.querySelectorAll('[data-prep]').forEach(el => {
+      const key = el.dataset.prep;
+      const def = prepBase[key];
+      if (!def) return;
+      const n = scaledValue(key);
+      let text;
+      if (def.label) {
+        text = def.label(n);
+      } else {
+        const unit = (n === 1 || !def.unit) ? (def.unit || '') : (def.pluralUnit || pluralize(def.unit, n));
+        text = (def.prefix || '') + fmtNum(n) + (unit ? ' ' + unit : '');
+      }
+      el.textContent = text;
+    });
+  }
+
+  /* ================= SHOPPING LIST =================
+     Each entry: base amount needed for 1 person/week, a practical pack size,
+     and a unit label used for display. We compute how many packs to buy. */
+  const shopBase = {
+    // Costco
+    salmonFillets:      { perPerson: 4,    packSize: 4,   unit: 'fillet', packLabel: n => n + ' large pack' + (n>1?'s':'') + ' (' + (n*4) + ' fillets)' },
+    tunaSteaks:         { perPerson: 1,    packSize: 1,   unit: 'steak', packLabel: n => n + ' steak' + (n>1?'s':'') + ' (~6–7 oz each)' },
+    shrimpBags:         { perPerson: 1,    packSize: 2,   unit: 'lb', packLabel: n => n + ' bag' + (n>1?'s':'') + ' (~2 lb each, use what you need, freeze rest)' },
+    chickenLb:          { perPerson: 2.5,  packSize: 2.5, unit: 'lb', packLabel: n => fmtNum(n*2.5) + ' lbs (1 family pack covers ~4 people)' },
+    turkeyLb:           { perPerson: 2,    packSize: 2,   unit: 'lb', packLabel: n => fmtNum(n*2) + ' lbs ground turkey' },
+    beefLb:             { perPerson: 0.75, packSize: 0.75,unit: 'lb', packLabel: n => fmtNum(n*0.75) + ' lbs grass-fed beef' },
+    deliTurkeyPacks:    { perPerson: 1,    packSize: 1,   unit: 'pack', packLabel: n => n + ' pack' + (n>1?'s':'') },
+    eggDozens:          { perPerson: 1,    packSize: 1,   unit: 'dozen', packLabel: n => n + ' dozen' + (n>1?' (or 1 flat of 24+)':'') },
+    yogurtTubs:         { perPerson: 1,    packSize: 1,   unit: 'tub', packLabel: n => n + ' large tub' + (n>1?'s':'') + ' (~32 oz each)' },
+    cottageTubs:        { perPerson: 1,    packSize: 1,   unit: 'tub', packLabel: n => n + ' large tub' + (n>1?'s':'') },
+    stringBoxes:        { perPerson: 1,    packSize: 1,   unit: 'box', packLabel: n => n + ' box' + (n>1?'es':'') },
+    quinoaBags:         { perPerson: 1,    packSize: 2,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    brownRiceBags:      { perPerson: 1,    packSize: 3,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    oatsContainers:     { perPerson: 1,    packSize: 2,   unit: 'container', packLabel: n => n + ' large container' + (n>1?'s':'') },
+    sweetPotatoes:      { perPerson: 3,    packSize: 6,   unit: 'potato', packLabel: n => n + ' bag' + (n>1?'s':'') + ' (use ' + fmtNum(scaledValue('sweetPotatoes')) + ')' },
+    oliveOilBottles:    { perPerson: 0.5,  packSize: 1,   unit: 'bottle', packLabel: n => n + ' large bottle' + (n>1?'s':'') },
+    walnutBags:         { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    almondBags:         { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    almondButterJars:   { perPerson: 0.4,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    peanutButterJars:   { perPerson: 0.4,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    bananaBunches:      { perPerson: 0.7,  packSize: 1,   unit: 'bunch', packLabel: n => n + ' bunch' + (n>1?'es':'') },
+    berryBags:          { perPerson: 0.6,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    spinachContainers:  { perPerson: 0.5,  packSize: 1,   unit: 'container', packLabel: n => n + ' large container' + (n>1?'s':'') },
+    avocados:           { perPerson: 3,    packSize: 6,   unit: 'avocado', packLabel: n => n + ' bag' + (n>1?'s':'') + ' (use ' + fmtNum(scaledValue('avocados')) + ')' },
+    // Whole Foods
+    broccoliBags:       { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    brusselsBags:        { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    asparagusBunches:   { perPerson: 1,    packSize: 1,   unit: 'bunch', packLabel: n => n + ' bunch' + (n>1?'es':'') + ' (2 needed at 1 person — already doubled)' },
+    bokChoyHeads:       { perPerson: 0.5,  packSize: 1,   unit: 'head', packLabel: n => n + ' head' + (n>1?'s':'') },
+    cauliflowerHeads:   { perPerson: 0.5,  packSize: 1,   unit: 'head', packLabel: n => n + ' head' + (n>1?'s':'') },
+    zucchini:           { perPerson: 1,    packSize: 1,   unit: '', packLabel: n => n + ' zucchini' },
+    bellPeppers:        { perPerson: 3,    packSize: 1,   unit: '', packLabel: n => n + ' bell peppers (mixed colors)' },
+    cherryTomatoPints:  { perPerson: 1,    packSize: 1,   unit: 'pint', packLabel: n => n + ' pint' + (n>1?'s':'') },
+    tomatoes:           { perPerson: 2,    packSize: 1,   unit: '', packLabel: n => n + ' tomatoes' },
+    mushroomPackages:   { perPerson: 0.5,  packSize: 1,   unit: 'package', packLabel: n => n + ' package' + (n>1?'s':'') },
+    arugulaBags:        { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    romaineHeads:       { perPerson: 0.5,  packSize: 1,   unit: 'head', packLabel: n => n + ' head' + (n>1?'s':'') },
+    cucumbers:          { perPerson: 0.5,  packSize: 1,   unit: '', packLabel: n => n + ' cucumber' + (n>1?'s':'') },
+    celeryBunches:      { perPerson: 0.5,  packSize: 1,   unit: 'bunch', packLabel: n => n + ' bunch' + (n>1?'es':'') },
+    garlicBulbs:        { perPerson: 0.7,  packSize: 1,   unit: 'bulb', packLabel: n => n + ' bulb' + (n>1?'s':'') + ' (or 1 bag of pre-peeled)' },
+    gingerPieces:       { perPerson: 0.3,  packSize: 1,   unit: 'piece', packLabel: n => n + ' piece' + (n>1?'s':'') },
+    redOnions:          { perPerson: 0.3,  packSize: 1,   unit: '', packLabel: n => n + ' red onion' + (n>1?'s':'') },
+    yellowOnions:       { perPerson: 0.7,  packSize: 1,   unit: '', packLabel: n => n + ' yellow onion' + (n>1?'s':'') },
+    lemons:             { perPerson: 1.3,  packSize: 1,   unit: '', packLabel: n => n + ' lemons' },
+    apples:             { perPerson: 0.7,  packSize: 1,   unit: '', packLabel: n => n + ' apples' },
+    rosemaryPacks:      { perPerson: 0.3,  packSize: 1,   unit: 'pack', packLabel: n => n + ' small pack' + (n>1?'s':'') },
+    basilPacks:         { perPerson: 0.3,  packSize: 1,   unit: 'pack', packLabel: n => n + ' small pack' + (n>1?'s':'') },
+    cilantroBunches:    { perPerson: 0.3,  packSize: 1,   unit: 'bunch', packLabel: n => n + ' bunch' + (n>1?'es':'') },
+    oliveJars:          { perPerson: 0.3,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    hummusContainers:   { perPerson: 0.5,  packSize: 1,   unit: 'container', packLabel: n => n + ' container' + (n>1?'s':'') },
+    fetaContainers:     { perPerson: 0.3,  packSize: 1,   unit: 'container', packLabel: n => n + ' small container' + (n>1?'s':'') },
+    ezekielLoaves:      { perPerson: 1,    packSize: 1,   unit: 'loaf', packLabel: n => n + ' loaf' + (n>1?'ves':'') },
+    tofuBlocks:         { perPerson: 1,    packSize: 1,   unit: 'block', packLabel: n => n + ' block' + (n>1?'s':'') },
+    proteinContainers:  { perPerson: 0.5,  packSize: 1,   unit: 'container', packLabel: n => n + ' container' + (n>1?'s':'') + ' each (vanilla + chocolate), if needed' },
+    // Trader Joe's
+    lentilBags:         { perPerson: 1,    packSize: 2,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    chickpeaCans:       { perPerson: 2,    packSize: 1,   unit: 'can', packLabel: n => n + ' cans' },
+    cannelliniCans:     { perPerson: 1,    packSize: 1,   unit: 'can', packLabel: n => n + ' can' + (n>1?'s':'') },
+    blackBeanCans:      { perPerson: 1,    packSize: 1,   unit: 'can', packLabel: n => n + ' can' + (n>1?'s':'') },
+    edamameBags:        { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    wildRiceBags:       { perPerson: 0.5,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    riceCakePacks:      { perPerson: 0.4,  packSize: 1,   unit: 'pack', packLabel: n => n + ' pack' + (n>1?'s':'') },
+    granolaBags:        { perPerson: 0.3,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    pumpkinSeedBags:    { perPerson: 0.4,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    flaxBags:           { perPerson: 0.3,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    chiaBags:           { perPerson: 0.3,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    hempBags:           { perPerson: 0.3,  packSize: 1,   unit: 'bag', packLabel: n => n + ' bag' + (n>1?'s':'') },
+    darkChocBars:       { perPerson: 0.3,  packSize: 1,   unit: 'bar', packLabel: n => n + ' bar' + (n>1?'s':'') },
+    almondMilkCartons:  { perPerson: 0.7,  packSize: 1,   unit: 'carton', packLabel: n => n + ' carton' + (n>1?'s':'') },
+    chocMilkCartons:    { perPerson: 0.3,  packSize: 1,   unit: 'carton', packLabel: n => n + ' small carton' + (n>1?'s':'') },
+    soySauceBottles:    { perPerson: 0.3,  packSize: 1,   unit: 'bottle', packLabel: n => n + ' bottle' + (n>1?'s':'') },
+    picoContainers:     { perPerson: 0.5,  packSize: 1,   unit: 'container', packLabel: n => n + ' container' + (n>1?'s':'') },
+    pineappleCans:      { perPerson: 0.5,  packSize: 1,   unit: 'can', packLabel: n => n + ' can' + (n>1?'s':'') },
+    bagelSeasoningJars: { perPerson: 0.3,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    // Aldi
+    mayoJars:           { perPerson: 0.3,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    dijonJars:           { perPerson: 0.3,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    balsamicBottles:     { perPerson: 0.3,  packSize: 1,   unit: 'bottle', packLabel: n => n + ' bottle' + (n>1?'s':'') },
+    redWineVinBottles:   { perPerson: 0.3,  packSize: 1,   unit: 'bottle', packLabel: n => n + ' bottle' + (n>1?'s':'') },
+    brothCartons:        { perPerson: 1,    packSize: 1,   unit: 'carton', packLabel: n => n + ' carton' + (n>1?'s':'') },
+    dicedTomatoCans:     { perPerson: 0.5,  packSize: 1,   unit: 'can', packLabel: n => n + ' can' + (n>1?'s':'') },
+    salsaJars:           { perPerson: 0.4,  packSize: 1,   unit: 'jar', packLabel: n => n + ' jar' + (n>1?'s':'') },
+    limes:               { perPerson: 1.5,  packSize: 1,   unit: '', packLabel: n => n + ' limes' }
+  };
+
+  function shopScaled(key) {
+    const def = shopBase[key];
+    if (!def) return 1;
+    const rawUnits = def.perPerson * servings;
+    const packs = Math.ceil(rawUnits / def.packSize);
+    return Math.max(1, packs);
+  }
+
+  function renderShoppingList() {
+    document.querySelectorAll('[data-shop]').forEach(el => {
+      const key = el.dataset.shop;
+      const def = shopBase[key];
+      if (!def) return;
+      const packs = shopScaled(key);
+      el.textContent = def.packLabel(packs);
+    });
+    updateShopProgress();
+  }
+
+  /* ================= SHOPPING CHECKBOXES ================= */
+  function updateShopProgress() {
+    const all = document.querySelectorAll('.shop-checkbox');
+    const checked = document.querySelectorAll('.shop-checkbox:checked');
+    document.getElementById('shop-progress-text').textContent = checked.length + ' of ' + all.length + ' checked';
+    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+    document.getElementById('shop-progress-fill').style.width = pct + '%';
+  }
+
+  function resetShoppingChecks() {
+    document.querySelectorAll('.shop-checkbox').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.shop-item').classList.remove('checked');
+    });
+    updateShopProgress();
+  }
+
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('shop-checkbox')) {
+      e.target.closest('.shop-item').classList.toggle('checked', e.target.checked);
+      updateShopProgress();
+    }
+  });
+
+  // Clicking anywhere on the row toggles the checkbox too (not just the box itself)
+  document.addEventListener('click', function(e) {
+    const row = e.target.closest('.shop-item');
+    if (row && e.target.tagName !== 'INPUT') {
+      const cb = row.querySelector('.shop-checkbox');
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+    }
+  });
+
+  /* ================= DAY / STORE TABS ================= */
   function showDay(index) {
     document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('day-' + index).classList.add('active');
     document.querySelectorAll('.day-tab')[index].classList.add('active');
   }
+
+  function showStore(index) {
+    document.querySelectorAll('.store-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('store-' + index).classList.add('active');
+    document.querySelectorAll('.store-tab')[index].classList.add('active');
+  }
+
+  /* ================= RECIPES =================
+     Each ingredient: { qty: amount for 1 person, unit: '' or unit string, name: descriptor }
+     Quantities scale with servings; whole/countable items round to sensible numbers. */
+  const recipes = {
+    'mon-b': { type:'breakfast', name:'Greek Yogurt Power Bowl', cal:430, protein:42, carbs:38, fat:14,
+      ingredients: [
+        {qty:1.5, unit:'cup', name:'plain Greek yogurt'},
+        {qty:0.5, unit:'cup', name:'blueberries'},
+        {qty:2, unit:'tbsp', name:'ground flaxseed'},
+        {qty:1, unit:'oz', name:'walnuts, chopped'},
+        {qty:1, unit:'tsp', name:'honey'}
+      ],
+      steps: ['Spoon Greek yogurt into a bowl.', 'Top with blueberries and chopped walnuts.', 'Sprinkle ground flaxseed over the top.', 'Drizzle honey and serve immediately.'],
+      impact: 'Flaxseed and walnuts add plant-based omega-3s that support your heart panel. Greek yogurt delivers slow-digesting protein to start the day.'
+    },
+    'mon-s1': { type:'snack', name:'Cottage Cheese + Apple', cal:280, protein:28, carbs:28, fat:6,
+      ingredients: [
+        {qty:1, unit:'cup', name:'2% cottage cheese'},
+        {qty:1, unit:'', name:'medium apple, sliced'},
+        {qty:0, unit:'', name:'Cinnamon to taste'}
+      ],
+      steps: ['Slice the apple.', 'Spoon cottage cheese into a bowl.', 'Arrange apple slices alongside or on top.', 'Dust with cinnamon.'],
+      impact: 'A simple, high-protein pre-workout snack. The apple provides quick carbs for energy without spiking blood sugar dramatically.'
+    },
+    'mon-l': { type:'lunch', name:'Turkey & Avocado Power Bowl', cal:620, protein:52, carbs:48, fat:24,
+      ingredients: [
+        {qty:6, unit:'oz', name:'ground turkey (93% lean), cooked'},
+        {qty:0.5, unit:'', name:'avocado, sliced'},
+        {qty:1, unit:'cup', name:'cooked brown rice'},
+        {qty:2, unit:'cup', name:'mixed greens'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:0.5, unit:'', name:'lemon, juiced'},
+        {qty:0, unit:'', name:'Salt and pepper to taste'}
+      ],
+      steps: ['Warm the pre-cooked ground turkey in a skillet or microwave.', 'Add rice to a bowl as the base.', 'Top with mixed greens, turkey, and sliced avocado.', 'Whisk olive oil and lemon juice; drizzle over the bowl.', 'Season with salt and pepper.'],
+      impact: 'Avocado and olive oil supply monounsaturated fat that helps lower LDL. Lean turkey keeps saturated fat low while protein stays high.'
+    },
+    'mon-s2': { type:'snack', name:'Hard-Boiled Eggs + Celery', cal:280, protein:22, carbs:8, fat:19,
+      ingredients: [
+        {qty:3, unit:'', name:'hard-boiled eggs'},
+        {qty:3, unit:'', name:'celery stalks'},
+        {qty:1, unit:'tbsp', name:'almond butter'}
+      ],
+      steps: ['Peel the hard-boiled eggs.', 'Cut celery into sticks.', 'Spread almond butter onto celery sticks.', 'Eat alongside the eggs.'],
+      impact: 'Eggs are one of your best dietary sources of Vitamin D — directly addressing your out-of-range nutrient marker.'
+    },
+    'mon-d': { type:'dinner', name:'Grilled Salmon with Roasted Vegetables and Quinoa', cal:620, protein:44, carbs:42, fat:26,
+      ingredients: [
+        {qty:6, unit:'oz', name:'salmon fillet'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:2, unit:'cup', name:'mixed vegetables (bell peppers, zucchini, cherry tomatoes)'},
+        {qty:0.5, unit:'cup', name:'quinoa, cooked'},
+        {qty:1, unit:'tbsp', name:'lemon juice'},
+        {qty:2, unit:'', name:'garlic cloves, minced'},
+        {qty:2, unit:'tbsp', name:'fresh herbs (parsley, basil)'}
+      ],
+      steps: ['Cook quinoa according to package directions; set aside.', 'Mix lemon juice, minced garlic, and chopped herbs; coat the salmon and let sit 10 minutes.', 'Toss vegetables with olive oil, salt, and pepper; roast at 400°F for 20 minutes.', 'Grill the salmon 4–5 minutes per side until just cooked through.', 'Plate salmon with quinoa and roasted vegetables; garnish with extra herbs.'],
+      impact: 'Grilled salmon is your single best food for omega-3s — directly targeting LDL and inflammation markers. Also a strong Vitamin D source.'
+    },
+    'tue-b': { type:'breakfast', name:'Egg White Oatmeal Scramble', cal:420, protein:38, carbs:36, fat:16,
+      ingredients: [
+        {qty:0.5, unit:'cup', name:'rolled oats, cooked'},
+        {qty:4, unit:'', name:'egg whites'},
+        {qty:2, unit:'', name:'whole eggs'},
+        {qty:1, unit:'cup', name:'spinach'},
+        {qty:0.25, unit:'cup', name:'salsa'}
+      ],
+      steps: ['Cook oats according to package directions; set aside.', 'Whisk egg whites and whole eggs together.', 'Sauté spinach in a non-stick pan for 1–2 minutes until wilted.', 'Add egg mixture to the pan and scramble until just set.', 'Serve eggs alongside oatmeal, topped with salsa.'],
+      impact: 'Combining whole eggs (Vitamin D, choline) with egg whites keeps protein very high while moderating saturated fat from yolks.'
+    },
+    'tue-s1': { type:'snack', name:'Protein Shake + Banana', cal:320, protein:32, carbs:36, fat:9,
+      ingredients: [
+        {qty:1, unit:'scoop', name:'whey protein powder'},
+        {qty:1, unit:'cup', name:'unsweetened almond milk'},
+        {qty:1, unit:'', name:'banana'},
+        {qty:1, unit:'tbsp', name:'natural peanut butter'}
+      ],
+      steps: ['Add almond milk, protein powder, banana, and peanut butter to a blender.', 'Blend until smooth.', 'Pour and serve immediately.'],
+      impact: 'Fast, convenient protein between meals — helps you hit your daily protein target without needing to cook.'
+    },
+    'tue-l': { type:'lunch', name:'Grilled Tuna Steak Salad', cal:490, protein:54, carbs:36, fat:16,
+      ingredients: [
+        {qty:6, unit:'oz', name:'fresh tuna steak, grilled'},
+        {qty:3, unit:'cup', name:'romaine lettuce, chopped'},
+        {qty:1, unit:'cup', name:'cherry tomatoes, halved'},
+        {qty:0.5, unit:'', name:'cucumber, sliced'},
+        {qty:0.5, unit:'cup', name:'chickpeas, drained'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:1, unit:'tbsp', name:'red wine vinegar'},
+        {qty:0, unit:'', name:'Salt and pepper to taste'}
+      ],
+      steps: ['Season tuna steak with salt and pepper.', 'Grill or pan-sear 2 minutes per side, keeping the center slightly pink — it overcooks fast.', 'Let rest 2 minutes, then slice.', 'Toss romaine, tomatoes, cucumber, and chickpeas in a bowl.', 'Whisk olive oil and red wine vinegar; dress the salad.', 'Top with sliced tuna and serve.'],
+      impact: 'Fresh grilled tuna is lean and high in omega-3s without any of the sodium load that comes with canned varieties — better for both your heart panel and blood pressure.'
+    },
+    'tue-s2': { type:'snack', name:'Greek Yogurt + Pumpkin Seeds', cal:230, protein:22, carbs:20, fat:9,
+      ingredients: [
+        {qty:1, unit:'cup', name:'plain Greek yogurt'},
+        {qty:2, unit:'tbsp', name:'pumpkin seeds'},
+        {qty:0.5, unit:'cup', name:'raspberries'}
+      ],
+      steps: ['Spoon yogurt into a bowl.', 'Top with raspberries and pumpkin seeds.', 'Serve chilled.'],
+      impact: 'Pumpkin seeds are rich in zinc and magnesium — both important for testosterone support and muscle recovery at 48.'
+    },
+    'tue-d': { type:'dinner', name:'Lentil & Spinach Stew with Extra Virgin Olive Oil', cal:400, protein:22, carbs:56, fat:14,
+      ingredients: [
+        {qty:1.5, unit:'cup', name:'green lentils, dry'},
+        {qty:4, unit:'cup', name:'spinach'},
+        {qty:2, unit:'tbsp', name:'extra virgin olive oil'},
+        {qty:1, unit:'', name:'medium onion, chopped'},
+        {qty:3, unit:'', name:'garlic cloves, minced'},
+        {qty:4, unit:'cup', name:'vegetable broth'},
+        {qty:2, unit:'tbsp', name:'lemon juice'},
+        {qty:0.5, unit:'tsp', name:'black pepper'}
+      ],
+      steps: ['Heat 1 tbsp olive oil in a pot; sauté chopped onion and garlic until translucent.', 'Add lentils and vegetable broth; bring to a boil, then simmer 25 minutes until tender.', 'Stir in spinach and cook an additional 5 minutes until wilted.', 'Add lemon juice, remaining olive oil, and black pepper; stir well and serve.'],
+      impact: 'Lentils provide soluble fiber that binds cholesterol in the gut — one of the most effective food-based tools for lowering LDL.'
+    },
+    'wed-b': { type:'breakfast', name:'Veggie Egg Scramble + Toast', cal:440, protein:38, carbs:34, fat:20,
+      ingredients: [
+        {qty:2, unit:'', name:'whole eggs'},
+        {qty:4, unit:'', name:'egg whites'},
+        {qty:1, unit:'cup', name:'spinach'},
+        {qty:0.5, unit:'', name:'tomato, diced'},
+        {qty:1, unit:'slice', name:'Ezekiel bread, toasted'},
+        {qty:1, unit:'tsp', name:'olive oil'}
+      ],
+      steps: ['Heat olive oil in a non-stick pan.', 'Sauté spinach and diced tomato for 1–2 minutes.', 'Whisk eggs and egg whites together; pour into the pan.', 'Scramble until just set.', 'Serve with toasted Ezekiel bread.'],
+      impact: 'A balanced, lower-fat egg breakfast on a training day — keeps protein high while leaving room for pre-workout carbs.'
+    },
+    'wed-s1': { type:'snack', name:'Rice Cake + Almond Butter', cal:340, protein:34, carbs:32, fat:14,
+      ingredients: [
+        {qty:2, unit:'', name:'brown rice cakes'},
+        {qty:2, unit:'tbsp', name:'natural almond butter'},
+        {qty:1, unit:'scoop', name:'protein powder + water, shaken'}
+      ],
+      steps: ['Spread almond butter on rice cakes.', 'Mix protein powder with water in a shaker bottle.', 'Eat together about 60–90 minutes before training.'],
+      impact: 'Fast-digesting carbs from rice cakes plus a protein shake fuel your lift without sitting heavy in your stomach.'
+    },
+    'wed-l': { type:'lunch', name:'Chicken & Sweet Potato Bowl', cal:560, protein:58, carbs:50, fat:18,
+      ingredients: [
+        {qty:7, unit:'oz', name:'grilled chicken breast'},
+        {qty:1, unit:'', name:'medium sweet potato, baked'},
+        {qty:2, unit:'cup', name:'arugula'},
+        {qty:0.25, unit:'', name:'avocado, sliced'},
+        {qty:0, unit:'', name:'Balsamic vinegar, drizzle'}
+      ],
+      steps: ['Slice the baked sweet potato.', 'Arrange arugula as the base in a bowl.', 'Top with sliced chicken, sweet potato, and avocado.', 'Drizzle with balsamic vinegar.'],
+      impact: 'Sweet potato provides beta-carotene and complex carbs to refuel glycogen for your training session, without the blood sugar spike of refined carbs.'
+    },
+    'wed-s2': { type:'snack', name:'Chocolate Milk + Banana', cal:290, protein:14, carbs:56, fat:4,
+      ingredients: [
+        {qty:12, unit:'oz', name:'low-fat chocolate milk'},
+        {qty:1, unit:'', name:'banana'}
+      ],
+      steps: ['Drink chocolate milk within 60 minutes after training.', 'Eat banana alongside.'],
+      impact: 'The classic post-workout recovery combo — fast carbs plus a bit of protein to replenish glycogen and kickstart muscle repair.'
+    },
+    'wed-d': { type:'dinner', name:'Herb-Crusted Chicken Breast with Roasted Brussels Sprouts and Sweet Potato', cal:450, protein:45, carbs:40, fat:16,
+      ingredients: [
+        {qty:6, unit:'oz', name:'chicken breast'},
+        {qty:1, unit:'tsp', name:'fresh rosemary, chopped'},
+        {qty:2, unit:'', name:'garlic cloves, minced'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:1, unit:'cup', name:'Brussels sprouts'},
+        {qty:1, unit:'', name:'medium sweet potato'},
+        {qty:1, unit:'tbsp', name:'lemon juice'}
+      ],
+      steps: ['Mix chopped rosemary, minced garlic, olive oil, and lemon juice; coat the chicken evenly.', 'Toss Brussels sprouts and sliced sweet potato with a little olive oil, salt, and pepper; roast at 400°F for 25–30 minutes.', 'Bake the herb-coated chicken at 375°F for 20–25 minutes until cooked through.', 'Plate chicken with roasted Brussels sprouts and sweet potato.'],
+      impact: 'Brussels sprouts are rich in fiber and sulfur compounds that support liver detoxification pathways, complementing your already-healthy liver markers.'
+    },
+    'thu-b': { type:'breakfast', name:'High-Protein Overnight Oats', cal:420, protein:40, carbs:46, fat:11,
+      ingredients: [
+        {qty:0.5, unit:'cup', name:'rolled oats'},
+        {qty:1, unit:'scoop', name:'vanilla protein powder'},
+        {qty:1, unit:'cup', name:'unsweetened almond milk'},
+        {qty:1, unit:'tbsp', name:'chia seeds'},
+        {qty:0.5, unit:'cup', name:'strawberries, sliced'}
+      ],
+      steps: ['The night before: combine oats, protein powder, almond milk, and chia seeds in a jar.', 'Stir well, seal, and refrigerate overnight.', 'In the morning, top with sliced strawberries and eat cold.'],
+      impact: 'Chia seeds add another plant-based omega-3 source, and the make-ahead format means zero morning effort on a busy day.'
+    },
+    'thu-s1': { type:'snack', name:'Edamame + String Cheese', cal:300, protein:30, carbs:20, fat:14,
+      ingredients: [
+        {qty:1, unit:'cup', name:'shelled edamame, steamed'},
+        {qty:2, unit:'', name:'sticks part-skim mozzarella'}
+      ],
+      steps: ['Steam edamame for 4–5 minutes (or microwave per bag instructions).', 'Sprinkle with a pinch of sea salt if desired.', 'Eat alongside string cheese.'],
+      impact: 'Edamame is a complete plant protein and a good source of magnesium, supporting both muscle function and healthy blood pressure.'
+    },
+    'thu-l': { type:'lunch', name:'Grilled Salmon & White Bean Salad', cal:500, protein:48, carbs:34, fat:22,
+      ingredients: [
+        {qty:6, unit:'oz', name:'grilled salmon (from Sunday prep), cold or room temp'},
+        {qty:0.5, unit:'cup', name:'cannellini beans, drained'},
+        {qty:2, unit:'cup', name:'arugula'},
+        {qty:0.5, unit:'cup', name:'cherry tomatoes, halved'},
+        {qty:0.25, unit:'', name:'red onion, thinly sliced'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:1, unit:'tbsp', name:'red wine vinegar'},
+        {qty:1, unit:'tbsp', name:'capers'}
+      ],
+      steps: ['Flake the pre-cooked salmon into large chunks.', 'Toss arugula, cannellini beans, tomatoes, and red onion in a bowl.', 'Whisk olive oil and red wine vinegar; dress the salad.', 'Top with flaked salmon and capers.'],
+      impact: 'A cold salmon salad using your Sunday-prepped fish — no canned fish needed, and the omega-3 content is identical to a freshly grilled portion.'
+    },
+    'thu-s2': { type:'snack', name:'Turkey Slices + Walnuts', cal:250, protein:24, carbs:6, fat:16,
+      ingredients: [
+        {qty:3, unit:'oz', name:'sliced turkey breast (deli)'},
+        {qty:1, unit:'oz', name:'walnuts'}
+      ],
+      steps: ['Roll turkey slices.', 'Eat alongside a small handful of walnuts.'],
+      impact: 'A quick, low-carb protein snack with an omega-3 boost from the walnuts — easy to pack and eat anywhere.'
+    },
+    'thu-d': { type:'dinner', name:'Tofu Stir-Fry with Broccoli, Bell Peppers, and Brown Rice', cal:520, protein:34, carbs:60, fat:16,
+      ingredients: [
+        {qty:14, unit:'oz', name:'extra-firm tofu, pressed and cubed'},
+        {qty:1, unit:'lb', name:'broccoli florets'},
+        {qty:1, unit:'', name:'red bell pepper, sliced'},
+        {qty:1, unit:'', name:'yellow bell pepper, sliced'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:2, unit:'', name:'garlic cloves, minced'},
+        {qty:2, unit:'tbsp', name:'low-sodium soy sauce'},
+        {qty:1, unit:'cup', name:'brown rice, cooked'}
+      ],
+      steps: ['Press and cube the tofu (do this ahead if possible).', 'Heat olive oil in a large pan or wok; sauté tofu until golden on most sides, about 5–6 minutes.', 'Add garlic, broccoli, and peppers; stir-fry for 8–10 minutes until vegetables are tender-crisp.', 'Add soy sauce, stir well, and serve hot over brown rice.'],
+      impact: 'A fully plant-based dinner gives your digestive system a break from animal protein while keeping fiber and protein both high.'
+    },
+    'fri-b': { type:'breakfast', name:'3-Egg Veggie Omelet', cal:460, protein:44, carbs:30, fat:22,
+      ingredients: [
+        {qty:3, unit:'', name:'whole eggs'},
+        {qty:0.5, unit:'cup', name:'egg whites'},
+        {qty:0.25, unit:'cup', name:'spinach'},
+        {qty:0.25, unit:'cup', name:'mushrooms, sliced'},
+        {qty:0.25, unit:'', name:'bell pepper, diced'},
+        {qty:0.25, unit:'cup', name:'feta cheese, crumbled'},
+        {qty:1, unit:'slice', name:'Ezekiel toast'}
+      ],
+      steps: ['Whisk whole eggs and egg whites together.', 'Sauté spinach, mushrooms, and bell pepper in a non-stick pan for 2–3 minutes.', 'Pour egg mixture over the vegetables; cook until edges set.', 'Sprinkle feta over half the omelet, fold, and cook 1–2 more minutes.', 'Serve with toasted Ezekiel bread.'],
+      impact: 'A protein-dense start before a training day, with feta adding flavor without much added saturated fat in this small a portion.'
+    },
+    'fri-s1': { type:'snack', name:'Banana + Protein Shake', cal:340, protein:30, carbs:38, fat:10,
+      ingredients: [
+        {qty:1, unit:'', name:'banana'},
+        {qty:1, unit:'scoop', name:'whey protein isolate'},
+        {qty:0, unit:'', name:'Water'},
+        {qty:1, unit:'tbsp', name:'peanut butter'}
+      ],
+      steps: ['Mix whey isolate with water in a shaker.', 'Eat the banana alongside, with peanut butter for extra calories if needed.'],
+      impact: 'Whey isolate digests fast — ideal right before a strength session when you don\u2019t want a heavy stomach.'
+    },
+    'fri-l': { type:'lunch', name:'Ground Turkey Taco Bowl', cal:580, protein:56, carbs:54, fat:18,
+      ingredients: [
+        {qty:6, unit:'oz', name:'ground turkey (93% lean), cooked with cumin and lime'},
+        {qty:0.5, unit:'cup', name:'black beans, drained'},
+        {qty:0.5, unit:'cup', name:'brown rice, cooked'},
+        {qty:0.25, unit:'cup', name:'pico de gallo'},
+        {qty:0.25, unit:'', name:'avocado, sliced'},
+        {qty:1, unit:'', name:'lime, juiced'}
+      ],
+      steps: ['Warm the seasoned ground turkey in a skillet.', 'Add rice to a bowl as the base.', 'Top with turkey, black beans, pico de gallo, and avocado.', 'Squeeze fresh lime juice over the top.'],
+      impact: 'Black beans add resistant starch and fiber that help slow digestion — useful for steady energy through an afternoon training session.'
+    },
+    'fri-s2': { type:'snack', name:'Cottage Cheese + Pineapple', cal:260, protein:28, carbs:26, fat:7,
+      ingredients: [
+        {qty:1, unit:'cup', name:'1% cottage cheese'},
+        {qty:0.5, unit:'cup', name:'pineapple chunks'},
+        {qty:1, unit:'tbsp', name:'hemp seeds'}
+      ],
+      steps: ['Spoon cottage cheese into a bowl.', 'Top with pineapple chunks and hemp seeds.'],
+      impact: 'Hemp seeds add a small but meaningful dose of plant omega-3s alongside a fast, low-effort protein snack.'
+    },
+    'fri-d': { type:'dinner', name:'Grilled Salmon with Tomato-Olive Salsa and Steamed Asparagus', cal:480, protein:42, carbs:18, fat:30,
+      ingredients: [
+        {qty:6, unit:'oz', name:'salmon fillet'},
+        {qty:1, unit:'cup', name:'cherry tomatoes, chopped'},
+        {qty:0.5, unit:'cup', name:'kalamata olives, chopped'},
+        {qty:2, unit:'tbsp', name:'extra virgin olive oil'},
+        {qty:0.25, unit:'cup', name:'fresh basil, chopped'},
+        {qty:1, unit:'bunch', name:'asparagus'},
+        {qty:1, unit:'tbsp', name:'lemon juice'},
+        {qty:2, unit:'', name:'garlic cloves, minced'}
+      ],
+      steps: ['Chop cherry tomatoes, olives, basil, and garlic; mix with olive oil and lemon juice to make the salsa.', 'Season salmon with salt and pepper; grill 4–5 minutes per side until just cooked through.', 'Steam asparagus for 4–5 minutes until tender.', 'Plate salmon topped with salsa, with asparagus on the side.'],
+      impact: 'A second weekly dose of grilled salmon keeps your omega-3 intake consistent — research suggests 2–3 servings/week is the threshold for measurable LDL and triglyceride improvement.'
+    },
+    'sat-b': { type:'breakfast', name:'Protein Pancakes', cal:490, protein:46, carbs:48, fat:14,
+      ingredients: [
+        {qty:1, unit:'scoop', name:'protein powder'},
+        {qty:2, unit:'', name:'eggs'},
+        {qty:0.5, unit:'cup', name:'rolled oats'},
+        {qty:0.5, unit:'', name:'banana'},
+        {qty:0, unit:'', name:'Mixed berries, for topping'},
+        {qty:1, unit:'tbsp', name:'almond butter, for topping'}
+      ],
+      steps: ['Blend protein powder, eggs, oats, and banana until smooth.', 'Heat a non-stick pan over medium heat.', 'Pour batter to form 4 small pancakes; cook 2–3 minutes per side until golden.', 'Top with berries and almond butter — skip the syrup.'],
+      impact: 'A weekend treat that still hits your protein target — proof that eating for your biomarkers doesn\u2019t mean every meal feels clinical.'
+    },
+    'sat-s1': { type:'snack', name:'Nut & Seed Mix', cal:280, protein:14, carbs:16, fat:20,
+      ingredients: [
+        {qty:1, unit:'oz', name:'almonds'},
+        {qty:1, unit:'oz', name:'pumpkin seeds'},
+        {qty:1, unit:'tbsp', name:'dark chocolate chips (70%+)'},
+        {qty:1, unit:'', name:'string cheese'}
+      ],
+      steps: ['Combine almonds, pumpkin seeds, and dark chocolate chips in a small bowl or bag.', 'Eat alongside a string cheese for extra protein.'],
+      impact: 'Dark chocolate (70%+) contains flavonoids associated with improved blood vessel function — a small, evidence-backed indulgence.'
+    },
+    'sat-l': { type:'lunch', name:'Grilled Shrimp & Quinoa Mediterranean Bowl', cal:480, protein:46, carbs:44, fat:16,
+      ingredients: [
+        {qty:6, unit:'oz', name:'wild-caught shrimp, peeled and deveined'},
+        {qty:0.5, unit:'cup', name:'quinoa, cooked'},
+        {qty:0.5, unit:'', name:'cucumber, diced'},
+        {qty:0.25, unit:'cup', name:'roasted red pepper, sliced'},
+        {qty:2, unit:'tbsp', name:'hummus'},
+        {qty:0.5, unit:'', name:'lemon, juiced'},
+        {qty:6, unit:'', name:'kalamata olives'}
+      ],
+      steps: ['Season shrimp with salt, pepper, and a little olive oil; thread onto skewers if desired.', 'Grill or pan-sear 2 minutes per side until pink and opaque — don\u2019t overcook.', 'Add quinoa to a bowl as the base.', 'Top with cucumber, roasted red pepper, hummus, and olives.', 'Place shrimp on top and finish with a squeeze of lemon.'],
+      impact: 'Shrimp is very lean and a good source of selenium, which supports thyroid function — keeping a category that\u2019s already in range healthy long-term.'
+    },
+    'sat-s2': { type:'snack', name:'Celery + Hummus + Turkey', cal:220, protein:26, carbs:14, fat:8,
+      ingredients: [
+        {qty:4, unit:'', name:'celery sticks'},
+        {qty:3, unit:'tbsp', name:'hummus'},
+        {qty:3, unit:'oz', name:'sliced turkey breast'}
+      ],
+      steps: ['Spread hummus onto celery sticks.', 'Roll or fold turkey slices and eat alongside.'],
+      impact: 'A fiber-and-protein combo that\u2019s easy to throw together with almost no prep — useful for a busy Saturday.'
+    },
+    'sat-d': { type:'dinner', name:'Chickpea & Vegetable Curry with Cauliflower Rice', cal:420, protein:17, carbs:50, fat:16,
+      ingredients: [
+        {qty:1, unit:'cup', name:'chickpeas, drained'},
+        {qty:1, unit:'head', name:'cauliflower, grated or processed into rice'},
+        {qty:2, unit:'tbsp', name:'olive oil'},
+        {qty:2, unit:'cup', name:'spinach'},
+        {qty:2, unit:'cup', name:'tomatoes, chopped'},
+        {qty:3, unit:'', name:'garlic cloves, minced'},
+        {qty:1, unit:'tbsp', name:'ginger, grated'},
+        {qty:2, unit:'tsp', name:'curry powder'},
+        {qty:1, unit:'tsp', name:'turmeric'},
+        {qty:1, unit:'tsp', name:'cumin'},
+        {qty:1, unit:'tbsp', name:'lemon juice'},
+        {qty:0.25, unit:'cup', name:'fresh cilantro, chopped'}
+      ],
+      steps: ['Grate cauliflower or pulse in a food processor until rice-sized; sauté in 1 tbsp olive oil for 5 minutes until tender.', 'In a separate pan, heat remaining olive oil; sauté garlic and ginger for 1 minute.', 'Add tomatoes, spices, and chickpeas; simmer 15 minutes.', 'Stir in spinach until wilted.', 'Finish with lemon juice and cilantro; serve over cauliflower rice.'],
+      impact: 'Turmeric and ginger both have measurable anti-inflammatory effects in studies — directly relevant to lowering hs-CRP, one of your heart-related markers.'
+    },
+    'sun-b': { type:'breakfast', name:'Avocado Toast with Soft-Boiled Eggs', cal:460, protein:26, carbs:36, fat:26,
+      ingredients: [
+        {qty:2, unit:'slice', name:'Ezekiel bread, toasted'},
+        {qty:0.5, unit:'', name:'avocado, mashed'},
+        {qty:2, unit:'', name:'soft-boiled eggs'},
+        {qty:0, unit:'', name:'Everything bagel seasoning'},
+        {qty:0, unit:'', name:'Red pepper flakes, optional'}
+      ],
+      steps: ['Toast the Ezekiel bread.', 'Soft-boil eggs for 6 minutes, then cool briefly in an ice bath and peel.', 'Mash avocado onto the toast.', 'Top each slice with a halved soft-boiled egg.', 'Sprinkle with everything bagel seasoning.'],
+      impact: 'A relaxed Sunday breakfast that still delivers monounsaturated fat (avocado) and Vitamin D (eggs) — no compromise on biomarker goals.'
+    },
+    'sun-s1': { type:'snack', name:'Greek Yogurt Parfait', cal:310, protein:24, carbs:38, fat:8,
+      ingredients: [
+        {qty:1, unit:'cup', name:'plain Greek yogurt'},
+        {qty:0.25, unit:'cup', name:'low-sugar granola'},
+        {qty:0.5, unit:'cup', name:'mixed berries'},
+        {qty:1, unit:'tbsp', name:'ground flaxseed'}
+      ],
+      steps: ['Layer yogurt, granola, and berries in a glass or bowl.', 'Top with ground flaxseed.', 'Serve immediately so the granola stays crunchy.'],
+      impact: 'A simple way to fit in more omega-3s (flaxseed) and antioxidant-rich berries without any extra cooking.'
+    },
+    'sun-l': { type:'lunch', name:'Leftover Batch Protein Bowl', cal:520, protein:52, carbs:44, fat:16,
+      ingredients: [
+        {qty:6.5, unit:'oz', name:'prepped chicken or turkey'},
+        {qty:0.5, unit:'cup', name:'lentils or beans (from prep)'},
+        {qty:2, unit:'cup', name:'roasted vegetables (from prep)'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:0.5, unit:'', name:'lemon, juiced'},
+        {qty:0, unit:'', name:'Fresh herbs, optional'}
+      ],
+      steps: ['Warm the prepped protein and vegetables together in a skillet or microwave.', 'Add lentils or beans.', 'Drizzle with olive oil and lemon juice.', 'Garnish with fresh herbs if available.'],
+      impact: 'Designed to use up whatever is left from Sunday\u2019s prep — minimizes food waste while still hitting your protein and fiber targets.'
+    },
+    'sun-s2': { type:'snack', name:'Hard-Boiled Eggs + Almonds', cal:280, protein:24, carbs:8, fat:19,
+      ingredients: [
+        {qty:3, unit:'', name:'hard-boiled eggs'},
+        {qty:1, unit:'oz', name:'roasted almonds'},
+        {qty:0, unit:'', name:'Pinch of sea salt'}
+      ],
+      steps: ['Peel hard-boiled eggs.', 'Eat alongside a small handful of almonds.', 'Add a pinch of sea salt to taste.'],
+      impact: 'A reliable, no-prep snack that bridges the gap between lunch and a heavier Sunday dinner.'
+    },
+    'sun-d': { type:'dinner', name:'Grass-Fed Beef Stir-Fry with Bok Choy, Mushrooms, and Wild Rice', cal:550, protein:48, carbs:38, fat:26,
+      ingredients: [
+        {qty:6, unit:'oz', name:'grass-fed beef, sliced thin'},
+        {qty:2, unit:'cup', name:'bok choy, chopped'},
+        {qty:1, unit:'cup', name:'mushrooms, sliced'},
+        {qty:0.5, unit:'cup', name:'wild rice, cooked'},
+        {qty:1, unit:'tbsp', name:'olive oil'},
+        {qty:2, unit:'', name:'garlic cloves, minced'},
+        {qty:1, unit:'tsp', name:'ginger, grated'},
+        {qty:1, unit:'tbsp', name:'low-sodium soy sauce'}
+      ],
+      steps: ['Cook wild rice according to package directions; set aside.', 'Heat olive oil in a wok or large skillet over medium-high heat; cook beef strips until browned, about 4–5 minutes.', 'Add garlic and ginger; cook 30 seconds. Add bok choy and mushrooms; stir-fry 5–7 minutes until tender.', 'Add cooked wild rice and soy sauce; toss to combine and heat through for 2 minutes.'],
+      impact: 'Grass-fed beef has a more favorable fat profile (more omega-3s, less saturated fat) than conventional beef — a smart way to close the week with red meat without working against your heart markers.'
+    }
+  };
+
+  let currentRecipeId = null;
+
+  function formatIngredient(ing) {
+    if (ing.qty === 0) return ing.name; // free-text items like "Salt and pepper to taste"
+    const scaled = ing.qty * servings;
+    const qtyStr = fmtNum(scaled);
+    let unit = ing.unit;
+    if (unit && scaled !== 1) unit = pluralize(unit, scaled);
+    const qtyDisplay = unit ? (qtyStr + ' ' + unit) : qtyStr;
+    return '<span class="qty">' + qtyDisplay + '</span> ' + ing.name;
+  }
+
+  function openRecipe(id) {
+    const r = recipes[id];
+    if (!r) return;
+    currentRecipeId = id;
+    const box = document.getElementById('modal-box-content');
+    const scaledCal = Math.round(r.cal * servings);
+    const scaledProtein = Math.round(r.protein * servings);
+    const scaledCarbs = Math.round(r.carbs * servings);
+    const scaledFat = Math.round(r.fat * servings);
+    box.innerHTML =
+      '<button class="modal-close" onclick="closeModal()">\u2715</button>' +
+      '<div class="modal-type ' + r.type + '">' + r.type + '</div>' +
+      '<div class="modal-title">' + r.name + '</div>' +
+      '<div class="modal-macros">' + scaledCal + ' cal · <span>' + scaledProtein + 'g protein</span> · ' + scaledCarbs + 'g carbs · ' + scaledFat + 'g fat</div>' +
+      '<div class="modal-serving-note">Scaled for <span>' + servings + (servings === 1 ? ' person' : ' people') + '</span></div>' +
+      '<div class="modal-section-label">Ingredients</div>' +
+      '<ul class="modal-ingredients">' + r.ingredients.map(function(i){ return '<li>' + formatIngredient(i) + '</li>'; }).join('') + '</ul>' +
+      '<div class="modal-section-label">Steps</div>' +
+      '<ol class="modal-steps">' + r.steps.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ol>' +
+      '<div class="modal-impact">\ud83c\udfaf ' + r.impact + '</div>';
+    document.getElementById('recipe-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('recipe-modal').classList.remove('active');
+    document.body.style.overflow = '';
+    currentRecipeId = null;
+  }
+
+  function closeModalOnOverlay(e) {
+    if (e.target.id === 'recipe-modal') closeModal();
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ================= INIT ================= */
+  updateServingUI();
+  renderShoppingList();
 </script>
 </body>
 </html>

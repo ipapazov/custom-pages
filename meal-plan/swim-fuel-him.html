@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fuel for the Water · Swimmer Nutrition Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --black: #0f0f0f;
+    --charcoal: #1c1c1c;
+    --panel: #242424;
+    --border: #333;
+    --muted: #888;
+    --cream: #f0ece3;
+    --white: #fafaf8;
+    --green: #4caf78;
+    --green-dim: #2a6645;
+    --red: #e05a5a;
+    --amber: #e8a53a;
+    --blue: #5b9bd5;
+    --purple: #9b7fd4;
+    --cyan: #4dd0c8;
+    --cyan-dim: #1f5a55;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ============ WAVE MOTIF ============ */
+  .wave-divider {
+    height: 18px;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .wave-divider svg { display: block; width: 100%; height: 100%; }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--charcoal);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-lane {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--cyan-dim) 0px, var(--cyan-dim) 14px, transparent 14px, transparent 26px);
+    opacity: 0.35;
+  }
+  .hero-lane.l1 { left: 8%; }
+  .hero-lane.l2 { right: 8%; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+
+  .alert-bar {
+    background: #0e1a12;
+    border: 1px solid #1f4a2c;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 auto 12px;
+    max-width: 700px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    position: relative;
+  }
+  .alert-bar.cyan { background: #0c1c1c; border-color: var(--cyan-dim); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { font-size: 13px; color: #a9d4ba; }
+  .alert-text strong { color: var(--green); }
+  .alert-bar.cyan .alert-text { color: #a3d8d4; }
+  .alert-bar.cyan .alert-text strong { color: var(--cyan); }
+
+  /* ============ NAV / MODE BAR ============ */
+  .nav-bar {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+  }
+  .nav-chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-chip:hover { border-color: var(--cyan-dim); color: var(--white); }
+  .nav-chip.active {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--white);
+  }
+
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ============ TOGGLE / SELECTOR ============ */
+  .toggle-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    flex: 1;
+    min-width: 150px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 14px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .toggle-btn:hover { border-color: var(--cyan-dim); color: var(--white); }
+  .toggle-btn.active {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--white);
+  }
+  .toggle-btn .toggle-emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+
+  /* ============ CALORIE BREAKDOWN CARDS ============ */
+  .calc-result {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .calc-total-row {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .calc-total-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .calc-total-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .calc-total-unit {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .calc-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    margin-top: 10px;
+  }
+
+  .breakdown-bars { display: flex; flex-direction: column; gap: 14px; }
+  .breakdown-row { display: grid; grid-template-columns: 110px 1fr 70px; gap: 12px; align-items: center; }
+  .breakdown-name {
+    font-size: 12px;
+    color: #ccc;
+    font-family: 'DM Mono', monospace;
+  }
+  .breakdown-track {
+    height: 10px;
+    background: var(--charcoal);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .breakdown-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+  .breakdown-fill.bmr { background: var(--blue); }
+  .breakdown-fill.neat { background: var(--purple); }
+  .breakdown-fill.swim { background: var(--cyan); }
+  .breakdown-fill.dryland { background: var(--amber); }
+  .breakdown-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--white);
+    text-align: right;
+  }
+
+  .why-box {
+    background: #0c1c1c;
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #a3d8d4;
+    line-height: 1.6;
+    margin-top: 20px;
+  }
+  .why-box strong { color: var(--cyan); }
+
+  /* ============ EVENT PICKER ============ */
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .event-chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 12px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .event-chip:hover { border-color: var(--amber); color: var(--white); }
+  .event-chip.active {
+    background: #2a1f0a;
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  .meet-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .meet-stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .meet-stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .meet-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .event-list-chosen {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 16px;
+  }
+  .event-list-chosen span { color: var(--amber); }
+
+  /* ============ TIMELINE ============ */
+  .meal-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 24px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-rail {
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .timeline-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+  .timeline-item.training .timeline-dot { border-color: var(--cyan); }
+  .timeline-item.meet .timeline-dot { border-color: var(--amber); }
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    margin-top: 4px;
+  }
+  .timeline-item:last-child .timeline-line { display: none; }
+  .timeline-content {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .timeline-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .timeline-meal-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+  .timeline-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .timeline-cal {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    background: #0e1a12;
+    border: 1px solid #1f4a2c;
+    padding: 2px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .timeline-foods {
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.6;
+  }
+  .timeline-foods .food-tag {
+    display: inline-block;
+    background: var(--charcoal);
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 3px 10px;
+    margin: 3px 4px 0 0;
+    font-size: 12px;
+    color: #ddd;
+  }
+
+  /* ============ AVOID BOX ============ */
+  .avoid-box {
+    background: #1f1010;
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #e0a9a9;
+    line-height: 1.6;
+    margin-top: 20px;
+  }
+  .avoid-box strong { color: var(--red); }
+
+  /* ============ MEET DAY TABS ============ */
+  .meet-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .meet-tab {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .meet-tab:hover { border-color: var(--amber); color: var(--white); }
+  .meet-tab.active {
+    background: #2a1f0a;
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .meet-panel { display: none; }
+  .meet-panel.active { display: block; }
+
+  /* ============ SHOPPING LIST (reused pattern) ============ */
+  .shop-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .shop-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--panel);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .shop-progress-fill {
+    height: 100%;
+    background: var(--cyan);
+    width: 0%;
+    transition: width 0.2s;
+  }
+  .shop-reset {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .shop-reset:hover { border-color: var(--red); color: var(--red); }
+
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .shop-category {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .shop-cat-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .shop-item {
+    display: flex;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 13px;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--charcoal);
+    flex-shrink: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    margin-top: 1px;
+  }
+  .shop-checkbox:checked {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+  }
+  .shop-checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    top: -3px;
+    left: 2px;
+    font-size: 11px;
+    color: var(--white);
+  }
+  .shop-item-name-qty { flex: 1; display: flex; justify-content: space-between; gap: 8px; }
+  .shop-item-name { color: var(--white); }
+  .shop-item.checked .shop-item-name { color: var(--muted); text-decoration: line-through; }
+  .shop-item-qty {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ============ WEEKLY MEAL PLAN ============ */
+  .day-type-setup {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+  }
+  .day-type-setup-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+  .day-type-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+  .day-type-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .day-type-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .day-type-btn {
+    width: 100%;
+    background: var(--charcoal);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.15s;
+  }
+  .day-type-btn:hover { border-color: var(--cyan-dim); }
+  .day-type-btn.active.rest { background: #2a2a2a; border-color: var(--muted); color: var(--white); }
+  .day-type-btn.active.swim { background: var(--cyan-dim); border-color: var(--cyan); color: var(--white); }
+  .day-type-btn.active.both { background: #2a1f0a; border-color: var(--amber); color: var(--white); }
+
+  .day-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .day-tab {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    transition: all 0.15s;
+  }
+  .day-tab:hover { border-color: var(--cyan-dim); color: var(--white); }
+  .day-tab.active {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--white);
+  }
+  .day-tab.rest-tab.active {
+    background: #2a2a2a;
+    border-color: var(--muted);
+  }
+
+  .hint-line {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+  }
+  .hint-line span { color: var(--cyan); }
+
+  .day-card { display: none; }
+  .day-card.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .day-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+  }
+  .day-macros {
+    display: flex;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .macro { color: var(--cyan); font-weight: 500; }
+
+  .meals-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .meal-row {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 12px;
+    align-items: start;
+  }
+  .meal-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .meal-type.breakfast { color: var(--amber); }
+  .meal-type.lunch { color: var(--blue); }
+  .meal-type.dinner { color: var(--purple); }
+  .meal-type.snack { color: var(--cyan); }
+  .meal-type.training { color: var(--red); }
+
+  .meal-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .meal-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .meal-cal {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+  .meal-protein {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    margin-top: 2px;
+  }
+
+  .training-badge {
+    display: inline-block;
+    background: #0c1c1c;
+    border: 1px solid var(--cyan-dim);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .training-badge.both {
+    background: #2a1f0a;
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .training-badge.rest {
+    background: #1a1a1a;
+    border-color: var(--border);
+    color: var(--muted);
+  }
+
+  /* ============ MODE PANELS ============ */
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer span { color: var(--cyan); }
+
+  /* ============ MISC HELPERS ============ */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .info-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .info-card h4 {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .info-card p {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.55;
+  }
+
+  .assumption-note {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 16px;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .breakdown-row { grid-template-columns: 90px 1fr 56px; gap: 8px; }
+    .calc-total-val { font-size: 2.3rem; }
+    .nav-bar { padding: 10px 12px; gap: 6px; }
+    .nav-chip { padding: 7px 12px; font-size: 11px; }
+    .timeline-rail { width: 32px; }
+    .timeline-dot { width: 32px; height: 32px; font-size: 14px; }
+    .day-type-grid { grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .day-type-btn { padding: 6px 2px; font-size: 12px; }
+    .day-type-col-label { font-size: 9px; }
+    .meal-row { grid-template-columns: 1fr; gap: 6px; }
+    .meal-cal { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-lane l1"></div>
+  <div class="hero-lane l2"></div>
+  <div class="hero-eyebrow">Performance Nutrition · For Swimmers</div>
+  <h1>Fuel for the Water</h1>
+  <p class="hero-sub">How much food it actually takes to swim fast, recover hard, and keep growing — built around the foods you already like eating.</p>
+
+  <div class="alert-bar cyan">
+    <div class="alert-icon">🌊</div>
+    <div class="alert-text"><strong>Why this matters:</strong> Swimming burns through serious fuel — your body moves against constant water resistance for hours each week while also growing. Under-eating is the #1 thing that quietly wrecks swim performance.</div>
+  </div>
+</div>
+
+<div class="nav-bar" id="nav-bar">
+  <button class="nav-chip active" data-mode="calc" onclick="showMode('calc')">🔢 Daily Calories</button>
+  <button class="nav-chip" data-mode="weekly" onclick="showMode('weekly')">📅 Weekly Meal Plan</button>
+  <button class="nav-chip" data-mode="race" onclick="showMode('race')">🏆 Race Day Fuel</button>
+  <button class="nav-chip" data-mode="timing" onclick="showMode('timing')">⏰ Meal Timing</button>
+  <button class="nav-chip" data-mode="meetplan" onclick="showMode('meetplan')">📋 Meet Day Plan</button>
+  <button class="nav-chip" data-mode="grocery" onclick="showMode('grocery')">🛒 Grocery List</button>
+</div>
+
+<!-- ============ MODE 1: DAILY CALORIE CALCULATOR ============ -->
+<div class="mode-panel active" id="mode-calc">
+  <div class="section">
+    <div class="section-title">How Much Should You Be Eating?</div>
+    <div class="section-sub">Pick your training day type below</div>
+
+    <div class="toggle-row">
+      <button class="toggle-btn active" id="train-swim" onclick="setTrainingType('swim')">
+        <span class="toggle-emoji">🏊</span>
+        Swim Only
+      </button>
+      <button class="toggle-btn" id="train-both" onclick="setTrainingType('both')">
+        <span class="toggle-emoji">🏊‍♂️🏋️</span>
+        Swim + Dryland
+      </button>
+    </div>
+
+    <div class="calc-result">
+      <div class="calc-total-row">
+        <div class="calc-total-label">Recommended Total Intake</div>
+        <div class="calc-total-val" id="calc-total">3,830</div>
+        <div class="calc-total-unit">calories today</div>
+        <div class="calc-range" id="calc-range">Range: 3,640 – 4,140 cal</div>
+      </div>
+
+      <div class="breakdown-bars" id="breakdown-bars">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <div class="why-box">
+      🌊 <strong>Why swimmers need so much food:</strong> Swimming is one of the highest calorie-burning sports because your body is moving continuously against water resistance, using nearly every major muscle group, while also recovering and growing during the teen years. Two hours in the pool can burn over 1,400 calories on its own — on top of everything your body needs just to function and grow.
+    </div>
+
+    <div class="assumption-note" id="calc-assumptions">
+      Estimates based on a 16-year-old male, ~160 lbs, 5'10", using the Mifflin-St Jeor formula for resting metabolism plus activity from school/daily life and training. Actual needs vary by individual — these are a strong starting point, not a strict prescription.
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODE 1.5: WEEKLY MEAL PLAN ============ -->
+<div class="mode-panel" id="mode-weekly">
+  <div class="section">
+    <div class="section-title">Weekly Meal Plan</div>
+    <div class="section-sub">Set up the training week, then tap any day to see the full meal schedule</div>
+
+    <div class="day-type-setup">
+      <div class="day-type-setup-title">🗓️ Set this week's training</div>
+      <div class="day-type-grid" id="day-type-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <div class="day-tabs" id="day-tabs">
+      <!-- filled by JS -->
+    </div>
+    <div class="hint-line"><span>Tip:</span> tap a day above to see that day's full meal schedule and calorie target.</div>
+
+    <div id="day-cards">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODE 2: RACE DAY FUELING CALCULATOR ============ -->
+<div class="mode-panel" id="mode-race">
+  <div class="section">
+    <div class="section-title">Race Day Fueling Calculator</div>
+    <div class="section-sub">Select every event you're swimming this meet</div>
+
+    <div class="event-grid" id="event-grid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="event-list-chosen" id="event-list-chosen">No events selected yet — tap any event above.</div>
+
+    <div class="meet-summary-grid" id="meet-summary-grid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="calc-result">
+      <div class="calc-total-row">
+        <div class="calc-total-label">Recommended Meet-Day Intake</div>
+        <div class="calc-total-val" id="race-total">—</div>
+        <div class="calc-total-unit">calories on meet day</div>
+      </div>
+      <div class="breakdown-bars" id="race-breakdown-bars">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <div class="why-box">
+      🏆 <strong>Why this looks different from a practice day:</strong> Races themselves are short and burn surprisingly few calories — the real cost comes from hours of warm-up, racing, and the active recovery swims between events, plus simply being at the pool all day. Recovery eating matters just as much as what you eat beforehand.
+    </div>
+
+    <div class="assumption-note">
+      Assumes roughly 35 minutes of warm-up plus a 15–20 minute easy cool-down swim after each event block. Actual expenditure varies a lot by meet format, number of heats, and how much standing/walking happens between events — treat this as a planning estimate, not an exact number.
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODE 3: MEAL TIMING (PRACTICE DAY) ============ -->
+<div class="mode-panel" id="mode-timing">
+  <div class="section">
+    <div class="section-title">Practice Day Meal Timing</div>
+    <div class="section-sub">When to eat, and roughly how much, around a normal training day</div>
+
+    <div class="meal-timeline" id="practice-timeline">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="why-box" style="margin-top:24px;">
+      ⏰ <strong>The big idea:</strong> Eating something every 2.5–3.5 hours keeps energy steady all day, so practice doesn't feel like it starts on empty. The pre-swim snack and post-swim meal are the two that matter most — they bookend the hardest work your body does all day.
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODE 4: MEET DAY MEAL PLAN ============ -->
+<div class="mode-panel" id="mode-meetplan">
+  <div class="section">
+    <div class="section-title">Meet Day Meal Plan</div>
+    <div class="section-sub">Example schedules for a morning prelims / afternoon finals format</div>
+
+    <div class="meet-tabs">
+      <button class="meet-tab active" onclick="showMeetTab(0)">🌅 Morning Prelims</button>
+      <button class="meet-tab" onclick="showMeetTab(1)">🌇 Afternoon Finals</button>
+    </div>
+
+    <div class="meet-panel active" id="meetpanel-0">
+      <div class="meal-timeline" id="prelims-timeline"></div>
+    </div>
+    <div class="meet-panel" id="meetpanel-1">
+      <div class="meal-timeline" id="finals-timeline"></div>
+    </div>
+
+    <div class="avoid-box">
+      🚫 <strong>Foods to avoid right before racing:</strong> Skip anything heavy, greasy, or new right before a race — fried chicken, French fries, and large amounts of pizza or cheese take a long time to digest and can sit heavy in the stomach during hard swimming. Same goes for anything carbonated or very high in fiber (like a huge plate of raw broccoli) in the 60–90 minutes before swimming — save those for after the last event.
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODE 5: GROCERY LIST ============ -->
+<div class="mode-panel" id="mode-grocery">
+  <div class="section">
+    <div class="section-title">Weekly Grocery List</div>
+    <div class="section-sub">Built for one week of training-fueled eating — quantities are a starting estimate</div>
+
+    <div class="shop-progress">
+      <span id="shop-progress-text">0 of 0 checked</span>
+      <div class="shop-progress-bar"><div class="shop-progress-fill" id="shop-progress-fill"></div></div>
+      <button class="shop-reset" onclick="resetShoppingChecks()">Reset checks</button>
+    </div>
+
+    <div class="shop-grid" id="shop-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<footer>
+  Built for a 16-year-old competitive swimmer · ~160 lbs · 6 days/week in the pool <span>🏊</span><br>
+  Estimates only — every athlete is different. Check in with a sports dietitian or doctor for personalized guidance.
+</footer>
+
+<script>
+  /* ================= ATHLETE CONSTANTS ================= */
+  const WEIGHT_KG = 72.5; // ~160 lbs
+  const BMR = 1762; // Mifflin-St Jeor: 10*72.5 + 6.25*178 - 5*16 + 5
+  const NEAT = 617;  // normal teen daily activity (school, walking, standing, social) above BMR
+  const SWIM_2HR = 1450; // ~2 hours of competitive swim practice
+  const DRYLAND_1HR = 460; // ~1 hour of dryland/strength training (averaged across 3x/week)
+
+  /* ================= MODE SWITCHING ================= */
+  function showMode(mode) {
+    document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-chip').forEach(c => c.classList.remove('active'));
+    document.getElementById('mode-' + mode).classList.add('active');
+    document.querySelector('.nav-chip[data-mode="' + mode + '"]').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ================= MODE 1: DAILY CALORIE CALCULATOR ================= */
+  let trainingType = 'swim';
+
+  function setTrainingType(type) {
+    trainingType = type;
+    document.getElementById('train-swim').classList.toggle('active', type === 'swim');
+    document.getElementById('train-both').classList.toggle('active', type === 'both');
+    renderDailyCalc();
+  }
+
+  function renderDailyCalc() {
+    const swim = SWIM_2HR;
+    const dryland = trainingType === 'both' ? DRYLAND_1HR : 0;
+    const total = BMR + NEAT + swim + dryland;
+    const low = Math.round(total * 0.95);
+    const high = Math.round(total * 1.08);
+
+    document.getElementById('calc-total').textContent = total.toLocaleString();
+    document.getElementById('calc-range').textContent = 'Range: ' + low.toLocaleString() + ' – ' + high.toLocaleString() + ' cal';
+
+    const rows = [
+      { name: 'BMR', val: BMR, cls: 'bmr' },
+      { name: 'Daily Activity', val: NEAT, cls: 'neat' },
+      { name: 'Swim Practice', val: swim, cls: 'swim' }
+    ];
+    if (trainingType === 'both') {
+      rows.push({ name: 'Dryland', val: dryland, cls: 'dryland' });
+    }
+
+    const max = total;
+    document.getElementById('breakdown-bars').innerHTML = rows.map(r => {
+      const pct = Math.round((r.val / max) * 100);
+      return '<div class="breakdown-row">' +
+        '<div class="breakdown-name">' + r.name + '</div>' +
+        '<div class="breakdown-track"><div class="breakdown-fill ' + r.cls + '" style="width:' + pct + '%"></div></div>' +
+        '<div class="breakdown-val">' + r.val.toLocaleString() + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  /* ================= WEEKLY MEAL PLAN ================= */
+  const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const DAY_SHORT = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+
+  // Default week: 1 day fully off (Sunday), 3 days swim+dryland, 3 days swim only
+  let dayTypes = ['swim','swim','both','swim','both','both','rest'];
+
+  const dayTypeIcon = { rest: '🛋️', swim: '🏊', both: '🏋️' };
+  const dayTypeLabel = { rest: 'Day Off', swim: 'Swim Only', both: 'Swim + Dryland' };
+
+  function setDayType(dayIndex, type) {
+    dayTypes[dayIndex] = type;
+    renderDayTypeGrid();
+    renderDayTabs();
+    renderAllDayCards();
+  }
+
+  function renderDayTypeGrid() {
+    const grid = document.getElementById('day-type-grid');
+    grid.innerHTML = DAY_SHORT.map((short, i) => {
+      const current = dayTypes[i];
+      return '<div class="day-type-col">' +
+        '<div class="day-type-col-label">' + short + '</div>' +
+        ['rest','swim','both'].map(type => {
+          const active = type === current ? 'active ' + type : '';
+          return '<button class="day-type-btn ' + active + '" title="' + dayTypeLabel[type] + '" onclick="setDayType(' + i + ',\'' + type + '\')">' + dayTypeIcon[type] + '</button>';
+        }).join('') +
+      '</div>';
+    }).join('');
+  }
+
+  function renderDayTabs() {
+    const tabs = document.getElementById('day-tabs');
+    tabs.innerHTML = DAY_SHORT.map((short, i) => {
+      const restClass = dayTypes[i] === 'rest' ? 'rest-tab' : '';
+      const activeClass = i === activeDayIndex ? 'active' : '';
+      return '<button class="day-tab ' + restClass + ' ' + activeClass + '" onclick="showDay(' + i + ')">' + short + '</button>';
+    }).join('');
+  }
+
+  // Meal templates per day type, built from the athlete's preferred foods.
+  // Calories are approximate targets that sum close to each day type's total need.
+  const mealTemplates = {
+    rest: [
+      { type: 'breakfast', label: 'Breakfast', name: 'Bagel & Yogurt Plate', detail: 'Bagel with cream cheese, flavored yogurt, banana', cal: 480, protein: 24 },
+      { type: 'snack', label: 'Snack', name: 'Apple & Protein Bar', detail: 'Apple, protein bar', cal: 220, protein: 14 },
+      { type: 'lunch', label: 'Lunch', name: 'Jimmy John\'s Sandwich', detail: 'Jimmy John\'s sandwich, cucumbers', cal: 650, protein: 32 },
+      { type: 'snack', label: 'Snack', name: 'Yogurt & Fruit', detail: 'Flavored yogurt, banana', cal: 220, protein: 12 },
+      { type: 'dinner', label: 'Dinner', name: 'Grilled Chicken Plate', detail: 'Grilled chicken, broccoli, mac and feta cheese', cal: 700, protein: 48 },
+      { type: 'snack', label: 'Evening Snack', name: 'Light Snack', name2: '', detail: 'Apple or protein bar', cal: 180, protein: 8 }
+    ],
+    swim: [
+      { type: 'breakfast', label: 'Breakfast', name: 'Bagel & Yogurt Power Plate', detail: 'Bagel with cream cheese, banana, flavored yogurt', cal: 600, protein: 28 },
+      { type: 'snack', label: 'School Snack', name: 'Protein Bar & Apple', detail: 'Protein bar, apple', cal: 220, protein: 16 },
+      { type: 'lunch', label: 'Lunch', name: 'Jimmy John\'s Sandwich', detail: 'Jimmy John\'s sandwich, cucumbers, banana', cal: 750, protein: 38 },
+      { type: 'training', label: 'Pre-Swim', name: 'Quick Carb Snack', detail: 'Banana, protein bar', cal: 350, protein: 18 },
+      { type: 'training', label: 'Post-Swim', name: 'Recovery Combo', detail: 'Chocolate milk, protein bar, banana', cal: 450, protein: 26 },
+      { type: 'dinner', label: 'Dinner', name: 'Steak & Mac', detail: 'Steak, mac and feta cheese, broccoli', cal: 1000, protein: 56 },
+      { type: 'snack', label: 'Evening Snack', name: 'Yogurt Bowl', detail: 'Flavored yogurt, apple slices', cal: 280, protein: 14 }
+    ],
+    both: [
+      { type: 'breakfast', label: 'Breakfast', name: 'Pancake Power Plate', detail: 'Pancakes, banana, flavored yogurt', cal: 650, protein: 30 },
+      { type: 'snack', label: 'School Snack', name: 'Protein Bar & Apple', detail: 'Protein bar, apple', cal: 240, protein: 16 },
+      { type: 'lunch', label: 'Lunch', name: 'Jimmy John\'s Sandwich + Extra', detail: 'Jimmy John\'s sandwich, cucumbers, banana, protein bar', cal: 800, protein: 42 },
+      { type: 'training', label: 'Pre-Swim', name: 'Quick Carb Snack', detail: 'Banana, bagel with cream cheese', cal: 380, protein: 16 },
+      { type: 'training', label: 'Post-Swim', name: 'Recovery Combo', detail: 'Chocolate milk, protein bar, banana', cal: 480, protein: 28 },
+      { type: 'snack', label: 'Pre-Dryland', name: 'Light Fuel-Up', detail: 'Apple, protein bar', cal: 250, protein: 14 },
+      { type: 'dinner', label: 'Dinner', name: 'Double Steak Plate', detail: 'Steak, mac and feta cheese, broccoli, extra portion', cal: 1080, protein: 62 },
+      { type: 'snack', label: 'Evening Snack', name: 'Yogurt Bowl', detail: 'Flavored yogurt, banana', cal: 300, protein: 14 }
+    ]
+  };
+
+  const dayTypeTotal = { rest: 2380, swim: 3650, both: 4180 };
+
+  let activeDayIndex = 0;
+
+  function showDay(index) {
+    activeDayIndex = index;
+    document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    const card = document.getElementById('day-' + index);
+    if (card) card.classList.add('active');
+    const tabsList = document.querySelectorAll('#day-tabs .day-tab');
+    if (tabsList[index]) tabsList[index].classList.add('active');
+  }
+
+  function renderDayCard(i) {
+    const type = dayTypes[i];
+    const meals = mealTemplates[type];
+    const totalCal = meals.reduce((sum, m) => sum + m.cal, 0);
+    const totalProtein = meals.reduce((sum, m) => sum + m.protein, 0);
+
+    const badgeClass = type === 'both' ? 'both' : (type === 'rest' ? 'rest' : '');
+    const badgeText = type === 'both' ? '🏋️ SWIM + DRYLAND' : (type === 'rest' ? '🛋️ DAY OFF — NO PRACTICE' : '🏊 SWIM DAY');
+
+    const mealsHtml = meals.map(m => {
+      return '<div class="meal-row">' +
+        '<div class="meal-type ' + m.type + '">' + m.label + '</div>' +
+        '<div>' +
+          '<div class="meal-name">' + m.name + '</div>' +
+          '<div class="meal-detail">' + m.detail + '</div>' +
+        '</div>' +
+        '<div><div class="meal-cal">' + m.cal + ' cal</div><div class="meal-protein">' + m.protein + 'g protein</div></div>' +
+      '</div>';
+    }).join('');
+
+    return '<div class="day-card' + (i === activeDayIndex ? ' active' : '') + '" id="day-' + i + '">' +
+      '<div class="day-header">' +
+        '<div class="day-title">' + DAY_NAMES[i] + '</div>' +
+        '<div class="day-macros">~' + totalCal.toLocaleString() + ' cal · <span class="macro">' + totalProtein + 'g protein</span></div>' +
+      '</div>' +
+      '<div class="training-badge ' + badgeClass + '">' + badgeText + '</div>' +
+      '<div class="meals-grid">' + mealsHtml + '</div>' +
+    '</div>';
+  }
+
+  function renderAllDayCards() {
+    const container = document.getElementById('day-cards');
+    container.innerHTML = DAY_NAMES.map((_, i) => renderDayCard(i)).join('');
+    showDay(activeDayIndex);
+  }
+
+  function initWeeklyPlan() {
+    renderDayTypeGrid();
+    renderDayTabs();
+    renderAllDayCards();
+  }
+
+
+  const events = {
+    '50 Free':     { raceCal: 7 },
+    '100 Free':    { raceCal: 15 },
+    '200 Free':    { raceCal: 33 },
+    '500 Free':    { raceCal: 88 },
+    '1650 Free':   { raceCal: 297 },
+    '50 Fly':      { raceCal: 7 },
+    '100 Fly':     { raceCal: 16 },
+    '200 Fly':     { raceCal: 36 },
+    '50 Back':     { raceCal: 8 },
+    '100 Back':    { raceCal: 16 },
+    '200 Back':    { raceCal: 35 },
+    '50 Breast':   { raceCal: 9 },
+    '100 Breast':  { raceCal: 18 },
+    '200 Breast':  { raceCal: 38 },
+    '200 IM':      { raceCal: 34 },
+    '400 IM':      { raceCal: 74 }
+  };
+  const WARMUP_CAL = 355;       // one ~35 min warm-up at the start of the meet
+  const COOLDOWN_PER_EVENT = 127; // ~20 min easy swim-down after each event
+  const MEET_DAY_BASELINE = Math.round(BMR * 1.5); // BMR scaled for a full day at the facility (less NEAT than a school day)
+
+  let selectedEvents = new Set();
+
+  function renderEventGrid() {
+    const grid = document.getElementById('event-grid');
+    grid.innerHTML = Object.keys(events).map(name => {
+      return '<div class="event-chip" data-event="' + name + '" onclick="toggleEvent(\'' + name + '\')">' + name + '</div>';
+    }).join('');
+  }
+
+  function toggleEvent(name) {
+    if (selectedEvents.has(name)) {
+      selectedEvents.delete(name);
+    } else {
+      selectedEvents.add(name);
+    }
+    document.querySelectorAll('.event-chip').forEach(chip => {
+      chip.classList.toggle('active', selectedEvents.has(chip.dataset.event));
+    });
+    renderRaceCalc();
+  }
+
+  function renderRaceCalc() {
+    const listEl = document.getElementById('event-list-chosen');
+    const summaryEl = document.getElementById('meet-summary-grid');
+    const totalEl = document.getElementById('race-total');
+    const barsEl = document.getElementById('race-breakdown-bars');
+
+    if (selectedEvents.size === 0) {
+      listEl.innerHTML = 'No events selected yet — tap any event above.';
+      summaryEl.innerHTML = '';
+      totalEl.textContent = '—';
+      barsEl.innerHTML = '';
+      return;
+    }
+
+    const names = Array.from(selectedEvents);
+    listEl.innerHTML = 'Swimming: ' + names.map(n => '<span>' + n + '</span>').join(', ');
+
+    let raceTotal = 0;
+    names.forEach(n => { raceTotal += events[n].raceCal; });
+    const cooldownTotal = COOLDOWN_PER_EVENT * names.length;
+    const swimEnergy = WARMUP_CAL + raceTotal + cooldownTotal;
+    const dayTotal = MEET_DAY_BASELINE + swimEnergy;
+    const recommended = Math.round(dayTotal * 1.1); // recovery buffer
+
+    summaryEl.innerHTML =
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + names.length + '</div><div class="meet-stat-label">Events</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + WARMUP_CAL + '</div><div class="meet-stat-label">Warm-up cal</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + Math.round(raceTotal) + '</div><div class="meet-stat-label">Race cal</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + Math.round(cooldownTotal) + '</div><div class="meet-stat-label">Cool-down cal</div></div>';
+
+    totalEl.textContent = recommended.toLocaleString();
+
+    const rows = [
+      { name: 'Day Baseline', val: MEET_DAY_BASELINE, cls: 'bmr' },
+      { name: 'Warm-up', val: WARMUP_CAL, cls: 'swim' },
+      { name: 'Racing', val: Math.round(raceTotal), cls: 'dryland' },
+      { name: 'Cool-downs', val: Math.round(cooldownTotal), cls: 'neat' }
+    ];
+    const max = recommended;
+    barsEl.innerHTML = rows.map(r => {
+      const pct = Math.max(2, Math.round((r.val / max) * 100));
+      return '<div class="breakdown-row">' +
+        '<div class="breakdown-name">' + r.name + '</div>' +
+        '<div class="breakdown-track"><div class="breakdown-fill ' + r.cls + '" style="width:' + pct + '%"></div></div>' +
+        '<div class="breakdown-val">' + r.val.toLocaleString() + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  /* ================= MODE 3: PRACTICE DAY TIMELINE ================= */
+  const practiceTimeline = [
+    { icon: '🌅', name: 'Breakfast', time: '6:30 AM', cal: '500–600 cal', foods: ['Bagel with cream cheese', 'Banana', 'Flavored yogurt'] },
+    { icon: '🎒', name: 'School Snack', time: '10:00 AM', cal: '150–200 cal', foods: ['Protein bar', 'Apple'] },
+    { icon: '🥪', name: 'Lunch', time: '12:00 PM', cal: '650–750 cal', foods: ['Jimmy John\'s sandwich', 'Apple', 'Cucumbers'] },
+    { icon: '⚡', name: 'Pre-Swim Snack', time: '3:30 PM', cal: '250–350 cal', foods: ['Banana', 'Protein bar'] },
+    { icon: '🏊', name: 'Swim Practice', time: '4:30–6:30 PM', cal: '~1,450 cal burned', foods: ['2 hours in the pool'] },
+    { icon: '🥤', name: 'Post-Swim Recovery', time: '6:45 PM', cal: '350–450 cal', foods: ['Chocolate milk', 'Protein bar', 'Banana'] },
+    { icon: '🍽️', name: 'Dinner', time: '7:30 PM', cal: '750–900 cal', foods: ['Steak', 'Mac and feta cheese', 'Broccoli'] },
+    { icon: '🌙', name: 'Evening Snack', time: '9:00 PM', cal: '200–300 cal', foods: ['Flavored yogurt', 'Pretzels or fruit'] }
+  ];
+
+  function renderTimeline(containerId, items) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = items.map(item => {
+      return '<div class="timeline-item">' +
+        '<div class="timeline-rail"><div class="timeline-dot">' + item.icon + '</div><div class="timeline-line"></div></div>' +
+        '<div class="timeline-content">' +
+          '<div class="timeline-head">' +
+            '<div class="timeline-meal-name">' + item.name + '</div>' +
+            '<div class="timeline-cal">' + item.cal + '</div>' +
+          '</div>' +
+          '<div class="timeline-time">' + item.time + '</div>' +
+          '<div class="timeline-foods" style="margin-top:8px;">' + item.foods.map(f => '<span class="food-tag">' + f + '</span>').join('') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  /* ================= MODE 4: MEET DAY TIMELINES ================= */
+  const prelimsTimeline = [
+    { icon: '🌅', name: 'Early Breakfast', time: '5:30 AM', cal: '500–600 cal', foods: ['Pancakes', 'Banana', 'Flavored yogurt'] },
+    { icon: '🥯', name: 'Pool Deck Snack', time: '8:00 AM', cal: '200–250 cal', foods: ['Bagel with cream cheese', 'Banana'] },
+    { icon: '🏆', name: 'Racing Window', time: '9:00–11:00 AM', cal: 'Varies by events', foods: ['Race + warm-up + cool-down'] },
+    { icon: '🥪', name: 'Recovery Lunch', time: '11:30 AM', cal: '600–700 cal', foods: ['Jimmy John\'s sandwich', 'Apple', 'Protein bar'] }
+  ];
+  const finalsTimeline = [
+    { icon: '🥞', name: 'Breakfast', time: '8:00 AM', cal: '500–600 cal', foods: ['Pancakes', 'Bagel', 'Bananas'] },
+    { icon: '🍎', name: 'Light Lunch', time: '11:30 AM', cal: '450–550 cal', foods: ['Jimmy John\'s sandwich (half)', 'Apple'] },
+    { icon: '⚡', name: 'Pre-Finals Snack', time: '2:30 PM', cal: '250–300 cal', foods: ['Yogurt', 'Protein bar'] },
+    { icon: '🏆', name: 'Finals Racing', time: '3:30–6:00 PM', cal: 'Varies by events', foods: ['Race + warm-up + cool-down'] },
+    { icon: '🍕', name: 'Celebration Dinner', time: '7:00 PM', cal: '700–900 cal', foods: ['Pizza', 'Cucumbers'] }
+  ];
+
+  let activeMeetTab = 0;
+  function showMeetTab(index) {
+    activeMeetTab = index;
+    document.querySelectorAll('.meet-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.meet-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('meetpanel-' + index).classList.add('active');
+    document.querySelectorAll('.meet-tab')[index].classList.add('active');
+  }
+
+  /* ================= MODE 5: GROCERY LIST ================= */
+  const groceryData = {
+    'Proteins': [
+      { name: 'Chicken breast (grilled or fried)', qty: '3 lbs' },
+      { name: 'Steak', qty: '2 lbs' },
+      { name: 'Eggs', qty: '1 dozen' },
+      { name: 'Protein bars', qty: '10–12 bars' }
+    ],
+    'Fruit': [
+      { name: 'Bananas', qty: '2 bunches' },
+      { name: 'Apples', qty: '7–10' },
+      { name: 'Cucumbers', qty: '4–5' }
+    ],
+    'Dairy': [
+      { name: 'Flavored yogurt (cups)', qty: '10–12' },
+      { name: 'Cream cheese', qty: '1 tub' },
+      { name: 'Feta cheese', qty: '1 container' },
+      { name: 'Chocolate milk', qty: '1/2 gallon' }
+    ],
+    'Bread': [
+      { name: 'Bagels', qty: '1 dozen' },
+      { name: 'Pancake mix', qty: '1 box' }
+    ],
+    'Snacks': [
+      { name: 'Protein bars (variety)', qty: '12–14 bars' },
+      { name: 'Broccoli (fresh)', qty: '2 lbs' }
+    ],
+    'Frozen Items': [
+      { name: 'French fries', qty: '1 large bag' },
+      { name: 'Frozen pizza (backup)', qty: '1–2' }
+    ],
+    'Convenience / Takeout': [
+      { name: 'Jimmy John\'s sandwiches', qty: '5–6 trips/week' },
+      { name: 'Pizza (meet day / dinners)', qty: '1–2 pies/week' },
+      { name: 'Mac and feta cheese ingredients', qty: 'pasta + feta, 2x/week' }
+    ]
+  };
+
+  function renderGroceryList() {
+    const grid = document.getElementById('shop-grid');
+    const icons = { 'Proteins':'🍗','Fruit':'🍌','Dairy':'🥛','Bread':'🥯','Snacks':'🥨','Frozen Items':'🧊','Convenience / Takeout':'🥪' };
+    grid.innerHTML = Object.keys(groceryData).map(cat => {
+      const items = groceryData[cat];
+      const icon = icons[cat] || '🛒';
+      return '<div class="shop-category">' +
+        '<div class="shop-cat-title">' + icon + ' ' + cat + '</div>' +
+        items.map((item, i) => {
+          const id = cat.replace(/\s+/g,'-') + '-' + i;
+          return '<div class="shop-item" data-shop-id="' + id + '">' +
+            '<input type="checkbox" class="shop-checkbox">' +
+            '<span class="shop-item-name-qty"><span class="shop-item-name">' + item.name + '</span><span class="shop-item-qty">' + item.qty + '</span></span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+    }).join('');
+    updateShopProgress();
+  }
+
+  function updateShopProgress() {
+    const all = document.querySelectorAll('.shop-checkbox');
+    const checked = document.querySelectorAll('.shop-checkbox:checked');
+    document.getElementById('shop-progress-text').textContent = checked.length + ' of ' + all.length + ' checked';
+    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+    document.getElementById('shop-progress-fill').style.width = pct + '%';
+  }
+
+  function resetShoppingChecks() {
+    document.querySelectorAll('.shop-checkbox').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.shop-item').classList.remove('checked');
+    });
+    updateShopProgress();
+  }
+
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('shop-checkbox')) {
+      e.target.closest('.shop-item').classList.toggle('checked', e.target.checked);
+      updateShopProgress();
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    const row = e.target.closest('.shop-item');
+    if (row && e.target.tagName !== 'INPUT') {
+      const cb = row.querySelector('.shop-checkbox');
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+
+  /* ================= INIT ================= */
+  renderDailyCalc();
+  initWeeklyPlan();
+  renderEventGrid();
+  renderRaceCalc();
+  renderTimeline('practice-timeline', practiceTimeline);
+  renderTimeline('prelims-timeline', prelimsTimeline);
+  renderTimeline('finals-timeline', finalsTimeline);
+  renderGroceryList();
+</script>
+</body>
+</html>

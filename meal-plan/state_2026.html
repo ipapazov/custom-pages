@@ -39,68 +39,23 @@
   .hero {
     background: var(--charcoal);
     border-bottom: 1px solid var(--border);
-    padding: 48px 24px 36px;
+    padding: 16px 24px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-lane {
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 2px;
-    background: repeating-linear-gradient(to bottom, var(--cyan-dim) 0px, var(--cyan-dim) 14px, transparent 14px, transparent 26px);
-    opacity: 0.35;
-  }
-  .hero-lane.l1 { left: 8%; }
-  .hero-lane.l2 { right: 8%; }
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--cyan);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    position: relative;
   }
   .hero h1 {
     font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1.2;
     color: var(--cream);
-    margin-bottom: 16px;
-    position: relative;
-  }
-  .hero-sub {
-    font-size: 15px;
-    color: var(--muted);
-    max-width: 620px;
-    margin: 0 auto 20px;
-    position: relative;
   }
   .hero-meta {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.04em;
+    margin-top: 4px;
   }
-
-  .alert-bar {
-    background: #1a1208;
-    border: 1px solid #4a3010;
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 20px auto 0;
-    max-width: 720px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    text-align: left;
-    position: relative;
-  }
-  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-  .alert-text { font-size: 13px; color: #c8a060; }
-  .alert-text strong { color: var(--amber); }
 
   /* ============ TAB NAV ============ */
   .nav-bar {
@@ -462,17 +417,8 @@
 <body>
 
 <div class="hero">
-  <div class="hero-lane l1"></div>
-  <div class="hero-lane l2"></div>
-  <div class="hero-eyebrow">West Chicago Sharks · Session Report</div>
   <h1>IL Swimming 11–14 Age Group Champs</h1>
-  <p class="hero-sub">Long Course State Championships 2026 — full 8-session schedule across 4 days, with every start time, round, and heat count. Filter to find exactly what you need.</p>
-  <div class="hero-meta">Thu 7/30 – Sun 8/2/2026 · Hosted by Illinois Swimming · Sanction #IN26294</div>
-
-  <div class="alert-bar">
-    <div class="alert-icon">⭐</div>
-    <div class="alert-text"><strong>Sophia is racing 7 individual events + 4 relays</strong> across all 4 days of the meet. Her swims are marked with a gold star and highlighted throughout the schedule below — tap the "Sophia's Events Only" toggle to see just her races.</div>
-  </div>
+  <div class="hero-meta">Thu 7/30 – Sun 8/2/2026 · Sanction #IN26294</div>
 </div>
 
 <div class="nav-bar" id="nav-bar">

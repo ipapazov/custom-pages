@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zones 2026 · Session Schedule</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --black: #0f0f0f;
+    --charcoal: #1c1c1c;
+    --panel: #242424;
+    --border: #333;
+    --muted: #888;
+    --cream: #f0ece3;
+    --white: #fafaf8;
+    --green: #4caf78;
+    --green-dim: #2a6645;
+    --red: #e05a5a;
+    --amber: #e8a53a;
+    --blue: #5b9bd5;
+    --purple: #9b7fd4;
+    --cyan: #4dd0c8;
+    --cyan-dim: #1f5a55;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--charcoal);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--cream);
+  }
+  .hero-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+
+  /* ============ TAB NAV ============ */
+  .nav-bar {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 600;
+  }
+  .nav-chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-chip:hover { border-color: var(--cyan-dim); color: var(--white); }
+  .nav-chip.active {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--white);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ============ SOPHIA STAT CARDS ============ */
+  .meet-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .meet-stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .meet-stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .meet-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .glance-note {
+    background: #0c1c1c;
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #a3d8d4;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .glance-note strong { color: var(--cyan); }
+
+  /* ============ SOPHIA GLANCE CARDS ============ */
+  .glance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+  }
+  .glance-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+  }
+  .glance-card.pending { border-left: 3px dashed var(--cyan); }
+  .glance-card.likely { border-left: 3px solid var(--green); }
+  .glance-final-tag.likely-tag { background: var(--green-dim); border-color: var(--green); }
+  .glance-event {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .glance-final-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    background: var(--cyan-dim);
+    border: 1px solid var(--cyan);
+    color: var(--white);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .glance-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .glance-meta .g-time { color: var(--cyan); }
+  .glance-meta .g-seed { color: var(--amber); }
+
+  /* ============ FILTER BAR ============ */
+  .filter-bar {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    position: sticky;
+    top: 61px;
+    z-index: 500;
+  }
+  .filter-bar-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px 16px;
+    flex-wrap: wrap;
+  }
+  .filter-select-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-select-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .filter-select {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    max-width: 150px;
+  }
+  .filter-select:hover { border-color: var(--cyan-dim); }
+  .filter-select:focus { outline: none; border-color: var(--cyan); }
+  .sophia-toggle {
+    background: #1a1208;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .sophia-toggle.active {
+    background: var(--amber);
+    color: #1a1208;
+  }
+  .results-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .results-count span { color: var(--cyan); }
+
+  @media (max-width: 700px) {
+    .results-count { margin-left: 0; }
+  }
+
+  /* ============ SCHEDULE ============ */
+  .session-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .session-block-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #2a2a2a;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .session-block-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+  .session-block-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .session-time-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .session-time-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    background: #0c1c1c;
+    border: 1px solid var(--cyan-dim);
+    padding: 4px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .session-time-badge.finish {
+    color: var(--muted);
+    background: var(--charcoal);
+    border-color: var(--border);
+  }
+  .session-block-body { padding: 6px 10px; }
+
+  .ev-item { }
+  .ev-break {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: center;
+    padding: 6px 0;
+    text-transform: uppercase;
+  }
+  .ev-row {
+    display: grid;
+    grid-template-columns: 96px 1fr 90px;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 8px;
+    border-bottom: 1px solid #2a2a2a;
+    border-left: 3px solid transparent;
+  }
+  .ev-item:last-child .ev-row { border-bottom: none; }
+  .ev-row.sophia {
+    border-left-color: var(--amber);
+    background: rgba(232, 165, 58, 0.06);
+  }
+  .ev-row.sophia-pending {
+    border-left: 3px dashed var(--cyan);
+    background: rgba(77, 208, 200, 0.05);
+  }
+  .ev-row.sophia-likely {
+    border-left-color: var(--green);
+    background: rgba(76, 175, 120, 0.06);
+  }
+  .ev-round-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ev-round-badge.prelims { background: #0e1a2a; border: 1px solid var(--blue); color: var(--blue); }
+  .ev-round-badge.finalss { background: #1a1208; border: 1px solid var(--amber); color: var(--amber); }
+  .ev-round-badge.finals1 { background: #0c1c1c; border: 1px solid var(--cyan); color: var(--cyan); }
+  .ev-round-badge.finals { background: #221a2c; border: 1px solid var(--purple); color: var(--purple); }
+
+  .ev-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .ev-num { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 12px; }
+  .ev-sophia-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    background: var(--amber);
+    color: #1a1208;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .ev-sophia-badge.pending {
+    background: var(--cyan);
+    color: #0c1c1c;
+  }
+  .ev-sophia-badge.likely {
+    background: var(--green);
+    color: #0c1c1c;
+  }
+  .ev-rank {
+    color: var(--cyan);
+    margin-left: 8px;
+  }
+  .ev-meta {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 3px;
+  }
+  .ev-seed { color: var(--amber); margin-left: 8px; }
+  .ev-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--cyan);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer span { color: var(--cyan); }
+
+  @media (max-width: 640px) {
+    .ev-row { grid-template-columns: 78px 1fr; }
+    .ev-time { grid-column: 2; text-align: left; margin-top: 2px; }
+    .session-block-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>CZ 14 &amp; Under Championship Meet</h1>
+  <div class="hero-meta">Thu 8/6 – Sun 8/9/2026 · Eden Prairie FoxJets, MN</div>
+</div>
+
+<div class="nav-bar" id="nav-bar">
+  <button class="nav-chip active" data-tab="glance" onclick="showTab('glance')">⭐ Sophia's Meet at a Glance</button>
+  <button class="nav-chip" data-tab="schedule" onclick="showTab('schedule')">📋 Full Session Schedule</button>
+</div>
+
+<div class="tab-panel active" id="tab-glance">
+  <div class="section" style="padding-bottom:40px;">
+    <div class="section-title">Sophia's Meet at a Glance</div>
+    <div class="section-sub">Every entered swim, in order — day, session, round, start time, and seed time</div>
+
+    <div class="meet-summary-grid" id="sophia-stats">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="glance-note">
+      🌊 <strong>How to read the badges:</strong> per the meet format, 200 Back and 400 Free use a <strong>Top-8 Seeded</strong> final — only the 8 fastest seeded swimmers (after scratches) return, and since scratches can only help her rank, seeds of 7th and 3rd make her a <span style="color:var(--green)">near-certain qualifier</span> (green "LIKELY QUALIFIES"). 200 Free, 100 Back, and 100 Free are <strong>standard Prelims/Finals</strong> — top 16 return (A Final 1st–8th, B Final 9th–16th), but qualifiers are set by her actual morning swim, not her seed, so those evening rounds stay dashed cyan "IF QUALIFIES." 800 Free is a timed final — she swims it once, no evening round. Relay legs aren't listed by swimmer name on the psych sheet, so they're not included here yet.
+    </div>
+
+    <div class="glance-grid" id="sophia-glance">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-schedule">
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+      <div class="filter-select-group">
+        <label for="select-day">Day</label>
+        <select class="filter-select" id="select-day" onchange="setFilter('day', this.value)"></select>
+      </div>
+      <div class="filter-select-group">
+        <label for="select-session">Session</label>
+        <select class="filter-select" id="select-session" onchange="setFilter('session', this.value)"></select>
+      </div>
+      <button class="sophia-toggle" id="sophia-toggle" onclick="toggleSophia()">⭐ Sophia's Events Only</button>
+      <div class="results-count" id="results-count"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Full Session Schedule</div>
+    <div class="section-sub">Grouped by session — Day of Meet, heat interval, and finish time shown per session</div>
+    <div id="schedule-container"></div>
+    <div class="no-results" id="no-results" style="display:none;">No events match the current filters.</div>
+  </div>
+</div>
+
+<footer>
+  2026 CZ 14 &amp; Under Championship Meet · Session Report + Psych Sheet data via HY-TEK Meet Manager 8.0 <span>🏊</span><br>
+  Start times are estimates based on entries at time of seeding — actual times may shift with scratches. Confirm at the pool.
+</footer>
+
+<script>
+  /* ================= SESSION METADATA ================= */
+  const sessionMeta = [
+    {num:1, day:1, dayName:'Thursday', label:'Thursday Prelims', start:'8:30 AM', interval:'15 Sec / Back +20 Sec', finish:'3:38 PM'},
+    {num:2, day:1, dayName:'Thursday', label:'Thursday Finals', start:'5:00 PM', interval:'25 Sec / Back +20 Sec', finish:'7:55 PM'},
+    {num:3, day:2, dayName:'Friday', label:'Friday Prelims', start:'8:30 AM', interval:'15 Sec / Back +20 Sec', finish:'11:57 AM'},
+    {num:4, day:2, dayName:'Friday', label:'Friday Finals', start:'5:00 PM', interval:'25 Sec / Back +20 Sec', finish:'7:58 PM'},
+    {num:5, day:3, dayName:'Saturday', label:'Saturday Prelims', start:'8:30 AM', interval:'15 Sec / Back +20 Sec', finish:'12:15 PM'},
+    {num:6, day:3, dayName:'Saturday', label:'Saturday Finals', start:'5:00 PM', interval:'25 Sec / Back +20 Sec', finish:'8:36 PM'},
+    {num:7, day:4, dayName:'Sunday', label:'Sunday Prelims', start:'8:30 AM', interval:'15 Sec / Back +20 Sec', finish:'3:21 PM'},
+    {num:8, day:4, dayName:'Sunday', label:'Sunday Finals', start:'5:00 PM', interval:'25 Sec / Back +20 Sec', finish:'6:23 PM'}
+  ];
+  const sessionByNum = {};
+  sessionMeta.forEach(m => sessionByNum[m.num] = m);
+
+  const ROUND_LABELS = { 'Prelims':'Prelims', 'Finals-S':'Timed Final', 'Finals-1':'Championship Final', 'Finals':'Final' };
+  const ROUND_CLASS  = { 'Prelims':'prelims', 'Finals-S':'finalss', 'Finals-1':'finals1', 'Finals':'finals' };
+
+  /* ================= FULL EVENT DATA ================= */
+  const events = [
+    // ---- Session 1: Thursday Prelims ----
+    {s:1,r:'Finals-S',n:3,nm:'Girls 11-12 200 Backstroke',en:13,h:2,t:'8:30 AM',sp:{lbl:'200 Back',seed:'2:37.85',rank:7,format:'top8'}},
+    {s:1,r:'Finals-S',n:4,nm:'Boys 11-12 200 Backstroke',en:9,h:2,t:'8:37 AM'},
+    {s:1,r:'Prelims',n:5,nm:'Girls 13-14 200 Backstroke',en:37,h:5,t:'8:44 AM'},
+    {s:1,r:'Prelims',n:6,nm:'Boys 13-14 200 Backstroke',en:33,h:5,t:'9:00 AM'},
+    {s:1,r:'Prelims',n:9,nm:'Girls 11-12 50 Freestyle',en:58,h:8,t:'9:15 AM'},
+    {s:1,r:'Prelims',n:10,nm:'Boys 11-12 50 Freestyle',en:48,h:6,t:'9:21 AM'},
+    {s:1,r:'Prelims',n:11,nm:'Girls 13-14 50 Freestyle',en:122,h:16,t:'9:25 AM'},
+    {s:1,r:'Prelims',n:12,nm:'Boys 13-14 50 Freestyle',en:67,h:9,t:'9:37 AM'},
+    {s:1,r:'Finals-S',n:15,nm:'Girls 11-12 200 Breaststroke',en:22,h:3,t:'9:43 AM'},
+    {s:1,r:'Finals-S',n:16,nm:'Boys 11-12 200 Breaststroke',en:18,h:3,t:'9:54 AM'},
+    {s:1,r:'Prelims',n:17,nm:'Girls 13-14 200 Breaststroke',en:52,h:7,t:'10:03 AM'},
+    {s:1,r:'Prelims',n:18,nm:'Boys 13-14 200 Breaststroke',en:34,h:5,t:'10:26 AM'},
+    {s:1,r:'Finals',n:19,nm:'Girls 11-12 400 Freestyle Relay',en:15,h:2,t:'10:41 AM'},
+    {s:1,r:'Finals',n:20,nm:'Boys 11-12 400 Freestyle Relay',en:14,h:2,t:'10:51 AM'},
+    {s:1,r:'Finals',n:21,nm:'Girls 13-14 400 Freestyle Relay',en:16,h:2,t:'11:00 AM'},
+    {s:1,r:'Finals',n:22,nm:'Boys 13-14 400 Freestyle Relay',en:16,h:2,t:'11:09 AM'},
+    {s:1,r:'Finals',n:25,nm:'Girls 11-12 800 Freestyle',en:29,h:4,t:'11:33 AM',brk:'15 Minutes: Relay Awards',sp:{lbl:'800 Free',seed:'10:06.80',rank:5,format:'timed'}},
+    {s:1,r:'Finals',n:26,nm:'Girls 13-14 800 Freestyle',en:30,h:4,t:'12:17 PM'},
+    {s:1,r:'Finals',n:27,nm:'Boys 11-12 1500 Freestyle',en:28,h:4,t:'12:59 PM'},
+    {s:1,r:'Finals',n:28,nm:'Boys 13-14 1500 Freestyle',en:28,h:4,t:'2:21 PM'},
+
+    // ---- Session 2: Thursday Finals ----
+    {s:2,r:'Finals',n:1,nm:'Girls 10 & Under 200 Freestyle Relay',en:10,h:2,t:'5:00 PM'},
+    {s:2,r:'Finals',n:2,nm:'Boys 10 & Under 200 Freestyle Relay',en:9,h:2,t:'5:06 PM'},
+    {s:2,r:'Finals-1',n:3,nm:'Girls 11-12 200 Backstroke',en:8,h:1,t:'5:22 PM',brk:'10 Minutes: Relay Awards',sp:{lbl:'200 Back',rank:7,format:'top8',likely:true}},
+    {s:2,r:'Finals-1',n:4,nm:'Boys 11-12 200 Backstroke',en:8,h:1,t:'5:25 PM'},
+    {s:2,r:'Finals',n:5,nm:'Girls 13-14 200 Backstroke',en:16,h:2,t:'5:29 PM'},
+    {s:2,r:'Finals',n:6,nm:'Boys 13-14 200 Backstroke',en:16,h:2,t:'5:35 PM'},
+    {s:2,r:'Finals',n:7,nm:'Girls 10 & Under 100 Freestyle',en:44,h:6,t:'5:56 PM',brk:'15 Minutes: Awards Break'},
+    {s:2,r:'Finals',n:8,nm:'Boys 10 & Under 100 Freestyle',en:30,h:4,t:'6:06 PM'},
+    {s:2,r:'Finals',n:9,nm:'Girls 11-12 50 Freestyle',en:16,h:2,t:'6:13 PM'},
+    {s:2,r:'Finals',n:10,nm:'Boys 11-12 50 Freestyle',en:16,h:2,t:'6:15 PM'},
+    {s:2,r:'Finals',n:11,nm:'Girls 13-14 50 Freestyle',en:16,h:2,t:'6:17 PM'},
+    {s:2,r:'Finals',n:12,nm:'Boys 13-14 50 Freestyle',en:16,h:2,t:'6:18 PM'},
+    {s:2,r:'Finals',n:13,nm:'Girls 10 & Under 50 Breaststroke',en:28,h:4,t:'6:32 PM',brk:'12 Minutes: Awards Break'},
+    {s:2,r:'Finals',n:14,nm:'Boys 10 & Under 50 Breaststroke',en:18,h:3,t:'6:37 PM'},
+    {s:2,r:'Finals-1',n:15,nm:'Girls 11-12 200 Breaststroke',en:8,h:1,t:'6:40 PM'},
+    {s:2,r:'Finals-1',n:16,nm:'Boys 11-12 200 Breaststroke',en:8,h:1,t:'6:44 PM'},
+    {s:2,r:'Finals',n:17,nm:'Girls 13-14 200 Breaststroke',en:16,h:2,t:'6:47 PM'},
+    {s:2,r:'Finals',n:18,nm:'Boys 13-14 200 Breaststroke',en:16,h:2,t:'6:54 PM'},
+    {s:2,r:'Finals',n:23,nm:'Girls 10 & Under 400 Freestyle',en:20,h:3,t:'7:12 PM',brk:'12 Minutes: Awards Break'},
+    {s:2,r:'Finals',n:24,nm:'Boys 10 & Under 400 Freestyle',en:19,h:3,t:'7:30 PM'},
+
+    // ---- Session 3: Friday Prelims ----
+    {s:3,r:'Finals',n:29,nm:'Girls 11-12 200 Medley Relay',en:15,h:2,t:'8:30 AM'},
+    {s:3,r:'Finals',n:30,nm:'Boys 11-12 200 Medley Relay',en:15,h:2,t:'8:36 AM'},
+    {s:3,r:'Finals',n:31,nm:'Girls 13-14 200 Medley Relay',en:16,h:2,t:'8:42 AM'},
+    {s:3,r:'Finals',n:32,nm:'Boys 13-14 200 Medley Relay',en:16,h:2,t:'8:48 AM'},
+    {s:3,r:'Prelims',n:35,nm:'Girls 11-12 200 Freestyle',en:38,h:5,t:'9:08 AM',brk:'15 Minutes: Relay Awards',sp:{lbl:'200 Free',seed:'2:19.39',rank:5,format:'standard'}},
+    {s:3,r:'Prelims',n:36,nm:'Boys 11-12 200 Freestyle',en:36,h:5,t:'9:22 AM'},
+    {s:3,r:'Prelims',n:37,nm:'Girls 13-14 200 Freestyle',en:63,h:8,t:'9:35 AM'},
+    {s:3,r:'Prelims',n:38,nm:'Boys 13-14 200 Freestyle',en:47,h:6,t:'9:55 AM'},
+    {s:3,r:'Prelims',n:41,nm:'Girls 11-12 50 Backstroke',en:42,h:6,t:'10:10 AM'},
+    {s:3,r:'Prelims',n:42,nm:'Boys 11-12 50 Backstroke',en:27,h:4,t:'10:17 AM'},
+    {s:3,r:'Prelims',n:43,nm:'Girls 13-14 50 Backstroke',en:82,h:11,t:'10:21 AM'},
+    {s:3,r:'Prelims',n:44,nm:'Boys 13-14 50 Backstroke',en:51,h:7,t:'10:34 AM'},
+    {s:3,r:'Prelims',n:47,nm:'Girls 11-12 100 Butterfly',en:36,h:5,t:'10:42 AM'},
+    {s:3,r:'Prelims',n:48,nm:'Boys 11-12 100 Butterfly',en:27,h:4,t:'10:49 AM'},
+    {s:3,r:'Prelims',n:49,nm:'Girls 13-14 100 Butterfly',en:45,h:6,t:'10:55 AM'},
+    {s:3,r:'Prelims',n:50,nm:'Boys 13-14 100 Butterfly',en:30,h:4,t:'11:04 AM'},
+    {s:3,r:'Finals-S',n:53,nm:'Girls 11-12 400 IM',en:15,h:2,t:'11:09 AM'},
+    {s:3,r:'Finals-S',n:54,nm:'Boys 11-12 400 IM',en:12,h:2,t:'11:22 AM'},
+    {s:3,r:'Finals-S',n:55,nm:'Girls 13-14 400 IM',en:15,h:2,t:'11:34 AM'},
+    {s:3,r:'Finals-S',n:56,nm:'Boys 13-14 400 IM',en:16,h:2,t:'11:46 AM'},
+
+    // ---- Session 4: Friday Finals ----
+    {s:4,r:'Finals',n:33,nm:'Girls 10 & Under 50 Freestyle',en:48,h:6,t:'5:00 PM'},
+    {s:4,r:'Finals',n:34,nm:'Boys 10 & Under 50 Freestyle',en:28,h:4,t:'5:06 PM'},
+    {s:4,r:'Finals',n:35,nm:'Girls 11-12 200 Freestyle',en:16,h:2,t:'5:10 PM',sp:{lbl:'200 Free',rank:5,format:'standard',pending:true}},
+    {s:4,r:'Finals',n:36,nm:'Boys 11-12 200 Freestyle',en:16,h:2,t:'5:16 PM'},
+    {s:4,r:'Finals',n:37,nm:'Girls 13-14 200 Freestyle',en:16,h:2,t:'5:21 PM'},
+    {s:4,r:'Finals',n:38,nm:'Boys 13-14 200 Freestyle',en:16,h:2,t:'5:26 PM'},
+    {s:4,r:'Finals',n:39,nm:'Girls 10 & Under 100 Backstroke',en:34,h:5,t:'5:43 PM',brk:'12 Minutes: Awards Break'},
+    {s:4,r:'Finals',n:40,nm:'Boys 10 & Under 100 Backstroke',en:25,h:4,t:'5:54 PM'},
+    {s:4,r:'Finals',n:41,nm:'Girls 11-12 50 Backstroke',en:16,h:2,t:'6:03 PM'},
+    {s:4,r:'Finals',n:42,nm:'Boys 11-12 50 Backstroke',en:16,h:2,t:'6:06 PM'},
+    {s:4,r:'Finals',n:43,nm:'Girls 13-14 50 Backstroke',en:16,h:2,t:'6:08 PM'},
+    {s:4,r:'Finals',n:44,nm:'Boys 13-14 50 Backstroke',en:16,h:2,t:'6:11 PM'},
+    {s:4,r:'Finals',n:45,nm:'Girls 10 & Under 50 Butterfly',en:44,h:6,t:'6:13 PM'},
+    {s:4,r:'Finals',n:46,nm:'Boys 10 & Under 50 Butterfly',en:26,h:4,t:'6:20 PM'},
+    {s:4,r:'Finals',n:47,nm:'Girls 11-12 100 Butterfly',en:16,h:2,t:'6:36 PM',brk:'12 Minutes: Awards Break'},
+    {s:4,r:'Finals',n:48,nm:'Boys 11-12 100 Butterfly',en:16,h:2,t:'6:39 PM'},
+    {s:4,r:'Finals',n:49,nm:'Girls 13-14 100 Butterfly',en:16,h:2,t:'6:42 PM'},
+    {s:4,r:'Finals',n:50,nm:'Boys 13-14 100 Butterfly',en:16,h:2,t:'6:45 PM'},
+    {s:4,r:'Finals',n:51,nm:'Girls 10 & Under 200 IM',en:21,h:3,t:'6:48 PM'},
+    {s:4,r:'Finals',n:52,nm:'Boys 10 & Under 200 IM',en:18,h:3,t:'6:59 PM'},
+    {s:4,r:'Finals-1',n:53,nm:'Girls 11-12 400 IM',en:8,h:1,t:'7:22 PM',brk:'12 Minutes: Awards Break'},
+    {s:4,r:'Finals-1',n:54,nm:'Boys 11-12 400 IM',en:8,h:1,t:'7:28 PM'},
+    {s:4,r:'Finals-1',n:55,nm:'Girls 13-14 400 IM',en:8,h:1,t:'7:34 PM'},
+    {s:4,r:'Finals-1',n:56,nm:'Boys 13-14 400 IM',en:8,h:1,t:'7:40 PM'},
+
+    // ---- Session 5: Saturday Prelims ----
+    {s:5,r:'Finals',n:57,nm:'Girls 11-12 200 Freestyle Relay',en:15,h:2,t:'8:30 AM'},
+    {s:5,r:'Finals',n:58,nm:'Boys 11-12 200 Freestyle Relay',en:14,h:2,t:'8:35 AM'},
+    {s:5,r:'Finals',n:59,nm:'Girls 13-14 200 Freestyle Relay',en:16,h:2,t:'8:40 AM'},
+    {s:5,r:'Finals',n:60,nm:'Boys 13-14 200 Freestyle Relay',en:16,h:2,t:'8:44 AM'},
+    {s:5,r:'Prelims',n:63,nm:'Girls 11-12 100 Breaststroke',en:36,h:5,t:'9:03 AM',brk:'15 Minutes: Relay Awards'},
+    {s:5,r:'Prelims',n:64,nm:'Boys 11-12 100 Breaststroke',en:31,h:4,t:'9:12 AM'},
+    {s:5,r:'Prelims',n:65,nm:'Girls 13-14 100 Breaststroke',en:72,h:9,t:'9:18 AM'},
+    {s:5,r:'Prelims',n:66,nm:'Boys 13-14 100 Breaststroke',en:48,h:6,t:'9:33 AM'},
+    {s:5,r:'Prelims',n:71,nm:'Girls 11-12 100 Backstroke',en:46,h:6,t:'9:42 AM',sp:{lbl:'100 Back',seed:'1:14.49',rank:15,format:'standard'}},
+    {s:5,r:'Prelims',n:72,nm:'Boys 11-12 100 Backstroke',en:26,h:4,t:'9:53 AM'},
+    {s:5,r:'Prelims',n:73,nm:'Girls 13-14 100 Backstroke',en:56,h:7,t:'10:01 AM'},
+    {s:5,r:'Prelims',n:74,nm:'Boys 13-14 100 Backstroke',en:37,h:5,t:'10:13 AM'},
+    {s:5,r:'Finals-S',n:77,nm:'Girls 11-12 200 Butterfly',en:8,h:1,t:'10:22 AM'},
+    {s:5,r:'Finals-S',n:78,nm:'Boys 11-12 200 Butterfly',en:11,h:2,t:'10:25 AM'},
+    {s:5,r:'Prelims',n:79,nm:'Girls 13-14 200 Butterfly',en:22,h:3,t:'10:31 AM'},
+    {s:5,r:'Prelims',n:80,nm:'Boys 13-14 200 Butterfly',en:18,h:3,t:'10:40 AM'},
+    {s:5,r:'Finals-S',n:83,nm:'Girls 11-12 400 Freestyle',en:27,h:4,t:'10:48 AM',sp:{lbl:'400 Free',seed:'4:49.54',rank:3,format:'top8'}},
+    {s:5,r:'Finals-S',n:84,nm:'Boys 11-12 400 Freestyle',en:23,h:3,t:'11:10 AM'},
+    {s:5,r:'Prelims',n:85,nm:'Girls 13-14 400 Freestyle',en:41,h:6,t:'11:26 AM'},
+    {s:5,r:'Prelims',n:86,nm:'Boys 13-14 400 Freestyle',en:27,h:4,t:'11:56 AM'},
+
+    // ---- Session 6: Saturday Finals ----
+    {s:6,r:'Finals',n:61,nm:'Girls 10 & Under 100 Breaststroke',en:25,h:4,t:'5:00 PM'},
+    {s:6,r:'Finals',n:62,nm:'Boys 10 & Under 100 Breaststroke',en:15,h:2,t:'5:09 PM'},
+    {s:6,r:'Finals',n:63,nm:'Girls 11-12 100 Breaststroke',en:16,h:2,t:'5:13 PM'},
+    {s:6,r:'Finals',n:64,nm:'Boys 11-12 100 Breaststroke',en:16,h:2,t:'5:17 PM'},
+    {s:6,r:'Finals',n:65,nm:'Girls 13-14 100 Breaststroke',en:16,h:2,t:'5:20 PM'},
+    {s:6,r:'Finals',n:66,nm:'Boys 13-14 100 Breaststroke',en:16,h:2,t:'5:23 PM'},
+    {s:6,r:'Finals',n:67,nm:'Girls 10 & Under 100 Butterfly',en:25,h:4,t:'5:27 PM'},
+    {s:6,r:'Finals',n:68,nm:'Boys 10 & Under 100 Butterfly',en:19,h:3,t:'5:34 PM'},
+    {s:6,r:'Finals',n:69,nm:'Girls 10 & Under 50 Backstroke',en:35,h:5,t:'5:56 PM',brk:'16 Minutes: Awards Break'},
+    {s:6,r:'Finals',n:70,nm:'Boys 10 & Under 50 Backstroke',en:28,h:4,t:'6:03 PM'},
+    {s:6,r:'Finals',n:71,nm:'Girls 11-12 100 Backstroke',en:16,h:2,t:'6:09 PM',sp:{lbl:'100 Back',rank:15,format:'standard',pending:true}},
+    {s:6,r:'Finals',n:72,nm:'Boys 11-12 100 Backstroke',en:16,h:2,t:'6:13 PM'},
+    {s:6,r:'Finals',n:73,nm:'Girls 13-14 100 Backstroke',en:16,h:2,t:'6:16 PM'},
+    {s:6,r:'Finals',n:74,nm:'Boys 13-14 100 Backstroke',en:16,h:2,t:'6:20 PM'},
+    {s:6,r:'Finals',n:75,nm:'Girls 10 & Under 200 Freestyle',en:39,h:5,t:'6:36 PM',brk:'12 Minutes: Awards Break'},
+    {s:6,r:'Finals',n:76,nm:'Boys 10 & Under 200 Freestyle',en:23,h:3,t:'6:52 PM'},
+    {s:6,r:'Finals-1',n:77,nm:'Girls 11-12 200 Butterfly',en:8,h:1,t:'7:01 PM'},
+    {s:6,r:'Finals-1',n:78,nm:'Boys 11-12 200 Butterfly',en:8,h:1,t:'7:04 PM'},
+    {s:6,r:'Finals',n:79,nm:'Girls 13-14 200 Butterfly',en:16,h:2,t:'7:07 PM'},
+    {s:6,r:'Finals',n:80,nm:'Boys 13-14 200 Butterfly',en:16,h:2,t:'7:13 PM'},
+    {s:6,r:'Finals',n:81,nm:'Girls 10 & Under 200 Medley Relay',en:10,h:2,t:'7:31 PM',brk:'12 Minutes: Awards Break'},
+    {s:6,r:'Finals',n:82,nm:'Boys 10 & Under 200 Medley Relay',en:9,h:2,t:'7:38 PM'},
+    {s:6,r:'Finals-1',n:83,nm:'Girls 11-12 400 Freestyle',en:8,h:1,t:'7:55 PM',brk:'10 Minutes: Relay Awards / High Points',sp:{lbl:'400 Free',rank:3,format:'top8',likely:true}},
+    {s:6,r:'Finals-1',n:84,nm:'Boys 11-12 400 Freestyle',en:8,h:1,t:'8:01 PM'},
+    {s:6,r:'Finals',n:85,nm:'Girls 13-14 400 Freestyle',en:16,h:2,t:'8:06 PM'},
+    {s:6,r:'Finals',n:86,nm:'Boys 13-14 400 Freestyle',en:16,h:2,t:'8:16 PM'},
+
+    // ---- Session 7: Sunday Prelims ----
+    {s:7,r:'Prelims',n:87,nm:'Girls 11-12 50 Breaststroke',en:34,h:5,t:'8:30 AM'},
+    {s:7,r:'Prelims',n:88,nm:'Boys 11-12 50 Breaststroke',en:36,h:5,t:'8:35 AM'},
+    {s:7,r:'Prelims',n:89,nm:'Girls 13-14 50 Breaststroke',en:76,h:10,t:'8:39 AM'},
+    {s:7,r:'Prelims',n:90,nm:'Boys 13-14 50 Breaststroke',en:64,h:8,t:'8:48 AM'},
+    {s:7,r:'Prelims',n:91,nm:'Girls 11-12 200 IM',en:32,h:4,t:'8:55 AM'},
+    {s:7,r:'Prelims',n:92,nm:'Boys 11-12 200 IM',en:21,h:3,t:'9:07 AM'},
+    {s:7,r:'Prelims',n:93,nm:'Girls 13-14 200 IM',en:36,h:5,t:'9:16 AM'},
+    {s:7,r:'Prelims',n:94,nm:'Boys 13-14 200 IM',en:33,h:5,t:'9:30 AM'},
+    {s:7,r:'Prelims',n:95,nm:'Girls 11-12 50 Butterfly',en:44,h:6,t:'9:43 AM'},
+    {s:7,r:'Prelims',n:96,nm:'Boys 11-12 50 Butterfly',en:36,h:5,t:'9:48 AM'},
+    {s:7,r:'Prelims',n:97,nm:'Girls 13-14 50 Butterfly',en:85,h:11,t:'9:52 AM'},
+    {s:7,r:'Prelims',n:98,nm:'Boys 13-14 50 Butterfly',en:61,h:8,t:'10:01 AM'},
+    {s:7,r:'Prelims',n:99,nm:'Girls 11-12 100 Freestyle',en:49,h:7,t:'10:07 AM',sp:{lbl:'100 Free',seed:'1:03.42',rank:7,format:'standard'}},
+    {s:7,r:'Prelims',n:100,nm:'Boys 11-12 100 Freestyle',en:35,h:5,t:'10:16 AM'},
+    {s:7,r:'Prelims',n:101,nm:'Girls 13-14 100 Freestyle',en:81,h:11,t:'10:23 AM'},
+    {s:7,r:'Prelims',n:102,nm:'Boys 13-14 100 Freestyle',en:53,h:7,t:'10:37 AM'},
+    {s:7,r:'Finals',n:103,nm:'Girls 11-12 400 Medley Relay',en:15,h:2,t:'10:46 AM'},
+    {s:7,r:'Finals',n:104,nm:'Boys 11-12 400 Medley Relay',en:15,h:2,t:'10:58 AM'},
+    {s:7,r:'Finals',n:105,nm:'Girls 13-14 400 Medley Relay',en:16,h:2,t:'11:09 AM'},
+    {s:7,r:'Finals',n:106,nm:'Boys 13-14 400 Medley Relay',en:16,h:2,t:'11:20 AM'},
+    {s:7,r:'Finals',n:107,nm:'Girls 11-12 1500 Freestyle',en:20,h:3,t:'11:45 AM',brk:'15 Minutes: Relay Awards'},
+    {s:7,r:'Finals',n:108,nm:'Girls 13-14 1500 Freestyle',en:23,h:3,t:'12:49 PM'},
+    {s:7,r:'Finals',n:109,nm:'Boys 11-12 800 Freestyle',en:39,h:5,t:'1:48 PM'},
+    {s:7,r:'Finals',n:110,nm:'Boys 13-14 800 Freestyle',en:30,h:4,t:'2:42 PM'},
+
+    // ---- Session 8: Sunday Finals ----
+    {s:8,r:'Finals',n:87,nm:'Girls 11-12 50 Breaststroke',en:16,h:2,t:'5:00 PM'},
+    {s:8,r:'Finals',n:88,nm:'Boys 11-12 50 Breaststroke',en:16,h:2,t:'5:03 PM'},
+    {s:8,r:'Finals',n:89,nm:'Girls 13-14 50 Breaststroke',en:16,h:2,t:'5:05 PM'},
+    {s:8,r:'Finals',n:90,nm:'Boys 13-14 50 Breaststroke',en:16,h:2,t:'5:07 PM'},
+    {s:8,r:'Finals',n:91,nm:'Girls 11-12 200 IM',en:16,h:2,t:'5:08 PM'},
+    {s:8,r:'Finals',n:92,nm:'Boys 11-12 200 IM',en:16,h:2,t:'5:15 PM'},
+    {s:8,r:'Finals',n:93,nm:'Girls 13-14 200 IM',en:16,h:2,t:'5:21 PM'},
+    {s:8,r:'Finals',n:94,nm:'Boys 13-14 200 IM',en:16,h:2,t:'5:26 PM'},
+    {s:8,r:'Finals',n:95,nm:'Girls 11-12 50 Butterfly',en:16,h:2,t:'5:48 PM',brk:'16 Minutes: Awards Break'},
+    {s:8,r:'Finals',n:96,nm:'Boys 11-12 50 Butterfly',en:16,h:2,t:'5:50 PM'},
+    {s:8,r:'Finals',n:97,nm:'Girls 13-14 50 Butterfly',en:16,h:2,t:'5:52 PM'},
+    {s:8,r:'Finals',n:98,nm:'Boys 13-14 50 Butterfly',en:16,h:2,t:'5:53 PM'},
+    {s:8,r:'Finals',n:99,nm:'Girls 11-12 100 Freestyle',en:16,h:2,t:'5:55 PM',sp:{lbl:'100 Free',rank:7,format:'standard',pending:true}},
+    {s:8,r:'Finals',n:100,nm:'Boys 11-12 100 Freestyle',en:16,h:2,t:'5:58 PM'},
+    {s:8,r:'Finals',n:101,nm:'Girls 13-14 100 Freestyle',en:16,h:2,t:'6:01 PM'},
+    {s:8,r:'Finals',n:102,nm:'Boys 13-14 100 Freestyle',en:16,h:2,t:'6:04 PM'}
+  ];
+
+
+  /* ================= FILTER STATE ================= */
+  const filters = { day: 'all', session: 'all' };
+  let sophiaOnly = false;
+
+  const DAY_OPTIONS = [
+    {v:'all', label:'All Days'},
+    {v:'1', label:'Day 1 · Thu'},
+    {v:'2', label:'Day 2 · Fri'},
+    {v:'3', label:'Day 3 · Sat'},
+    {v:'4', label:'Day 4 · Sun'}
+  ];
+  const SESSION_OPTIONS = [{v:'all', label:'All Sessions'}].concat(
+    sessionMeta.map(m => ({v:String(m.num), label:'S'+m.num+' · '+m.label}))
+  );
+  function renderSelect(selectId, options) {
+    const el = document.getElementById(selectId);
+    el.innerHTML = options.map(o => '<option value="' + o.v + '">' + o.label + '</option>').join('');
+  }
+
+  function setFilter(dim, val) {
+    filters[dim] = val;
+    applyFilters();
+  }
+
+  function toggleSophia() {
+    sophiaOnly = !sophiaOnly;
+    document.getElementById('sophia-toggle').classList.toggle('active', sophiaOnly);
+    applyFilters();
+  }
+
+  function showTab(tab) {
+    document.querySelectorAll('.nav-chip').forEach(c => c.classList.toggle('active', c.dataset.tab === tab));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function applyFilters() {
+    let visibleTotal = 0;
+    document.querySelectorAll('.session-block').forEach(block => {
+      let blockVisible = 0;
+      block.querySelectorAll('.ev-item').forEach(item => {
+        const row = item.querySelector('.ev-row');
+        const day = row.dataset.day, sess = row.dataset.session, sophia = row.dataset.sophia === 'true';
+        let show = true;
+        if (filters.day !== 'all' && filters.day !== day) show = false;
+        if (filters.session !== 'all' && filters.session !== sess) show = false;
+        if (sophiaOnly && !sophia) show = false;
+        item.style.display = show ? '' : 'none';
+        if (show) { blockVisible++; visibleTotal++; }
+      });
+      block.style.display = blockVisible ? '' : 'none';
+    });
+    document.getElementById('results-count').innerHTML = '<span>' + visibleTotal + '</span> event' + (visibleTotal === 1 ? '' : 's') + ' shown';
+    document.getElementById('no-results').style.display = visibleTotal ? 'none' : 'block';
+  }
+
+  /* ================= SOPHIA SEEDING HELPERS ================= */
+  function ordinal(n) {
+    const s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  function sophiaState(sp) {
+    if (!sp) return null;
+    return sp.likely ? 'likely' : (sp.pending ? 'pending' : 'confirmed');
+  }
+
+  function sophiaFormatNote(sp) {
+    if (sp.format === 'timed') return 'Timed final — she swims once, no evening round for this event.';
+    if (sp.format === 'top8') {
+      return sp.likely
+        ? 'Top-8 seeded format: only the 8 fastest SEEDED swimmers (after scratches) return for finals. Seeded ' + ordinal(sp.rank) + ' pre-scratch — scratches can only improve her rank, so she is very likely to swim this final.'
+        : 'Top-8 seeded format: only the 8 fastest seeded swimmers (after scratches) return for finals — not a standard A/B split.';
+    }
+    if (sp.format === 'standard') {
+      const tier = sp.rank <= 8 ? 'A-Final range (1st–8th)' : 'B-Final bubble (9th–16th)';
+      return sp.pending
+        ? 'Standard prelims/finals: top 16 return (A Final 1st–8th, B Final 9th–16th). Seeded ' + ordinal(sp.rank) + ' pre-scratch, currently in the ' + tier + ' — but qualifiers are set by her actual AM swim, not this seed.'
+        : 'Standard prelims/finals — top 16 advance to finals (A Final: 1st–8th, B Final: 9th–16th).';
+    }
+    return '';
+  }
+
+  /* ================= RENDER SCHEDULE ================= */
+  function rowHtml(e) {
+    const meta = sessionByNum[e.s];
+    const roundClass = ROUND_CLASS[e.r] || 'finals';
+    const roundLabel = ROUND_LABELS[e.r] || e.r;
+    const brk = e.brk ? '<div class="ev-break">Break · ' + e.brk + '</div>' : '';
+    const sophia = e.sp;
+    const state = sophiaState(sophia);
+    const rowClass = state === 'confirmed' ? ' sophia' : state === 'pending' ? ' sophia-pending' : state === 'likely' ? ' sophia-likely' : '';
+    const badgeClass = state === 'pending' ? ' pending' : state === 'likely' ? ' likely' : '';
+    const badgeText = !sophia ? '' : state === 'likely' ? '⭐ SOPHIA · LIKELY QUALIFIES' : state === 'pending' ? '⭐ SOPHIA · IF QUALIFIES' : '⭐ SOPHIA';
+    const sophiaBadge = sophia ? '<span class="ev-sophia-badge' + badgeClass + '">' + badgeText + '</span>' : '';
+    const seed = sophia && sophia.seed ? '<span class="ev-seed">Seed ' + sophia.seed + '</span>' : '';
+    const rank = sophia && sophia.rank ? '<span class="ev-rank">Seeded ' + ordinal(sophia.rank) + '</span>' : '';
+    return '<div class="ev-item">' + brk +
+      '<div class="ev-row' + rowClass + '" data-day="' + meta.day + '" data-session="' + e.s + '" data-sophia="' + (sophia ? 'true' : 'false') + '">' +
+        '<div class="ev-round-badge ' + roundClass + '">' + roundLabel + '</div>' +
+        '<div class="ev-main">' +
+          '<div class="ev-name"><span class="ev-num">#' + e.n + '</span> ' + e.nm + sophiaBadge + '</div>' +
+          '<div class="ev-meta">' + e.en + ' Entries · ' + e.h + ' Heat' + (e.h === 1 ? '' : 's') + seed + rank + '</div>' +
+        '</div>' +
+        '<div class="ev-time">' + e.t + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderSchedule() {
+    const container = document.getElementById('schedule-container');
+    let html = '';
+    sessionMeta.forEach(meta => {
+      const rows = events.filter(e => e.s === meta.num);
+      const rowsHtml = rows.map(rowHtml).join('');
+      html += '<div class="session-block" data-session="' + meta.num + '">' +
+        '<div class="session-block-head">' +
+          '<div>' +
+            '<div class="session-block-title">Session ' + meta.num + ' — ' + meta.label + '</div>' +
+            '<div class="session-block-sub">Day ' + meta.day + ' of Meet · Heat Interval ' + meta.interval + '</div>' +
+          '</div>' +
+          '<div class="session-time-badges">' +
+            '<span class="session-time-badge">Starts ' + meta.start + '</span>' +
+            '<span class="session-time-badge finish">Finish ~' + meta.finish + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="session-block-body">' + rowsHtml + '</div>' +
+      '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  /* ================= SOPHIA GLANCE ================= */
+  function renderSophiaGlance() {
+    const sophiaEvents = events.filter(e => e.sp);
+    const confirmed = sophiaEvents.filter(e => !e.sp.pending);
+    const individualCount = new Set(confirmed.map(e => e.sp.lbl)).size;
+    const sessionsSet = new Set(sophiaEvents.map(e => e.s));
+    const daysSet = new Set(sophiaEvents.map(e => sessionByNum[e.s].day));
+
+    document.getElementById('sophia-stats').innerHTML =
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + individualCount + '</div><div class="meet-stat-label">Individual Events</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + sessionsSet.size + ' / 8</div><div class="meet-stat-label">Sessions Involved</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + daysSet.size + '</div><div class="meet-stat-label">Days of Racing</div></div>';
+
+    document.getElementById('sophia-glance').innerHTML = sophiaEvents.map(e => {
+      const meta = sessionByNum[e.s];
+      const roundLabel = ROUND_LABELS[e.r] || e.r;
+      const sp = e.sp;
+      const state = sophiaState(sp);
+      const tagText = state === 'likely' ? 'LIKELY QUALIFIES' : (state === 'pending' ? 'IF QUALIFIES' : '');
+      const tagClass = state === 'likely' ? 'glance-final-tag likely-tag' : 'glance-final-tag';
+      const finalTag = tagText ? '<span class="' + tagClass + '">' + tagText + '</span>' : '';
+      const rankLine = sp.rank ? '<div>Seeded <strong style="color:var(--white)">' + ordinal(sp.rank) + '</strong></div>' : '';
+      const seedLine = sp.seed ? '<div class="g-seed">Seed ' + sp.seed + '</div>' : '';
+      const noteLine = '<div style="margin-top:6px;color:#999;font-family:\'DM Sans\',sans-serif;font-size:11px;line-height:1.5;">' + sophiaFormatNote(sp) + '</div>';
+      return '<div class="glance-card ' + state + '">' +
+        '<div class="glance-event">' + sp.lbl + finalTag + '</div>' +
+        '<div class="glance-meta">' +
+          'Day ' + meta.day + ' · ' + meta.dayName + ' — Session ' + e.s + '<br>' +
+          roundLabel + ' · Event #' + e.n + '<br>' +
+          '<span class="g-time">Start ' + e.t + '</span>' +
+          rankLine +
+          seedLine +
+        '</div>' +
+        noteLine +
+      '</div>';
+    }).join('');
+  }
+
+  /* ================= INIT ================= */
+  renderSelect('select-day', DAY_OPTIONS);
+  renderSelect('select-session', SESSION_OPTIONS);
+  renderSophiaGlance();
+  renderSchedule();
+  applyFilters();
+</script>
+
+</body>
+</html>

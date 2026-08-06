@@ -471,7 +471,7 @@
     </div>
 
     <div class="glance-note">
-      🌊 <strong>How to read the badges:</strong> per the meet format, 200 Back and 400 Free use a <strong>Top-8 Seeded</strong> final — only the 8 fastest seeded swimmers (after scratches) return, and since scratches can only help her rank, seeds of 7th and 3rd make her a <span style="color:var(--green)">near-certain qualifier</span> (green "LIKELY QUALIFIES"). 200 Free, 100 Back, and 100 Free are <strong>standard Prelims/Finals</strong> — top 16 return (A Final 1st–8th, B Final 9th–16th), but qualifiers are set by her actual morning swim, not her seed, so those evening rounds stay dashed cyan "IF QUALIFIES." 800 Free is a timed final — she swims it once, no evening round. Relay legs aren't listed by swimmer name on the psych sheet, so they're not included here yet.
+      🌊 <strong>How to read the badges:</strong> per the meet format, 200 Back and 400 Free use a <strong>Top-8 Seeded</strong> final — only the 8 fastest seeded swimmers (after scratches) return, and since scratches can only help her rank, seeds of 7th and 3rd make her a <span style="color:var(--green)">near-certain qualifier</span> (green "LIKELY QUALIFIES"). 200 Free, 100 Back, and 100 Free are <strong>standard Prelims/Finals</strong> — top 16 return (A Final 1st–8th, B Final 9th–16th), but qualifiers are set by her actual morning swim, not her seed, so those evening rounds stay dashed cyan "IF QUALIFIES." 800 Free and the 400 Free Relay are both timed finals — one swim each, no evening round. Relay legs aren't listed by swimmer name on the psych sheet, so only the 400 Free Relay is included so far (confirmed) — let me know if she's swimming any other relays.
     </div>
 
     <div class="glance-grid" id="sophia-glance">
@@ -542,7 +542,7 @@
     {s:1,r:'Finals-S',n:16,nm:'Boys 11-12 200 Breaststroke',en:18,h:3,t:'9:54 AM'},
     {s:1,r:'Prelims',n:17,nm:'Girls 13-14 200 Breaststroke',en:52,h:7,t:'10:03 AM'},
     {s:1,r:'Prelims',n:18,nm:'Boys 13-14 200 Breaststroke',en:34,h:5,t:'10:26 AM'},
-    {s:1,r:'Finals',n:19,nm:'Girls 11-12 400 Freestyle Relay',en:15,h:2,t:'10:41 AM'},
+    {s:1,r:'Finals',n:19,nm:'Girls 11-12 400 Freestyle Relay',en:15,h:2,t:'10:41 AM',sp:{lbl:'400 Free Relay',format:'timed'}},
     {s:1,r:'Finals',n:20,nm:'Boys 11-12 400 Freestyle Relay',en:14,h:2,t:'10:51 AM'},
     {s:1,r:'Finals',n:21,nm:'Girls 13-14 400 Freestyle Relay',en:16,h:2,t:'11:00 AM'},
     {s:1,r:'Finals',n:22,nm:'Boys 13-14 400 Freestyle Relay',en:16,h:2,t:'11:09 AM'},
@@ -853,12 +853,14 @@
   function renderSophiaGlance() {
     const sophiaEvents = events.filter(e => e.sp);
     const confirmed = sophiaEvents.filter(e => !e.sp.pending);
-    const individualCount = new Set(confirmed.map(e => e.sp.lbl)).size;
+    const individualCount = new Set(confirmed.filter(e => !/Relay/.test(e.nm)).map(e => e.sp.lbl)).size;
+    const relayCount = new Set(confirmed.filter(e => /Relay/.test(e.nm)).map(e => e.sp.lbl)).size;
     const sessionsSet = new Set(sophiaEvents.map(e => e.s));
     const daysSet = new Set(sophiaEvents.map(e => sessionByNum[e.s].day));
 
     document.getElementById('sophia-stats').innerHTML =
       '<div class="meet-stat-card"><div class="meet-stat-val">' + individualCount + '</div><div class="meet-stat-label">Individual Events</div></div>' +
+      '<div class="meet-stat-card"><div class="meet-stat-val">' + relayCount + '</div><div class="meet-stat-label">Relays</div></div>' +
       '<div class="meet-stat-card"><div class="meet-stat-val">' + sessionsSet.size + ' / 8</div><div class="meet-stat-label">Sessions Involved</div></div>' +
       '<div class="meet-stat-card"><div class="meet-stat-val">' + daysSet.size + '</div><div class="meet-stat-label">Days of Racing</div></div>';
 
